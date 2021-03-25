@@ -1,11 +1,11 @@
 {
-  "name": "ProgressTrackerProject",
+  "name": "progress_tracker_project",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./progressTracker/frontend/src/index.js --output ./progressTracker/frontend/static/frontend/main.js",
-    "build": "webpack --mode production ./progressTracker/frontend/src/index.js --output ./progressTracker/frontend/static/frontend/main.js"
+    "dev": "webpack --mode development ./progressTracker/frontend/src/index.js --output-path ./progressTracker/frontend/static/frontend/",
+    "build": "webpack --mode production ./progressTracker/frontend/src/index.js --output-path ./progressTracker/frontend/static/frontend/"
 
   },
   "keywords": [],
