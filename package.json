@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./progressTracker/frontend/src/index.js --output-path ./progressTracker/frontend/static/frontend/",
+    "dev": "webpack --mode development --watch ./progressTracker/frontend/src/index.js --output-path ./progressTracker/frontend/static/frontend/",
     "build": "webpack --mode production ./progressTracker/frontend/src/index.js --output-path ./progressTracker/frontend/static/frontend/"
 
   },
