@@ -5,7 +5,5 @@ from .api import MockViewSet
 
 router = routers.DefaultRouter()
 router.register('api/mocks', MockViewSet, 'mock')
-urlpatterns = router.urls
-# urlpatterns = [
-#     path('', views.index, name='index'),
-# ]
+urlpatterns = []
+urlpatterns += router.urls
