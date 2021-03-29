@@ -15,7 +15,6 @@ class RegisterApi(generics.GenericAPIView):
         """ register user, returns user and token. """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         user = serializer.save()
         _, token = AuthToken.objects.create(user)
         return Response({
@@ -25,7 +24,7 @@ class RegisterApi(generics.GenericAPIView):
 
 
 class RegisterStudentApi(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
+    serializer_class = StudentSerializer
 
     def post(self, request, *args, **kwargs):
         """ register user, returns user and token. """
