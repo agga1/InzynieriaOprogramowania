@@ -5,9 +5,9 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 def validate_index(value: str):
-    if len(value) != 6 or value.isdigit():
+    if len(value) != 6 or not value.isdigit():
         raise ValidationError(
-            _('%(value)s is not a proper index number'),
+            _(f'%(value)s is not a proper index number, len={len(value)}, isdigit={value.isdigit()}'),
             params={'value': value},
         )
 
