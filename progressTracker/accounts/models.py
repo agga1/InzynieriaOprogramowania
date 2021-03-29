@@ -17,4 +17,5 @@ class DefaultUser(AbstractUser):
 
 class Student(models.Model):
     user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE, primary_key=True)
+    is_female = models.BooleanField()
     index_nr = models.CharField(verbose_name="Index number", validators=[validate_index], max_length=6)

@@ -14,7 +14,7 @@ class StudentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     class Meta:
         model = Student
-        fields = ('user', 'index_nr')
+        fields = ('__all__')
 
 
 class RegisterStudentSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
     password = serializers.CharField(source='user.password')
     class Meta:
         model = Student
-        fields = ('index_nr', 'username', 'email', 'first_name', 'last_name', 'password')
+        fields = ('index_nr', 'is_female', 'username', 'email', 'first_name', 'last_name', 'password')
         extra_kwargs = {'password': {"write_only": True}}
 
     def create(self, validated_data):
@@ -34,7 +34,7 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create_user(**user_data)
         user.is_student = True
         user.save()
-        student = Student.objects.create(user=user, index_nr=validated_data['index_nr'])
+        student = Student.objects.create(user=user, index_nr=validated_data['index_nr'], is_female=validated_data['is_female'])
         return student
 
 
