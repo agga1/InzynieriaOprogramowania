@@ -40,7 +40,7 @@ class RegisterApi(generics.GenericAPIView):
         })
 
 
-# Login Api
+# Login Api -- same for all profiles TODO - frontend - possibly Student attributes needed?
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
 

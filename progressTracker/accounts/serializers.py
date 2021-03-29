@@ -38,6 +38,17 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         return student
 
 
+class LoginSerializer(serializers.Serializer):
+    """ validating authentication - DefaultUser only"""
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        user = authenticate(**data)
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("incorrect credentials")
+
 # default user serializer
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -53,12 +64,4 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return user
 
 
-class LoginSerializer(serializers.Serializer):  # no model - only validating authentication
-    username = serializers.CharField()
-    password = serializers.CharField()
 
-    def validate(self, data):
-        user = authenticate(**data)
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("incorrect credentials")
