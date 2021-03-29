@@ -1,15 +1,13 @@
 from rest_framework import serializers
-# from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, get_user_model
 
 from accounts.models import Student
-from progressTracker.settings import AUTH_USER_MODEL
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -31,7 +29,7 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {"write_only": True}}
 
     def create(self, validated_data):
-        # first create user, then student
+        # first create user, then student profile for that user
         user_data = validated_data['user']
         user = get_user_model().objects.create_user(**user_data)
         user.is_student = True
@@ -40,14 +38,15 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         return student
 
 
+# default user serializer
+
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()  # AUTH_USER_MODEL
+        model = get_user_model()
         fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
         extra_kwargs = {'password': {"write_only": True}}
 
     def create(self, validated_data):
-        print("validated_data", validated_data)
         user = get_user_model().objects.create_user(validated_data['username'],
                                                     validated_data['email'], validated_data['password'],
                                                     first_name=validated_data['first_name'],last_name=validated_data['last_name'])
