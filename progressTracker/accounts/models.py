@@ -19,3 +19,11 @@ class Student(models.Model):
     user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE, primary_key=True)
     is_female = models.BooleanField()
     index_nr = models.CharField(verbose_name="Index number", validators=[validate_index], max_length=6)
+
+class Teacher(models.Model):
+    class Title(models.TextChoices):
+        PROFESSOR = 'PROF', _('professor')
+        MASTER = 'MSc', _('master of science')
+        BACHELOR = 'BoS', _('bachelor of science')
+    user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE, primary_key=True)
+    title = models.CharField(max_length=4, choices=Title.choices, default=Title.BACHELOR)
