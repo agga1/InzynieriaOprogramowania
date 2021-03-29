@@ -2,7 +2,8 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterUserSerializer, LoginSerializer, StudentSerializer, \
-    RegisterStudentSerializer
+    RegisterStudentSerializer, RegisterTeacherSerializer, TeacherSerializer
+
 
 # Student API
 
@@ -22,6 +23,36 @@ class RegisterStudentApi(generics.GenericAPIView):
 
 # Teacher API
 
+class RegisterTeacherApi(generics.GenericAPIView):
+    serializer_class = RegisterTeacherSerializer
+
+    def post(self, request, *args, **kwargs):
+        """ register teacher """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        teacher = serializer.save()
+        _, token = AuthToken.objects.create(teacher.user)
+        return Response({
+            "user": TeacherSerializer(teacher, context=self.get_serializer_context()).data,
+            "token": token
+        })
+
+# Login Api -- same for all profiles TODO - frontend - possibly Student attributes needed?
+class LoginAPI(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        """ returns user and his token """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        _, token = AuthToken.objects.create(user)
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": token
+        })
+
+
 # ----- API for DefaultUser, use mostly as a template to create API for each user profile
 
 # Register Api
@@ -39,21 +70,6 @@ class RegisterApi(generics.GenericAPIView):
             "token": token
         })
 
-
-# Login Api -- same for all profiles TODO - frontend - possibly Student attributes needed?
-class LoginAPI(generics.GenericAPIView):
-    serializer_class = LoginSerializer
-
-    def post(self, request, *args, **kwargs):
-        """ returns user and his token """
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        _, token = AuthToken.objects.create(user)
-        return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": token
-        })
 
 # Get user Api
 class UserAPI(generics.RetrieveAPIView):

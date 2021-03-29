@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
 
-from accounts.models import Student
+from accounts.models import Student, Teacher
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,17 +16,28 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ('__all__')
 
+class TeacherSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Teacher
+        fields = ('__all__')
+
+
+class RegisterUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
+        extra_kwargs = {'password': {"write_only": True}}
+
+    def create(self, validated_data):
+        user = get_user_model().objects.create_user(**validated_data)
+        return user
 
 class RegisterStudentSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
-    email = serializers.CharField(source='user.email')
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
-    password = serializers.CharField(source='user.password')
+    user = RegisterUserSerializer()
     class Meta:
         model = Student
-        fields = ('index_nr', 'is_female', 'username', 'email', 'first_name', 'last_name', 'password')
-        extra_kwargs = {'password': {"write_only": True}}
+        fields = ('index_nr', 'is_female', 'user')
 
     def create(self, validated_data):
         # first create user, then student profile for that user
@@ -37,7 +48,22 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         student = Student.objects.create(user=user, index_nr=validated_data['index_nr'], is_female=validated_data['is_female'])
         return student
 
+class RegisterTeacherSerializer(serializers.ModelSerializer):
+    user = RegisterUserSerializer()
+    class Meta:
+        model = Teacher
+        fields = ('title', 'user')
 
+    def create(self, validated_data):
+        # first create user, then teacher profile for that user
+        user_data = validated_data['user']
+        user = get_user_model().objects.create_user(**user_data)
+        user.save()
+        teacher = Teacher.objects.create(user=user, title=validated_data['title'])
+        return teacher
+
+
+# Login - one for all
 class LoginSerializer(serializers.Serializer):
     """ validating authentication - DefaultUser only"""
     username = serializers.CharField()
@@ -49,19 +75,7 @@ class LoginSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError("incorrect credentials")
 
-# default user serializer
 
-class RegisterUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
-        extra_kwargs = {'password': {"write_only": True}}
-
-    def create(self, validated_data):
-        user = get_user_model().objects.create_user(validated_data['username'],
-                                                    validated_data['email'], validated_data['password'],
-                                                    first_name=validated_data['first_name'],last_name=validated_data['last_name'])
-        return user
 
 
 
