@@ -20,8 +20,11 @@ class DefaultUser(AbstractUser):
 
 class Student(models.Model):
     """ extends DefaultUser class with extra information about student (no influence on authentication service) """
+    class Gender(models.TextChoices):
+        MALE = 'M', _('male')
+        FEMALE = 'F', _('female')
     user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE, primary_key=True)
-    is_female = models.BooleanField()
+    gender = models.CharField(max_length=1, choices=Gender.choices, default=Gender.MALE)
     index_nr = models.CharField(verbose_name="Index number", validators=[validate_index], max_length=6)
 
 class Teacher(models.Model):

@@ -37,7 +37,7 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
     user = RegisterUserSerializer()
     class Meta:
         model = Student
-        fields = ('index_nr', 'is_female', 'user')
+        fields = ('index_nr', 'gender', 'user')
 
     def create(self, validated_data):
         # first create user, then student profile for that user
@@ -45,7 +45,7 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create_user(**user_data)
         user.is_student = True
         user.save()
-        student = Student.objects.create(user=user, index_nr=validated_data['index_nr'], is_female=validated_data['is_female'])
+        student = Student.objects.create(user=user, index_nr=validated_data['index_nr'], gender=validated_data['gender'])
         return student
 
 class RegisterTeacherSerializer(serializers.ModelSerializer):
