@@ -30,3 +30,24 @@ class Task(models.Model):
     deadline = models.DateTimeField()
     aggregation_method = models.CharField(
         max_length=4, choices=AggregationMethod.choices, default=AggregationMethod.AVERAGE)
+
+
+class Grade(models.Model):
+    task_id = models.ForeignKey(Task, on_delete=models.SET(-1))
+    value = models.SmallIntegerField()
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Course, on_delete=models.SET(-1))
+    issued_by = models.ForeignKey(Teacher, on_delete=models.SET(-1))
+    issued_at = models.DateTimeField(auto_now_add=True)
+
+
+class Prize(models.Model):
+    class PrizeKind(models.IntegerChoices):
+        DIAMOND = 1
+        GOLD = 2
+        SILVER = 3
+        BRONZE = 4
+
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    issued_at = models.DateTimeField(auto_now_add=True)
+    kind = models.IntegerField(choices=PrizeKind.choices)

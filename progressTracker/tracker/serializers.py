@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Mock, Task, Course
+from .models import Mock, Task, Course, Grade, Prize
 
 
 class MockSerializer(serializers.ModelSerializer):
@@ -26,10 +26,37 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'teacher', 'student' ,'pass_threshold'
+            'name', 'teacher', 'student', 'pass_threshold'
         )
 
     def create(self, validated_data):
         course = Course.objects.create(**validated_data)
         course.save()
         return course
+
+
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = (
+            'task_id', 'value', 'student_id', 'course_id',
+            'issued_by'
+        )
+
+    def create(self, validated_data):
+        grade = Grade.objects.create(**validated_data)
+        grade.save()
+        return grade
+
+
+class PrizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prize
+        fields = (
+            'student_id', 'kind'
+        )
+
+    def create(self, validated_data):
+        prize = Prize.objects.create(**validated_data)
+        prize.save()
+        return prize
