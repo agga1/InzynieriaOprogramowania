@@ -25,7 +25,7 @@ class Task(models.Model):
     grade_min = models.SmallIntegerField()
     grade_max = models.SmallIntegerField()
     is_extra = models.BooleanField()
-    parent_task = models.ForeignKey("self", on_delete=models.CASCADE)
+    parent_task = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)
     weight = models.FloatField()
     deadline = models.DateTimeField()
     aggregation_method = models.CharField(

@@ -11,10 +11,7 @@ class MockSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = (
-            'course_id', 'grade_min', 'grade_max', 'is_extra',
-            'parent_task_id', 'weight', 'deadline', 'aggregation_method'
-        )
+        fields = '__all__'
 
     def create(self, validated_data):
         task = Task.objects.create(**validated_data)
@@ -63,3 +60,4 @@ class PrizeSerializer(serializers.ModelSerializer):
         prize = Prize.objects.create(**validated_data)
         prize.save()
         return prize
+
