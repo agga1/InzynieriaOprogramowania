@@ -11,7 +11,7 @@ class Mock(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
-    teacher = models.ForeignKey(Teacher, related_name="courses", on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     student = models.ManyToManyField(Student)
     pass_threshold = models.SmallIntegerField(default=50)
 
@@ -21,7 +21,7 @@ class Task(models.Model):
         AVERAGE = 'AVG'
         WEIGHTED_AVERAGE = 'WAVG'
 
-    course = models.ForeignKey(Course, related_name="tasks", on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     grade_min = models.SmallIntegerField()
     grade_max = models.SmallIntegerField()
     is_extra = models.BooleanField()
