@@ -39,7 +39,7 @@ class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = (
-            'task_id', 'value', 'student_id', 'course_id',
+            'task', 'value', 'student', 'course',
             'issued_by'
         )
 
@@ -53,7 +53,7 @@ class PrizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prize
         fields = (
-            'student_id', 'kind'
+            'student', 'kind'
         )
 
     def create(self, validated_data):
