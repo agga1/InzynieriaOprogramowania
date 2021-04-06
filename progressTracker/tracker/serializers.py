@@ -26,7 +26,7 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'teacher', 'student', 'pass_threshold'
+            'name', 'teacher', 'pass_threshold'
         )
 
     def create(self, validated_data):
