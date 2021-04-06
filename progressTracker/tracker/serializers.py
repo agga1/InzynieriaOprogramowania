@@ -26,11 +26,15 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'teacher', 'pass_threshold'
+            'name', 'teacher', 'student', 'pass_threshold'
         )
 
     def create(self, validated_data):
-        course = Course.objects.create(**validated_data)
+        course = Course.objects.create(name=validated_data['name'], teacher=validated_data['teacher'],
+                                       pass_threshold=validated_data['pass_threshold'])
+        course.save()
+        for student in validated_data['student']:
+            course.student.add(student)
         course.save()
         return course
 
