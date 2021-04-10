@@ -1,6 +1,7 @@
+from django.contrib.auth import login, logout
 from rest_framework import generics, permissions
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterUserSerializer, LoginSerializer, StudentSerializer, \
     RegisterStudentSerializer, RegisterTeacherSerializer, TeacherSerializer
 
@@ -15,10 +16,8 @@ class RegisterStudentApi(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         student = serializer.save()
-        _, token = AuthToken.objects.create(student.user)
         return Response({
             "user": StudentSerializer(student, context=self.get_serializer_context()).data,
-            "token": token
         })
 
 # Teacher API
@@ -31,10 +30,8 @@ class RegisterTeacherApi(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         teacher = serializer.save()
-        _, token = AuthToken.objects.create(teacher.user)
         return Response({
             "user": TeacherSerializer(teacher, context=self.get_serializer_context()).data,
-            "token": token
         })
 
 # Login Api -- same for all profiles TODO - frontend - possibly Student attributes needed?
@@ -46,11 +43,15 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
-        _, token = AuthToken.objects.create(user)
+        login(request, user)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": token
         })
+
+@api_view()
+def logout_api(request):
+    logout(request)
+    return Response({"status": "logged out"})
 
 
 # ----- API for DefaultUser, use mostly as a template to create API for each user profile
@@ -64,10 +65,8 @@ class RegisterApi(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        _, token = AuthToken.objects.create(user)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": token
         })
 
 
