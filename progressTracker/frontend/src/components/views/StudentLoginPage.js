@@ -13,7 +13,7 @@ export class StudentLoginPage extends Component {
     render() {
         return (
             <Fragment>
-                <Header button1_text="Student" button2_text="MainPage"/>
+                <Header button1_text="Student" button2_text="MainPage" button1_path="/student_login" button2_path="/"/>
                 <Container fluid>
                     <Row className="mt-4 ml-3">
                         <Col xs={6} className="heading login_heading">Log into student's account</Col>     

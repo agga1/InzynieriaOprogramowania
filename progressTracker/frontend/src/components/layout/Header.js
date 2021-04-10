@@ -16,10 +16,10 @@ export class Header extends Component{
                     <img src="../../static/images/logo.png" alt="logo"/>
                     <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                         <li>
-                            <Button text={this.props.button1_text}/>
+                            <Button text={this.props.button1_text} path={this.props.button1_path}/>
                         </li>
                         <li>
-                            <Button text={this.props.button2_text}/>
+                            <Button text={this.props.button2_text} path={this.props.button2_path}/>
                         </li>
                     </ul>
                 </div>
