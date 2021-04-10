@@ -73,11 +73,20 @@ class RegisterApi(generics.GenericAPIView):
 
 # Get user Api
 class UserAPI(generics.RetrieveAPIView):
+    """ get-only. Returns currently logged in user profile (Student or Teacher) (send token with request)  """
     permission_classes = [
         permissions.IsAuthenticated,
     ]
     serializer_class = UserSerializer
 
+    def get_serializer_class(self):  # todo check for is_staff? (for admin user)
+        if self.request.user.is_student:
+            return StudentSerializer
+        return TeacherSerializer
+
     def get_object(self):
         """ looks at the token and returns associated user. """
-        return self.request.user
+        if self.request.user.is_student:
+            return self.request.user.student
+        else:
+            return self.request.user.teacher

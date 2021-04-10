@@ -27,15 +27,13 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
-        if hasattr(self.request.user, 'teacher'):
+        if hasattr(self.request.user, 'teacher'): # todo use .is_student
             teacher = self.request.user.teacher
             return teacher.course_set.all()
         elif hasattr(self.request.user, 'student'):
             student = self.request.user.student
             return student.course_set.all()
         return None
-
-
 
 
 class GradeViewSet(viewsets.ModelViewSet):
