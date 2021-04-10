@@ -4,7 +4,7 @@ export class Button extends Component {
     render() {
         return (
             <div>
-                <a href="#" className="btn btn-lg" role="button" aria-pressed="true">{this.props.text}</a>
+                <a href={this.props.path} className="btn btn-lg" role="button" aria-pressed="true">{this.props.text}</a>
             </div>
         )
     }

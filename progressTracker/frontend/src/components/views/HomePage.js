@@ -16,7 +16,7 @@ export class HomePage extends Component {
                 <Switch>
                     <Route exact path='/'>
                         <Fragment>
-                            <Header button1_text="Student" button2_text="Teacher"/>
+                            <Header button1_text="Student" button2_text="Teacher" button1_path="/student_login" button2_path="teacher_login"/>
                             <h1 className="d-flex justify-content-center heading" id="main_heading">TeachRideExperience</h1>
                             <img src="../../static/images/sleeping_students.png" className="mx-auto d-block" alt="sleeping students furing lecture" />
                         </Fragment>
