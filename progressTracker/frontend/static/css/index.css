@@ -1,0 +1,64 @@
+* {
+  font-family: Montserrat;
+  font-style: italic;
+}
+
+.navbar {
+  background-color: #483ebb;
+}
+
+.btn {
+  background-color: #ff8c42;
+  border-radius: 25px;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  margin: 0px 10px 0px 10px;
+}
+
+#main_heading {
+  margin-top: 5vw;
+  margin-bottom: 2vw;
+  font-size: 72px;
+  font-weight: 800;
+}
+
+.login_heading {
+  margin-top: 2vw !important;
+  margin-bottom: 0vw !important;
+  font-size: 48px !important;
+  font-weight: 800 !important;
+  text-align: center;
+}
+
+.slogan {
+  margin-top: 5vw !important;
+  margin-bottom: 0vw !important;
+  margin-left: 8vw !important;
+}
+
+.heading {
+  color: #ff8c42 !important;
+}
+
+.form {
+  background: #483ebb !important;
+  margin-top: 2vw !important;
+  border-radius: 30px !important;
+  padding: 3% !important;
+}
+
+.form_text {
+  color: #fffffa !important;
+  font-weight: 500 !important;
+  font-size: 24px !important;
+}
+
+.input_window {
+  border-radius: 25px;
+}
+
+.log_image {
+  margin-left: 6vw !important;
+}
