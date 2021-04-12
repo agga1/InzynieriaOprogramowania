@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useState } from 'react'
 import Header from '../layout/Header'
 import StudentLoginPage from './StudentLoginPage'
 import TeacherLoginPage from './TeacherLoginPage'
@@ -9,8 +9,8 @@ export class HomePage extends Component {
     constructor(props){
         super(props);
     }
-
     render() {
+        
         return (
             <Router>
                 <Switch>
