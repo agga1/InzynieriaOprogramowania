@@ -83,16 +83,19 @@ AUTH_USER_MODEL = 'accounts.DefaultUser'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'maciejko',
         'USER': 'maciejko',
         'PASSWORD': 'mX1hLgTu8jmVdYMV',
-        'HOST': 'mysql.agh.edu.pl',
-        'PORT': '3306',
+        # 'HOST': 'mysql.agh.edu.pl',
+        # 'PORT': '3306',
+        'HOST': 'localhost',
+        'PORT': '1234',
     }
+    
 }
 
 
