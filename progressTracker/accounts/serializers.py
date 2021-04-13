@@ -7,7 +7,7 @@ from accounts.models import Student, Teacher
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_student')
 
 
 class StudentSerializer(serializers.ModelSerializer):
