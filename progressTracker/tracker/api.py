@@ -1,7 +1,10 @@
 # ViewSets here
+from rest_framework.response import Response
+
 from .models import Mock, Task, Course, Grade, Prize
-from rest_framework import viewsets, permissions
-from .serializers import MockSerializer, TaskSerializer, CourseSerializer, GradeSerializer, PrizeSerializer
+from rest_framework import viewsets, permissions, generics
+from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, GradeSerializer, PrizeSerializer, \
+    CreateCourseSerializer, CourseListSerializer
 
 
 class MockViewSet(viewsets.ModelViewSet):
@@ -22,9 +25,18 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.IsAuthenticated
+        permissions.AllowAny  # todo change permission
     ]
-    serializer_class = CourseSerializer
+    # serializer_class = None
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CourseListSerializer
+        if self.action == 'retrieve':
+            return CourseDetailSerializer
+        if self.action == 'create':
+            return CreateCourseSerializer
+        return None  # I dont' know what you want for create/destroy/update.
 
     def get_queryset(self):
         if hasattr(self.request.user, 'teacher'): # todo use .is_student
@@ -35,6 +47,18 @@ class CourseViewSet(viewsets.ModelViewSet):
             return student.course_set.all()
         return None
 
+class CreateCourseApi(generics.GenericAPIView):
+    serializer_class = CreateCourseSerializer
+
+    def post(self, request, *args, **kwargs):
+        """ register teacher """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        course = serializer.save()
+        return Response({
+            "status": "ok",
+            "course": CourseDetailSerializer(course, context=self.get_serializer_context()).data,
+        })
 
 class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()

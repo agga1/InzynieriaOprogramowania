@@ -19,7 +19,21 @@ class TaskSerializer(serializers.ModelSerializer):
         return task
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = (
+            'name', 'teacher', 'student', 'pass_threshold'
+        )
+
+class CourseListSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Course
+        fields = (
+            'url', 'name'
+        )
+
+class CreateCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
