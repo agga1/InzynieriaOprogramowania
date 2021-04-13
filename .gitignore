@@ -5,6 +5,7 @@ logs
 **/*.backup.*
 **/*.back.*
 **/.idea
+.vscode
 
 node_modules
 bower_components

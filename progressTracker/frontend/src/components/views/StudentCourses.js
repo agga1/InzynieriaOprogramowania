@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react'
+import { Container, Row, Col } from 'reactstrap';
+import CourseIcon from '../layout/CourseIcon';
 import Header from '../layout/Header'
 
 export class StudentCourses extends Component {
@@ -59,15 +61,25 @@ export class StudentCourses extends Component {
         return (
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/teacher/courses" button2_path="/" button2_handle={this.handleLogout}/>
-                <ul>
-           {this.state.data.map(course=> {
-            return (
-              <li key={course.name}>
-                {course.name}, {course.teacher}, {course.student}, {course.pass_threshold}
-              </li>
-            );
-          })}
-        </ul>
+                <Container fluid>
+                    <Row className="mt-4 mb-5 ml-3">
+                        <Col xs={6} className="heading login_heading">My courses</Col>     
+                        <Col></Col>                                           
+                    </Row>
+                    <Row className="mt-2">
+                        {this.state.data.map(course=> {
+                            return (
+                                <Col md={4} sm={6} xs={12} className="mb-4">
+                                    <CourseIcon
+                                    course_name = {course.name}
+                                    teacher_name = {course.teacher_name}
+                                    course_details_path = {course.url}
+                                    />
+                                </Col>
+                            );
+                        })} 
+                    </Row> 
+                </Container>                   
             </Fragment>
         )
     }
