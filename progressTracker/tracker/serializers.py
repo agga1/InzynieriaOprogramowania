@@ -30,10 +30,11 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         )
 
 class CourseListSerializer(serializers.HyperlinkedModelSerializer):
+    teacher_name = serializers.CharField(source='teacher', read_only=True)
     class Meta:
         model = Course
         fields = (
-            'url', 'name'
+            'url', 'name', 'teacher_name'
         )
 
 class CreateCourseSerializer(serializers.ModelSerializer):
