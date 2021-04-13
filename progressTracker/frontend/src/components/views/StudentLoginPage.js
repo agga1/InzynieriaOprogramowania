@@ -29,9 +29,12 @@ export class StudentLoginPage extends Component {
 			})
 			.then(res => res.json())
 			.then(resp => {
-				this.setState({ 
-                    username : resp.username                 })
-				    window.location.href="/student/courses"
+                if(resp.is_student){
+                    this.setState({ 
+                        username : resp.username
+                    })
+                    window.location.href="/student/courses"
+                }	
 			})
 			.catch(err => console.log(err));
         }
@@ -71,12 +74,14 @@ export class StudentLoginPage extends Component {
 		})
 		.then(response => response.json())
 		.then(json => {
-			localStorage.setItem('token', json.token);
+            if(json.user.is_student){
+                localStorage.setItem('token', json.token);
 			this.setState({
 				username : json.user.username,
                 password : json.user.password
 			})
 			window.location.href="/student/courses";
+            }
 		})
 		.catch(error => {
 			console.log(error)
