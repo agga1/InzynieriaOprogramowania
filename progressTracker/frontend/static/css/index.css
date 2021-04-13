@@ -67,10 +67,10 @@
   box-shadow: 2px 2px 2px black;
 }
 
-.course-icon .card-header{
+.course-icon .card-title{
   color: #ff8c42 !important;
 }
 
-.course-icon .card-body{
+.course-icon .card-text{
   color: #483ebb !important;
 }

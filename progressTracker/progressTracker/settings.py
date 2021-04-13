@@ -90,12 +90,11 @@ DATABASES = {
         'NAME': 'maciejko',
         'USER': 'maciejko',
         'PASSWORD': 'mX1hLgTu8jmVdYMV',
-        'HOST': 'mysql.agh.edu.pl',
-        'PORT': '3306',
-        # 'HOST': 'localhost',
-        # 'PORT': '1234',
+        # 'HOST': 'mysql.agh.edu.pl',
+        # 'PORT': '3306',
+        'HOST': 'localhost',
+        'PORT': '1234',
     }
-    
 }
 
 
