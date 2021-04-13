@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import CourseIcon from '../layout/CourseIcon';
 import Header from '../layout/Header'
 
 export class StudentCourses extends Component {
@@ -59,15 +60,23 @@ export class StudentCourses extends Component {
         return (
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/teacher/courses" button2_path="/" button2_handle={this.handleLogout}/>
-                <ul>
-           {this.state.data.map(course=> {
-            return (
-              <li key={course.name}>
-                {course.name}, {course.teacher}, {course.student}, {course.pass_threshold}
-              </li>
-            );
-          })}
-        </ul>
+                {/* <ul> */}
+                    {this.state.data.map(course=> {
+                        return (
+                            <CourseIcon
+                            course_name = {course.name}
+                            class_dates = "no date"
+                            teacher = {course.teacher}
+                            desc = "course description"
+                            course_details_path = {course.name}
+                            />
+
+                        // <li key={course.name}>
+                        //     {course.name}, {course.teacher}, {course.student}, {course.pass_threshold}
+                        // </li>
+                        );
+                    })}
+                {/* </ul> */}
             </Fragment>
         )
     }

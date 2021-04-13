@@ -62,3 +62,15 @@
 .log_image {
   margin-left: 6vw !important;
 }
+
+.course-icon{
+  box-shadow: 2px 2px 2px black;
+}
+
+.course-icon .card-header{
+  color: #ff8c42 !important;
+}
+
+.course-icon .card-body{
+  color: #483ebb !important;
+}
