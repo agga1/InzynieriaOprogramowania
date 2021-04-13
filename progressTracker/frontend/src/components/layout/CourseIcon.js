@@ -5,28 +5,35 @@ import Button from './Button'
 export class CourseIcon extends Component { 
     getInfo(user){
         if(user ==='student'){
-            return (<CardText>
-                <dt className="col-xs-4 card-text">Teacher:</dt>
-                <dd className="col-xs-8 card-text">{this.props.teacher_name}</dd>
+            return (<CardText clssName="card-text">
+                <dt className="col-xs-4">Teacher:</dt>
+                <dd className="col-xs-8">{this.props.teacher_name}</dd>
                 </CardText> )
         }
         else{
-            return(<CardText></CardText>)
+            return(<CardText></CardText>);
         }
+    }
+
+    setUrl(url){
+        if(localStorage.getItem("url")){
+            localStorage.removeItem("url");
+        }
+        localStorage.setItem("url", url);
     }
 
 
     render() {
         return (
             <div>
-                <Card className="course-icon">
+                <Card className="icon">
                     <CardBody>
-                        <CardTitle tag="h2">{this.props.course_name}</CardTitle>
+                        <CardTitle tag="h1">{this.props.course_name}</CardTitle>
                         {this.getInfo(this.props.user)}
                     </CardBody>
 
                     <Col className="text-right mb-3">
-                        <Button variant="primary" path={this.props.course_details_path} text="View details"/>
+                        <Button variant="primary" path={this.props.course_details_path} onClick={() => this.setUrl(this.props.course_url)} text="View details"/>
                     </Col>
                 </Card>
             </div>
