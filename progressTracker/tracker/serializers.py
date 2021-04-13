@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from accounts.serializers import TeacherSerializer
 from .models import Mock, Task, Course, Grade, Prize
 
 
@@ -20,6 +22,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
+    teacher = TeacherSerializer()
     class Meta:
         model = Course
         fields = (

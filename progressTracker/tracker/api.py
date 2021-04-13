@@ -47,18 +47,6 @@ class CourseViewSet(viewsets.ModelViewSet):
             return student.course_set.all()
         return None
 
-class CreateCourseApi(generics.GenericAPIView):
-    serializer_class = CreateCourseSerializer
-
-    def post(self, request, *args, **kwargs):
-        """ register teacher """
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        course = serializer.save()
-        return Response({
-            "status": "ok",
-            "course": CourseDetailSerializer(course, context=self.get_serializer_context()).data,
-        })
 
 class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
