@@ -9,7 +9,7 @@ export class StudentLoginPage extends Component {
 		super(props)
 
         this.state = {
-			 logged_in : localStorage.getItem('token') ? true : false,
+			 logged_in : !!localStorage.getItem('token'),
 			 username : '',
 			 password : ''
 		}
@@ -32,6 +32,7 @@ export class StudentLoginPage extends Component {
 			.then(resp => {
 				this.setState({ 
                     username : resp.username                 })
+				window.location.href="/"
 			})
 			.catch(err => console.log(err));
         }
@@ -58,6 +59,7 @@ export class StudentLoginPage extends Component {
 			console.log(error)
 		})
 		this.setState({logged_in : false, username : '', password: ''})
+		localStorage.removeItem('token');
 	}
 
     handlePasswordChange = (e) => {
@@ -92,6 +94,7 @@ export class StudentLoginPage extends Component {
 				username : json.user.username,
                 password : json.user.password
 			})
+			window.location.href="/";
 		})
 		.catch(error => {
 			console.log(error)
