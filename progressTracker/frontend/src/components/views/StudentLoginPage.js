@@ -17,7 +17,6 @@ export class StudentLoginPage extends Component {
         this.handleLoginChange = this.handleLoginChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
 	}
 
     componentDidMount(){
@@ -32,7 +31,7 @@ export class StudentLoginPage extends Component {
 			.then(resp => {
 				this.setState({ 
                     username : resp.username                 })
-				window.location.href="/"
+				    window.location.href="/student/courses"
 			})
 			.catch(err => console.log(err));
         }
@@ -43,23 +42,6 @@ export class StudentLoginPage extends Component {
         this.setState({
             username : event.target.value
         })
-	}
-
-    handleLogout = () => {
-        fetch('api/auth/logout', {
-			crossDomain : true,
-			withCredentials : true,
-			async : true,
-			method : 'POST',
-			headers : {
-				Authorization : `Token ${localStorage.getItem('token')}`
-			},
-		})
-		.catch(error => {
-			console.log(error)
-		})
-		this.setState({logged_in : false, username : '', password: ''})
-		localStorage.removeItem('token');
 	}
 
     handlePasswordChange = (e) => {
@@ -94,7 +76,7 @@ export class StudentLoginPage extends Component {
 				username : json.user.username,
                 password : json.user.password
 			})
-			window.location.href="/";
+			window.location.href="/student/courses";
 		})
 		.catch(error => {
 			console.log(error)
@@ -103,17 +85,6 @@ export class StudentLoginPage extends Component {
 
     render() {
         const { logged_in, username , password} = this.state;
-        
-        const logged_out_nav = (
-            <ul>
-                <li onClick={this.handleLogout}>Logout</li>
-            </ul>
-        );
-
-        const logged_in_nav = (
-            <p>Login</p>
-        );
-
         return (
             <Fragment>
                 <Header button1_text="Student" button2_text="MainPage" button1_path="/student_login" button2_path="/"/>
@@ -124,14 +95,11 @@ export class StudentLoginPage extends Component {
                     </Row>
                     <Row className="mt-4 ml-3">
                         <Col xs={6}><LoginForm 
-                            logged_in = {logged_in}
                             handleLogin = {this.handleLogin}
-                            handleLogout = {this.handleLogout}
                             handleLoginChange = {this.handleLoginChange}
                             handlePasswordChange = {this.handlePasswordChange}
                             username = {username}
-                            password = {password}
-                            path={localStorage.getItem('token') ? '/' : 'teacher_login'}/>
+                            password = {password}/>
                         </Col>
                         <Col className="slogan"><img src="../../static/images/slogan1.png"  alt="slogan" /></Col>
                        
@@ -141,9 +109,6 @@ export class StudentLoginPage extends Component {
                         <Col className="log_image"><img src="../../static/images/breaking_rocks.png"  alt="sleeping students furing lecture" /></Col>
                      </Row>
                 </Container>  
-                <div>
-                    {this.state.logged_in ? logged_out_nav : logged_in_nav};
-                </div>
             </Fragment>
             
         )
