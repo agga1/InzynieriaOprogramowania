@@ -26,14 +26,15 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'teacher', 'student', 'pass_threshold'
+            'name', 'pass_threshold', 'teacher',
         )
 
 class CourseListSerializer(serializers.HyperlinkedModelSerializer):
+    teacher_name = serializers.CharField(source='teacher', read_only=True)
     class Meta:
         model = Course
         fields = (
-            'url', 'name'
+            'url', 'name', 'teacher_name'
         )
 
 class CreateCourseSerializer(serializers.ModelSerializer):
@@ -52,7 +53,7 @@ class CreateCourseSerializer(serializers.ModelSerializer):
         return course
 
 
-class GradeSerializer(serializers.ModelSerializer):
+class CreateGradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = (

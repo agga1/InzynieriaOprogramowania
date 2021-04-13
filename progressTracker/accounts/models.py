@@ -35,3 +35,9 @@ class Teacher(models.Model):
         BACHELOR = 'BoS', _('bachelor of science')
     user = models.OneToOneField(DefaultUser, on_delete=models.CASCADE, primary_key=True)
     title = models.CharField(max_length=4, choices=Title.choices, default=Title.BACHELOR)
+
+    def __unicode__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
