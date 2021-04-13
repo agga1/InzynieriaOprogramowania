@@ -3,6 +3,7 @@ import Header from '../layout/Header'
 import StudentLoginPage from './StudentLoginPage'
 import TeacherLoginPage from './TeacherLoginPage'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom"
+import StudentCourses from './StudentCourses'
 
 
 export class HomePage extends Component {
@@ -23,6 +24,8 @@ export class HomePage extends Component {
                     </Route>
                     <Route path='/student_login' component={StudentLoginPage}/>
                     <Route path='/teacher_login' component={TeacherLoginPage}/>
+                    <Route path='/student/courses' component={StudentCourses}/>
+                    <Route path='/teacher/courses' component={StudentCourses}/>
                 </Switch>
             </Router>
            

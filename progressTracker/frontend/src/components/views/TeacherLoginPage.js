@@ -17,7 +17,6 @@ export class TeacherLoginPage extends Component {
        this.handleLoginChange = this.handleLoginChange.bind(this);
        this.handlePasswordChange = this.handlePasswordChange.bind(this);
        this.handleLogin = this.handleLogin.bind(this);
-       this.handleLogout = this.handleLogout.bind(this);
    }
 
    componentDidMount(){
@@ -33,6 +32,7 @@ export class TeacherLoginPage extends Component {
                this.setState({ 
                    username : resp.username,
                 })
+                window.location.href="/teacher/courses"
            })
            .catch(err => console.log(err));
        }
@@ -43,22 +43,6 @@ export class TeacherLoginPage extends Component {
            username : event.target.value
        })
    }
-
-   handleLogout = () => {
-    fetch('api/auth/logout', {
-        crossDomain : true,
-        withCredentials : true,
-        async : true,
-        method : 'POST',
-        headers : {
-            Authorization : `Token ${localStorage.getItem('token')}`
-        },
-    })
-    .catch(error => {
-        console.log(error)
-    })
-    this.setState({logged_in : false, username : '', password: ''})
-}
 
    handlePasswordChange = (e) => {
        this.setState({
@@ -86,6 +70,7 @@ export class TeacherLoginPage extends Component {
                username : json.user.username,
                password : json.user.password
            })
+           window.location.href="/teacher/courses";
        })
        .catch(error => {
            console.log(error)
@@ -95,17 +80,6 @@ export class TeacherLoginPage extends Component {
     render() {
         const { logged_in, username , password} = this.state;
         
-        const logged_out_nav = (
-            <ul>
-                <li onClick={this.handleLogout}>Logout</li>
-            </ul>
-        );
-
-        const logged_in_nav = (
-            <p>Login</p>
-        );
-
-
         return (
             <Fragment>
                 <Header button1_text="Teacher" button2_text="MainPage" button1_path="/teacher_login" button2_path="/"/>
@@ -131,9 +105,6 @@ export class TeacherLoginPage extends Component {
                         <Col className="log_image"><img src="../../static/images/teaching_meme.png"  alt="sleeping students furing lecture" /></Col>
                      </Row>
                 </Container>   
-                <div>
-                    {this.state.logged_in ? logged_out_nav : logged_in_nav}
-                </div>
             </Fragment>
         )
     }

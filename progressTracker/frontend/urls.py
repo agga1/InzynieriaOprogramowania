@@ -5,4 +5,6 @@ urlpatterns = [
     path('', views.index),
     path('student_login', views.index),
     path('teacher_login', views.index),
+    path('student/courses', views.index),
+    path('teacher/courses', views.index)
 ]
