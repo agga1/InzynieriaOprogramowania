@@ -6,7 +6,7 @@ from accounts.models import Student
 from accounts.serializers import StudentSerializer
 from .models import Mock, Task, Course, Grade, Prize
 from rest_framework import viewsets, permissions, generics
-from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, GradeSerializer, PrizeSerializer, \
+from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, PrizeSerializer, \
     CreateCourseSerializer, CourseListSerializer
 
 
@@ -30,7 +30,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny  # todo change permission
     ]
-    # serializer_class = None
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -39,10 +38,10 @@ class CourseViewSet(viewsets.ModelViewSet):
             return CourseDetailSerializer
         if self.action == 'create':
             return CreateCourseSerializer
-        return None  # I dont' know what you want for create/destroy/update.
+        return None
 
     def get_queryset(self):
-        if hasattr(self.request.user, 'teacher'): # todo use .is_student
+        if hasattr(self.request.user, 'teacher'): # todo use .is_student ?
             teacher = self.request.user.teacher
             return teacher.course_set.all()
         elif hasattr(self.request.user, 'student'):
@@ -57,13 +56,18 @@ class CourseViewSet(viewsets.ModelViewSet):
         print(students_)
         return Response({"students": StudentSerializer(students_, many=True).data})
 
+    @action(detail=True)
+    def tasks(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        tasks_ = course.task_set.all()
+        return Response({"tasks": TaskSerializer(tasks_, many=True).data})
 
 class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
-    serializer_class = GradeSerializer
+    serializer_class = CreateGradeSerializer
 
 
 class PrizeViewSet(viewsets.ModelViewSet):

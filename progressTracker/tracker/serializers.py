@@ -53,7 +53,7 @@ class CreateCourseSerializer(serializers.ModelSerializer):
         return course
 
 
-class GradeSerializer(serializers.ModelSerializer):
+class CreateGradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = (
