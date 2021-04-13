@@ -1,6 +1,9 @@
 # ViewSets here
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from accounts.models import Student
+from accounts.serializers import StudentSerializer
 from .models import Mock, Task, Course, Grade, Prize
 from rest_framework import viewsets, permissions, generics
 from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, GradeSerializer, PrizeSerializer, \
@@ -46,6 +49,13 @@ class CourseViewSet(viewsets.ModelViewSet):
             student = self.request.user.student
             return student.course_set.all()
         return None
+
+    @action(detail=True)
+    def students(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        students_ = course.student.all()
+        print(students_)
+        return Response({"students": StudentSerializer(students_, many=True).data})
 
 
 class GradeViewSet(viewsets.ModelViewSet):
