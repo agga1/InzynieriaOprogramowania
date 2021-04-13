@@ -26,7 +26,7 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'teacher', 'student', 'pass_threshold'
+            'name', 'pass_threshold', 'teacher',
         )
 
 class CourseListSerializer(serializers.HyperlinkedModelSerializer):
