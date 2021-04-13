@@ -1,4 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Container, Row, Col } from 'reactstrap';
+import CourseIcon from '../layout/CourseIcon';
+import Header from '../layout/Header'
 
 export class TeacherCourses extends Component {
     constructor(props) {
@@ -55,9 +58,29 @@ export class TeacherCourses extends Component {
 
     render() {
         return (
-            <div>
-                
-            </div>
+            <Fragment>
+                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
+                <Container fluid>
+                    <Row className="mt-4 mb-5 ml-3">
+                        <Col xs={6} className="heading login_heading">My courses</Col>     
+                        <Col></Col>                                           
+                    </Row>
+                    <Row className="mt-2">
+                        {this.state.data.map(course=> {
+                            return (
+                                <Col md={4} sm={6} xs={12} className="mb-4">
+                                    <CourseIcon
+                                    user = "teacher"
+                                    course_name = {course.name}
+                                    teacher_name = {course.teacher_name}
+                                    course_details_path = {course.id}
+                                    />
+                                </Col>
+                            );
+                        })} 
+                    </Row> 
+                </Container>                   
+            </Fragment>
         )
     }
 }

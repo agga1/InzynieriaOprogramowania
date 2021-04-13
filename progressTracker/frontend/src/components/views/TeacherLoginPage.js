@@ -101,7 +101,7 @@ export class TeacherLoginPage extends Component {
                         username = {username}
                         password = {password}/>
                         </Col>
-                        <Col className="slogan"><img src="../../static/images/slogan1.png"  alt="slogan" /></Col>
+                        <Col className="slogan"><img src="../../static/images/slogan2.png"  alt="slogan" /></Col>
                        
                      </Row>
                      <Row className="mt-4 ml-3">

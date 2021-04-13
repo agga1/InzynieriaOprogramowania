@@ -60,7 +60,7 @@ export class StudentCourses extends Component {
     render() {
         return (
             <Fragment>
-                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/teacher/courses" button2_path="/" button2_handle={this.handleLogout}/>
+                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
                 <Container fluid>
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={6} className="heading login_heading">My courses</Col>     
@@ -71,9 +71,10 @@ export class StudentCourses extends Component {
                             return (
                                 <Col md={4} sm={6} xs={12} className="mb-4">
                                     <CourseIcon
+                                    user = "student"
                                     course_name = {course.name}
                                     teacher_name = {course.teacher_name}
-                                    course_details_path = {course.url}
+                                    course_details_path = {course.id}
                                     />
                                 </Col>
                             );
