@@ -63,14 +63,15 @@
   margin-left: 6vw !important;
 }
 
-.course-icon{
+
+.icon{
   box-shadow: 2px 2px 7px gray;
 }
 
-.course-icon .card-title{
+.card-title{
   color: #ff8c42 !important;
 }
 
-.course-icon .card-text{
+.card-text{
   color: #483ebb !important;
 }

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import CourseIcon from '../layout/CourseIcon';
+import EmptyCard from '../layout/EmptyCard';
 import Header from '../layout/Header'
 
 export class StudentCourses extends Component {
@@ -57,6 +58,29 @@ export class StudentCourses extends Component {
 		localStorage.removeItem('token');
 	}
 
+
+    prepareView(){
+        // if(this.state.data.length==0){
+        //     return (<Col xs={12} className="mb-4"><EmptyCard/></Col>)
+        // }
+        // else{
+            return (this.state.data.map(course=> {
+                return (
+                    <Col md={4} sm={6} xs={12} className="mb-4">
+                        <CourseIcon
+                        user = "student"
+                        course_name = {course.name}
+                        teacher_name = {course.teacher_name}
+                        course_url = {course.url}
+                        course_details_path = "/student/course/tasks"
+                        />
+                    </Col>
+                );
+            }))
+        // }
+    }
+
+
     render() {
         return (
             <Fragment>
@@ -67,18 +91,7 @@ export class StudentCourses extends Component {
                         <Col></Col>                                           
                     </Row>
                     <Row className="mt-2">
-                        {this.state.data.map(course=> {
-                            return (
-                                <Col md={4} sm={6} xs={12} className="mb-4">
-                                    <CourseIcon
-                                    user = "student"
-                                    course_name = {course.name}
-                                    teacher_name = {course.teacher_name}
-                                    course_details_path = {course.id}
-                                    />
-                                </Col>
-                            );
-                        })} 
+                        {this.prepareView()}
                     </Row> 
                 </Container>                   
             </Fragment>
