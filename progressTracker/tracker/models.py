@@ -22,6 +22,7 @@ class Task(models.Model):
         WEIGHTED_AVERAGE = 'WAVG'
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
     grade_min = models.SmallIntegerField()
     grade_max = models.SmallIntegerField()
     is_extra = models.BooleanField()

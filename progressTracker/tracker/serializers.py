@@ -9,6 +9,10 @@ class MockSerializer(serializers.ModelSerializer):
         model = Mock
         fields = '__all__'
 
+class TaskListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ()
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
