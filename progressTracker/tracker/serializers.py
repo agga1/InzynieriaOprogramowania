@@ -9,10 +9,10 @@ class MockSerializer(serializers.ModelSerializer):
         model = Mock
         fields = '__all__'
 
-class TaskListSerializer(serializers.ModelSerializer):
+class TaskListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
-        fields = ()
+        fields = ('url', 'name', 'deadline')
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,6 +55,10 @@ class CreateCourseSerializer(serializers.ModelSerializer):
             course.student.add(student)
         course.save()
         return course
+
+    def update(self, instance, validated_data):
+        Course.objects.filter(pk=instance.id).update(**validated_data)
+        return Course.objects.get(pk=instance.id)
 
 
 class CreateGradeSerializer(serializers.ModelSerializer):
