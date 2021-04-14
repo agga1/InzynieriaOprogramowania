@@ -81,6 +81,16 @@ class CourseViewSet(viewsets.ModelViewSet):
             course.student.add(student_id)
         return Response({"status": 'ok'})
 
+    @action(detail=True, methods=['POST'])
+    def del_students(self, request, pk=None):
+        """ provide {"students" : [1,2,3..]}
+            (list of students ids to be added to course)"""
+        student_ids = request.data['students']
+        course = Course.objects.get(pk=pk)
+        for student_id in student_ids:
+            course.student.remove(student_id)
+        return Response({"status": 'ok'})
+
     @action(detail=True)
     def tasks(self, request, pk=None):
         course = Course.objects.get(pk=pk)
