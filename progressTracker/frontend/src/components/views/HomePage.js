@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import StudentCourses from './StudentCourses'
 import TeacherCourses from './TeacherCourses'
 import Tasks from './Tasks'
+import StudentsList from './StudentsList'
+import AddCourse from './AddCourse'
 
 
 
@@ -30,7 +32,8 @@ export class HomePage extends Component {
                     <Route path='/student/courses' component={StudentCourses}/>
                     <Route path='/teacher/courses' component={TeacherCourses}/>
                     <Route path='/student/course/tasks' component={Tasks}/>
-                    {/* <Route path='/teacher/course/tasks' component={Tasks}/> */}
+                    <Route path='/student/course/students' component={StudentsList}/>
+                    <Route path='/teacher/course/add' component={AddCourse}/>
                 </Switch>
             </Router>
            

@@ -94,20 +94,21 @@ export class TeacherLoginPage extends Component {
                     </Row>
                     <Row className="mt-4 ml-3">
                         <Col xs={6}><LoginForm
-                        logged_in = {logged_in}
                         handleLogin = {this.handleLogin}
                         handleLoginChange = {this.handleLoginChange}
                         handlePasswordChange = {this.handlePasswordChange}
                         username = {username}
                         password = {password}/>
                         </Col>
-                        <Col className="slogan"><img src="../../static/images/slogan2.png"  alt="slogan" /></Col>
-                       
-                     </Row>
-                     <Row className="mt-4 ml-3">
-                        <Col xs={6}></Col>
-                        <Col className="log_image"><img src="../../static/images/teaching_meme.png"  alt="sleeping students furing lecture" /></Col>
-                     </Row>
+                        <Col xs={5}>
+                            <Row className="mt-2">
+                            <Col className="slogan"><img src="../../static/images/slogan2.png"  alt="slogan" /></Col> 
+                            </Row>
+                            <Row className="mt-5">
+                            <Col className="log_image"><img src="../../static/images/teaching_meme.png"  alt="sleeping students furing lecture" /></Col>
+                            </Row>
+                        </Col>
+                    </Row> 
                 </Container>   
             </Fragment>
         )

@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import CourseIcon from '../layout/CourseIcon';
-import EmptyCard from '../layout/EmptyCard';
-import Header from '../layout/Header'
+import Spinner from '../layout/Spinner';
+import Header from '../layout/Header';
 
 export class StudentCourses extends Component {
 
@@ -60,13 +60,13 @@ export class StudentCourses extends Component {
 
 
     prepareView(){
-        // if(this.state.data.length==0){
-        //     return (<Col xs={12} className="mb-4"><EmptyCard/></Col>)
-        // }
-        // else{
+        if(this.state.loaded==false){
+            return (<Col xs={12} className="mb-4"><Spinner/></Col>);
+        }
+        else{
             return (this.state.data.map(course=> {
                 return (
-                    <Col md={4} sm={6} xs={12} className="mb-4">
+                    <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
                         <CourseIcon
                         user = "student"
                         course_name = {course.name}
@@ -76,8 +76,8 @@ export class StudentCourses extends Component {
                         />
                     </Col>
                 );
-            }))
-        // }
+            }));
+        }
     }
 
 

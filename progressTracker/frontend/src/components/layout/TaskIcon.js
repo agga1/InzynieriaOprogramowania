@@ -11,7 +11,7 @@ export class TaskIcon extends Component {
                         <Col xs={8}>
                             <CardBody>
                                 <CardTitle tag="h1">{this.props.task_name}</CardTitle>
-                                <List inline>
+                                <List >
                                     <ListInlineItem className="card-text"><b>Deadline:</b></ListInlineItem>
                                     <ListInlineItem className="card-text">{this.props.deadline}</ListInlineItem>
                                 </List>

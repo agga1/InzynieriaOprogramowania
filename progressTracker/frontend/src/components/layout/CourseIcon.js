@@ -5,7 +5,7 @@ import Button from './Button'
 export class CourseIcon extends Component { 
     getInfo(user){
         if(user ==='student'){
-            return (<CardText clssName="card-text">
+            return (<CardText className="card-text">
                 <dt className="col-xs-4">Teacher:</dt>
                 <dd className="col-xs-8">{this.props.teacher_name}</dd>
                 </CardText> )

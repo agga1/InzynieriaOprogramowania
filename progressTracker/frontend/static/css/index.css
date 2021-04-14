@@ -88,3 +88,15 @@
   align-self:flex-end;
   padding: 0 30px 10px 0;
 }
+
+.students-list{
+  font-style: normal;
+}
+
+.add-icon{
+  width: 3rem !important;
+}
+
+.empty-icon{
+  text-align: center;
+}
