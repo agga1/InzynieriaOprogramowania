@@ -94,5 +94,9 @@
 }
 
 .add-icon{
-  width:30% !important;
+  width: 3rem !important;
+}
+
+.empty-icon{
+  text-align: center;
 }
