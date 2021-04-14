@@ -94,7 +94,7 @@ export class StudentsList extends Component {
                         </Col>
 
                         <Col xs={10}>
-                                <Table striped>
+                                <Table striped className="students-list">
                                     <thead>
                                         <tr>
                                         <th></th>
