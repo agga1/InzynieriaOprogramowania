@@ -1,7 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import CourseIcon from '../layout/CourseIcon';
-import Header from '../layout/Header'
+import EmptyCourseIcon from '../layout/EmptyCourseIcon';
+import Header from '../layout/Header';
+import Spinner from '../layout/Spinner';
+
 
 export class TeacherCourses extends Component {
     constructor(props) {
@@ -56,6 +59,36 @@ export class TeacherCourses extends Component {
 		localStorage.removeItem('token');
 	}
 
+    prepareView(){
+        if(this.state.loaded==false){
+            return (<Col xs={12} className="mb-4"><Spinner/></Col>);
+        }
+        else{
+            return (
+                <Fragment>
+                    {this.state.data.map(course=> {
+                    return (
+                        <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
+                            <CourseIcon
+                            user = "teacher"
+                            course_name = {course.name}
+                            teacher_name = {course.teacher_name}
+                            course_url = {course.url}
+                            course_details_path = "/student/course/tasks"
+                            />
+                        </Col>
+                    );
+                    })}
+                    <Col md={4} sm={6} xs={12} className="mb-4">
+                        <EmptyCourseIcon
+                        path="/teacher/course/add"
+                        />
+                    </Col>
+                </Fragment>
+            );
+        }
+    }
+
     render() {
         return (
             <Fragment>
@@ -66,19 +99,7 @@ export class TeacherCourses extends Component {
                         <Col></Col>                                           
                     </Row>
                     <Row className="mt-2">
-                        {this.state.data.map(course=> {
-                            return (
-                                <Col md={4} sm={6} xs={12} className="mb-4">
-                                    <CourseIcon
-                                    user = "teacher"
-                                    course_name = {course.name}
-                                    teacher_name = {course.teacher_name}
-                                    course_url = {course.url}
-                                    course_details_path = "/student/course/tasks"
-                                    />
-                                </Col>
-                            );
-                        })} 
+                        {this.prepareView()}
                     </Row> 
                 </Container>                   
             </Fragment>

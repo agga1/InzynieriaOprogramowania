@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import CourseIcon from '../layout/CourseIcon';
 import Spinner from '../layout/Spinner';
-import Header from '../layout/Header'
+import Header from '../layout/Header';
 
 export class StudentCourses extends Component {
 

@@ -89,7 +89,7 @@ export class StudentLoginPage extends Component {
 	}
 
     render() {
-        const { logged_in, username , password} = this.state;
+        const { username , password} = this.state;
         return (
             <Fragment>
                 <Header button1_text="Student" button2_text="MainPage" button1_path="/student_login" button2_path="/"/>
@@ -106,12 +106,14 @@ export class StudentLoginPage extends Component {
                             username = {username}
                             password = {password}/>
                         </Col>
-                        <Col xs={6} className="slogan"><img src="../../static/images/slogan1.png"  alt="slogan" /></Col>
-                       
-                     </Row>
-                     <Row className="mt-4 ml-3">
-                        <Col xs={6}></Col>
-                        <Col className="log_image"><img src="../../static/images/breaking_rocks.png"  alt="sleeping students furing lecture" /></Col>
+                        <Col xs={6}>
+                            <Row className="mt-2 ml-3">
+                            <Col className="slogan"><img src="../../static/images/slogan1.png"  alt="slogan" /></Col> 
+                            </Row>
+                            <Row className="mt-5 ml-3">
+                            <Col className="log_image"><img src="../../static/images/breaking_rocks.png"  alt="sleeping students furing lecture" /></Col>
+                            </Row>
+                        </Col>
                      </Row>
                 </Container>  
             </Fragment>
