@@ -73,7 +73,8 @@ export class TeacherCourses extends Component {
                                     user = "teacher"
                                     course_name = {course.name}
                                     teacher_name = {course.teacher_name}
-                                    course_details_path = {course.id}
+                                    course_url = {course.url}
+                                    course_details_path = "/student/course/tasks"
                                     />
                                 </Col>
                             );

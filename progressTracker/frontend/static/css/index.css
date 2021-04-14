@@ -72,6 +72,19 @@
   color: #ff8c42 !important;
 }
 
+
 .card-text{
   color: #483ebb !important;
+  font-size: large;
+}
+
+
+.task-sidebar{
+  background-color: #483ebb !important;
+  height:70vh;
+}
+
+.task-btn{
+  align-self:flex-end;
+  padding: 0 30px 10px 0;
 }

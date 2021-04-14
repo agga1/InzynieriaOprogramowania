@@ -90,7 +90,7 @@ export class StudentCourses extends Component {
                         <Col xs={6} className="heading login_heading">My courses</Col>     
                         <Col></Col>                                           
                     </Row>
-                    <Row className="mt-2">
+                    <Row className="m-2">
                         {this.prepareView()}
                     </Row> 
                 </Container>                   
