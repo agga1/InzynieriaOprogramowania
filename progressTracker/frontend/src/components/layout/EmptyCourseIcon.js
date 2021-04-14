@@ -9,11 +9,11 @@ export class EmptyCourseIcon extends Component {
                 <Card className="icon">
                     <CardBody>
                         <CardTitle tag="h1">Add new course</CardTitle>
-                            <a href={this.props.path}>
-                                <div class="empty-icon" >
+                            <div class="empty-icon" >
+                                <a href={this.props.path}>
                                     <img src="../../static/images/add_icon.png" className="card-img-top add-icon" alt="add course icon"/>
-                                </div>
-                            </a>                         
+                                </a>   
+                            </div>                      
                     </CardBody>
                 </Card>
             </div>
