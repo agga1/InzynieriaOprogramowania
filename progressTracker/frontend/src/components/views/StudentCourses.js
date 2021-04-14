@@ -66,7 +66,7 @@ export class StudentCourses extends Component {
         // else{
             return (this.state.data.map(course=> {
                 return (
-                    <Col md={4} sm={6} xs={12} className="mb-4">
+                    <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
                         <CourseIcon
                         user = "student"
                         course_name = {course.name}
