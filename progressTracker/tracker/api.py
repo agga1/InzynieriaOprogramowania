@@ -46,6 +46,8 @@ class CourseViewSet(viewsets.ModelViewSet):
             return CourseDetailSerializer
         if self.action == 'create':
             return CreateCourseSerializer
+        if self.action == 'update':
+            return CreateCourseSerializer
         return CreateCourseSerializer
 
     def get_queryset(self):
