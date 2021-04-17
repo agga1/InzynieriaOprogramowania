@@ -12,7 +12,7 @@ class Mock(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=100)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    student = models.ManyToManyField(Student)
+    student = models.ManyToManyField(Student, blank=True)
     pass_threshold = models.SmallIntegerField(default=50)
 
 
