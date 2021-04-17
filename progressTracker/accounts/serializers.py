@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
 
@@ -40,12 +41,15 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         fields = ('index_nr', 'gender', 'user')
 
     def create(self, validated_data):
-        # first create user, then student profile for that user
+        """ first create user, then student profile for that user
+            then add user to student group. """
         user_data = validated_data['user']
         user = get_user_model().objects.create_user(**user_data)
         user.is_student = True
         user.save()
         student = Student.objects.create(user=user, index_nr=validated_data['index_nr'], gender=validated_data['gender'])
+        group = Group.objects.get(name="StudentGroup")
+        group.user_set.add(user)
         return student
 
 class RegisterTeacherSerializer(serializers.ModelSerializer):
@@ -55,11 +59,14 @@ class RegisterTeacherSerializer(serializers.ModelSerializer):
         fields = ('title', 'user')
 
     def create(self, validated_data):
-        # first create user, then teacher profile for that user
+        """ first create user, then teacher profile for that user
+            then add user to teacher group. """
         user_data = validated_data['user']
         user = get_user_model().objects.create_user(**user_data)
         user.save()
         teacher = Teacher.objects.create(user=user, title=validated_data['title'])
+        group = Group.objects.get(name="TeacherGroup")
+        group.user_set.add(user)
         return teacher
 
 
