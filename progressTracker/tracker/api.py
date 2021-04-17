@@ -36,7 +36,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.AllowAny  # todo change permission
+        permissions.IsAuthenticated
     ]
 
     def get_serializer_class(self):
@@ -66,7 +66,10 @@ class CourseViewSet(viewsets.ModelViewSet):
         course = serializer.save()
         return Response({"course": CreateCourseSerializer(course).data})
 
-    @action(detail=True)
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user.teacher)
+
+    @action(detail=True)  # todo add parmission_classes = IsTeacher (create permission class)
     def students(self, request, pk=None):
         course = Course.objects.get(pk=pk)
         students_ = course.student.all()
