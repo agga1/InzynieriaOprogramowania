@@ -9,7 +9,7 @@ from .serializers import UserSerializer, RegisterUserSerializer, LoginSerializer
 
 class RegisterStudentApi(generics.GenericAPIView):
     permission_classes = [
-        permissions.IsAdminUser
+        permissions.AllowAny
     ]
     serializer_class = RegisterStudentSerializer
 
@@ -28,7 +28,7 @@ class RegisterStudentApi(generics.GenericAPIView):
 
 class RegisterTeacherApi(generics.GenericAPIView):
     permission_classes = [
-        permissions.IsAdminUser
+        permissions.AllowAny
     ]
     serializer_class = RegisterTeacherSerializer
 
@@ -67,7 +67,7 @@ class LoginAPI(generics.GenericAPIView):
 # Register Api
 class RegisterApi(generics.GenericAPIView):
     permission_classes = [
-        permissions.IsAdminUser
+        permissions.AllowAny
     ]
     serializer_class = RegisterUserSerializer
 
