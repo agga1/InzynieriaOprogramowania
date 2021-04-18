@@ -36,7 +36,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.IsAuthenticated
+        permissions.DjangoModelPermissions
     ]
 
     def get_serializer_class(self):
@@ -51,7 +51,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         return CreateCourseSerializer
 
     def get_queryset(self):
-        if hasattr(self.request.user, 'teacher'): # todo use .is_student ?
+        if hasattr(self.request.user, 'teacher'):
             teacher = self.request.user.teacher
             return teacher.course_set.all()
         elif hasattr(self.request.user, 'student'):

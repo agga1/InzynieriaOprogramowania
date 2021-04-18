@@ -44,8 +44,14 @@ INSTALLED_APPS = [
     'accounts',
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES':
-        ('knox.auth.TokenAuthentication',)
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'knox.auth.TokenAuthentication',
+         ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        'rest_framework.permissions.AllowAny',
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.DjangoModelPermissions",
+    ],
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

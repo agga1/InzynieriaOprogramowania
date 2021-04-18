@@ -24,6 +24,10 @@ class TaskSerializer(serializers.ModelSerializer):
         task.save()
         return task
 
+    def update(self, instance, validated_data):
+        Task.objects.filter(pk=instance.id).update(**validated_data)
+        return Task.objects.get(pk=instance.id)
+
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
