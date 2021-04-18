@@ -100,7 +100,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     def tasks(self, request, pk=None):
         course = Course.objects.get(pk=pk)
         tasks_ = course.task_set.all()
-        return Response({"tasks": TaskSerializer(tasks_, many=True).data})
+        return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
 
 class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
