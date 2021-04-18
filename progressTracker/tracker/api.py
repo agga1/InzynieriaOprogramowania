@@ -5,9 +5,10 @@ from rest_framework.response import Response
 from accounts.models import Student
 from accounts.serializers import StudentSerializer
 from .models import Mock, Task, Course, Grade, Prize
-from rest_framework import viewsets, permissions, generics
-from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, PrizeSerializer, \
-    CreateCourseSerializer, CourseListSerializer, TaskListSerializer
+from rest_framework import viewsets, permissions
+from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
+    PrizeListSerializer, CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
+    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer
 
 
 class MockViewSet(viewsets.ModelViewSet):
@@ -19,7 +20,6 @@ class MockViewSet(viewsets.ModelViewSet):
 
 
 class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
     permission_classes = [
         permissions.DjangoModelPermissions
     ]
@@ -36,14 +36,13 @@ class TaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if hasattr(self.request.user, 'teacher'):
             courses = self.request.user.teacher.course_set.all()
-            print(courses)
-            return Task.objects.all()
+            tasks = Task.objects.filter(course__in=courses)
+            return tasks
         elif hasattr(self.request.user, 'student'):
             courses = self.request.user.student.course_set.all()
             tasks = Task.objects.filter(course__in=courses)
             return tasks
         return None
-
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -114,18 +113,75 @@ class CourseViewSet(viewsets.ModelViewSet):
         tasks_ = course.task_set.all()
         return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
 
+
 class GradeViewSet(viewsets.ModelViewSet):
-    queryset = Grade.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.DjangoModelPermissions
     ]
-    serializer_class = CreateGradeSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return GradeListSerializer
+        if self.action == 'retrieve':
+            return GradeDetailSerializer
+        if self.action == 'create':
+            return CreateGradeSerializer
+        if self.action == 'update':
+            return CreateGradeSerializer
+        return CreateGradeSerializer
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'teacher'):  # todo use .is_student ?
+            teacher = self.request.user.teacher
+            return teacher.grade_set.all()
+        elif hasattr(self.request.user, 'student'):
+            student = self.request.user.student
+            return student.grade_set.all()
+        return None
+
+    def partial_update(self, request, pk=None, **kwargs):
+        grade = Grade.objects.get(pk=pk)
+        serializer = self.get_serializer(grade, data=request.data, partial=True)
+        serializer.is_valid()
+        grade = serializer.save()
+        return Response({"grade": CreateGradeSerializer(grade).data})
+
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user.teacher)
 
 
 class PrizeViewSet(viewsets.ModelViewSet):
-    queryset = Prize.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.DjangoModelPermissions
     ]
-    serializer_class = PrizeSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return PrizeListSerializer
+        if self.action == 'retrieve':
+            return PrizeDetailSerializer
+        if self.action == 'create':
+            return CreatePrizeSerializer
+        if self.action == 'update':
+            return CreatePrizeSerializer
+        return CreatePrizeSerializer
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'teacher'):  # todo use .is_student ?
+            courses = self.request.user.teacher.course_set.all()
+            prizes = Prize.objects.filter(course__in=courses)
+            return prizes
+        elif hasattr(self.request.user, 'student'):
+            student = self.request.user.student
+            return student.proize_set.all()
+        return None
+
+    def partial_update(self, request, pk=None, **kwargs):
+        prize = Prize.objects.get(pk=pk)
+        serializer = self.get_serializer(prize, data=request.data, partial=True)
+        serializer.is_valid()
+        prize = serializer.save()
+        return Response({"prize": CreateGradeSerializer(prize).data})
+
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user.teacher)
