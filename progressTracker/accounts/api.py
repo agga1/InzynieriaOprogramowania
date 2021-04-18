@@ -39,6 +39,9 @@ class RegisterTeacherApi(generics.GenericAPIView):
 
 # Login Api -- same for all profiles TODO - frontend - possibly Student attributes needed?
 class LoginAPI(generics.GenericAPIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):

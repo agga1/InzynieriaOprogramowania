@@ -21,7 +21,7 @@ class MockViewSet(viewsets.ModelViewSet):
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.DjangoModelPermissions
     ]
 
     def get_serializer_class(self):
@@ -32,6 +32,18 @@ class TaskViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return TaskSerializer
         return None
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'teacher'):
+            courses = self.request.user.teacher.course_set.all()
+            print(courses)
+            return Task.objects.all()
+        elif hasattr(self.request.user, 'student'):
+            courses = self.request.user.student.course_set.all()
+            tasks = Task.objects.filter(course__in=courses)
+            return tasks
+        return None
+
 
 
 class CourseViewSet(viewsets.ModelViewSet):
