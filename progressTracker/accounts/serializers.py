@@ -78,6 +78,7 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, data):
         user = authenticate(**data)
+        print("user", user)
         if user and user.is_active:
             return user
         raise serializers.ValidationError("incorrect credentials")
