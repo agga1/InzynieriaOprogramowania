@@ -31,18 +31,26 @@ class TaskViewSet(viewsets.ModelViewSet):
             return TaskSerializer
         if self.action == 'create':
             return TaskSerializer
-        return None
+        return TaskSerializer
 
     def get_queryset(self):
+        """ restrict queryset so that users can see only their own tasks. """
         if hasattr(self.request.user, 'teacher'):
             courses = self.request.user.teacher.course_set.all()
-            print(courses)
-            return Task.objects.all()
+            tasks = Task.objects.filter(course__in=courses)
+            return tasks
         elif hasattr(self.request.user, 'student'):
             courses = self.request.user.student.course_set.all()
             tasks = Task.objects.filter(course__in=courses)
             return tasks
         return None
+
+    def partial_update(self, request, pk=None, **kwargs):
+        task = Task.objects.get(pk=pk)
+        serializer = self.get_serializer(task, data=request.data, partial=True)
+        serializer.is_valid()
+        task = serializer.save()
+        return Response({"task": TaskSerializer(task).data})
 
 
 
