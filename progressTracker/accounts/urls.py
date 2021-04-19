@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .api import RegisterApi, LoginAPI, UserAPI, RegisterStudentApi, RegisterTeacherApi
+from .api import RegisterApi, LoginAPI, UserAPI, RegisterStudentApi, RegisterTeacherApi, StudentListAPI
 from knox import views as knox_views
 
 urlpatterns = [
@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/auth/registerstudent', RegisterStudentApi.as_view()),
     path('api/auth/registerteacher', RegisterTeacherApi.as_view()),
     path('api/auth/user', UserAPI.as_view()),
+    path('api/students', StudentListAPI.as_view()),
 
 ]
 
