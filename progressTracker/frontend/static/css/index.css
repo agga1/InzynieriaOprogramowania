@@ -1,6 +1,7 @@
+
 * {
-  font-family: Montserrat;
-  font-style: italic;
+  font-family: 'Karla', sans-serif;
+  /* font-style: italic; */
 }
 
 .navbar {
@@ -52,7 +53,8 @@
 .form_text {
   color: #fffffa !important;
   font-weight: 500 !important;
-  font-size: 24px !important;
+  font-size: 20px !important;
+  padding-left:10px;
 }
 
 .input_window {
@@ -94,7 +96,6 @@
 }
 
 .empty-icon{
-
   text-align: center;
 }
 .add-icon{

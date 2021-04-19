@@ -1,5 +1,5 @@
 import React, {  Component, Fragment } from 'react'
-import { Container, Row, Col, Alert } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import AddCourseForm from '../layout/AddCourseForm'
 import Header from '../layout/Header';
 
@@ -12,7 +12,8 @@ export class AddCourse extends Component {
             teacher : '',
             teacher_id : '',
             pass_threshold : '',
-            students : []
+            students: [],
+            chosen_students : [],
        }
 
         this.handleName = this.handleName.bind(this);
@@ -31,25 +32,26 @@ export class AddCourse extends Component {
             })
             .then(res => res.json())
             .then(resp => {
-             if(!resp.is_student){
-                 this.setState({ 
-                     teacher : resp.username,
-                     teacher_id :resp.id
-                 })
-                 
+             if(resp.user.is_student!=false){
+                 alert("Only teacher can add courses");
+                 window.location.href="/student/courses";       
              }	
              else{
-                alert('Only teacher can add courses');
-                window.location.href="/student/courses";
+                this.setState({ 
+                    teacher : resp.user.first_name + " " + resp.user.last_name,
+                    teacher_id :resp.user.id
+                });
+                this.getStudents();
             }
             })
             .catch(err => console.log(err));
+            
         }
         else{
             alert('Log into to see the view');
             window.location.href="/";
         }
-
+        
     }
 
     getStudents(){
@@ -61,20 +63,11 @@ export class AddCourse extends Component {
         })
         .then(res => res.json())
         .then(resp => {
-         if(!resp.is_student){
-             this.setState({ 
-                 teacher : resp.username,
-                 teacher_id :resp.id
-             })
-             
-         }	
-         else{
-            alert('Only teacher can add courses');
-            window.location.href="/student/courses";
-        }
+            this.setState({
+                students : this.prepareStudents(resp)
+            });    
         })
-        .catch(err => console.log(err));
-
+        .catch(err => console.log(err)); 
     }
 
     handleName = event => {
@@ -90,49 +83,81 @@ export class AddCourse extends Component {
     }
 
     handleStudents = (e) => {
-        this.setState({
-            students : e.target.value
-        })
+        this.setState({chosen_students: e});
     }
 
     handleSubmit = (e) =>{
        e.preventDefault();
-       ReactDOM.render(
-        <Alert color="success">
-            Added new course: {this.state.name}\n 
-            pass threshold: {this.state.pass_threshold}\n
-            students: {this.state.students}
-        </Alert>, document.getElementById('root')
-       );
-       alert('added new course: '+this.state.name+ ' '+ this.state.students);
+        fetch('/api/courses/', {
+            method : 'POST',
+            headers : {
+                Authorization : `Token ${localStorage.getItem('token')}`,
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify(this.prepareData())
+        })
+        .then(res => res.json())
+        .then(resp =>{
+            if(resp.name == this.state.name){
+                alert("Course "+this.state.name+" added succesfully.\nteacher: "
+                +this.state.teacher+"\n"
+                +"pass threshold: "+this.state.pass_threshold);
+            }
+        })
+        .catch(err => console.log(err));
+        }
 
+    prepareData(){
+        var students_id = this.state.chosen_students;
+        students_id = students_id.map(e => e.value);
+        if(students_id.length==0){
+            students_id=[];
+        }
+
+        return{
+            name: this.state.name,
+            teacher: this.state.teacher_id,
+            student: students_id,
+            pass_threshold: this.state.pass_threshold
+        }
     }
-   
 
+    prepareStudents(students){
+        var tab = [];
+        var student;
+        for(student in students){
+            tab.push({
+                value: students[student].user.id,
+                label: students[student].user.first_name + students[student].user.last_name+"; ["+students[student].user.email+"]"
+            })
+        }
+        return tab
+    }
 
     render() {
-        const { name, pass_threshold, students} = this.state;
+        const { name, pass_threshold, chosen_students} = this.state;
         return (
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
                 <Container fluid>
                     <Row className="mt-4 mb-5 ml-3">
-                        <Col xs={3}></Col> 
-                        <Col xs={6} className="heading text-center login_heading">Add new course</Col>     
+                        
+                        <Col xs={12} className="heading text-center login_heading">Add new course</Col>     
                                                                   
                     </Row>
                     <Row className="mt-2">
                         <Col xs={2}></Col>
-                        <Col xs={8} className="text-center">
+                        <Col xs={8} >
                         <AddCourseForm
                             handleName = {this.handleName}
                             handlePassThreshold = {this.handlePassThreshold}
                             handleStudents = {this.handleStudents}
                             handleSubmit = {this.handleSubmit}
+                            teacher = {this.state.teacher}
+                            students = {this.state.students}
                             name = {name}
-                            teacher = "super teacher"
                             pass_threshold = {pass_threshold}
-                            students = {students}
+                            chosen_students = {chosen_students} 
                         />
                         </Col>
                     </Row> 
