@@ -107,6 +107,8 @@ class UserAPI(generics.RetrieveAPIView):
             return self.request.user.teacher
 
 class DjangoModelPermissionsWithRead(DjangoModelPermissions):
+    """ added this extension because
+        default DjangoModelPermissions don't restrict GET """
     perms_map = {
         'GET': ['%(app_label)s.view_%(model_name)s'],
         'OPTIONS': [],
