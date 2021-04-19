@@ -7,7 +7,7 @@ import Select from 'react-select'
 
 
 export class AddCourseForm extends Component {
-    
+
     render() {
         return(
             <Form className="form">
@@ -23,12 +23,13 @@ export class AddCourseForm extends Component {
 
                 <Form.Group controlId="formPassThreshold">
                     <Form.Label className="form_text text-left">Pass threshold</Form.Label>
-                    <Form.Control type="text" placeholder="Enter pass threshold" className="input_window"  onChange={this.props.handlePassThreshold} value={this.props.pass_threshold || ''} />
+                    <Form.Control type="text" placeholder="Enter pass threshold" className="input_window" onChange={this.props.handlePassThreshold} value={this.props.pass_threshold || ''} />
                 </Form.Group>
 
                 <Form.Group controlId="formStudents">
                     <Form.Label className="form_text">Enroll students</Form.Label>
                         <Select 
+                        classNamePrefix="input_window "
                         isMulti = {true}
                         value = {this.props.chosen_students}
                         onChange={this.props.handleStudents}
@@ -42,6 +43,7 @@ export class AddCourseForm extends Component {
             </Form>
         )
         
+
     }
 }
 

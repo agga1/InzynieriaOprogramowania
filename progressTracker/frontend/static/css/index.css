@@ -1,7 +1,7 @@
-
 * {
   font-family: 'Karla', sans-serif;
-  /* font-style: italic; */
+  font-style: normal;
+  font-weight: 221;
 }
 
 .navbar {
@@ -58,7 +58,7 @@
 }
 
 .input_window {
-  border-radius: 25px;
+  border-radius: 25px !important;
 }
 
 .log_image {
