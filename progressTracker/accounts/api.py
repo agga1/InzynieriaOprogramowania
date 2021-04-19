@@ -6,7 +6,6 @@ from .serializers import UserSerializer, RegisterUserSerializer, LoginSerializer
 
 
 # Student API
-
 class RegisterStudentApi(generics.GenericAPIView):
     permission_classes = [
         permissions.AllowAny
@@ -24,8 +23,8 @@ class RegisterStudentApi(generics.GenericAPIView):
             "token": token
         })
 
-# Teacher API
 
+# Teacher API
 class RegisterTeacherApi(generics.GenericAPIView):
     permission_classes = [
         permissions.AllowAny
@@ -42,6 +41,7 @@ class RegisterTeacherApi(generics.GenericAPIView):
             "user": TeacherSerializer(teacher, context=self.get_serializer_context()).data,
             "token": token
         })
+
 
 # Login Api -- same for all profiles TODO - frontend - possibly Student attributes needed?
 class LoginAPI(generics.GenericAPIView):

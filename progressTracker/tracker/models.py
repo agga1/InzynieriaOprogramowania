@@ -29,8 +29,8 @@ class Task(models.Model):
     parent_task = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)
     weight = models.FloatField()
     deadline = models.DateTimeField()
-    aggregation_method = models.CharField(
-        max_length=4, choices=AggregationMethod.choices, default=AggregationMethod.AVERAGE)
+    aggregation_method = models.CharField(max_length=4, choices=AggregationMethod.choices,
+                                          default=AggregationMethod.AVERAGE)
 
 
 class Grade(models.Model):
@@ -50,5 +50,6 @@ class Prize(models.Model):
         BRONZE = 4
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     issued_at = models.DateTimeField(auto_now_add=True)
     kind = models.IntegerField(choices=PrizeKind.choices)
