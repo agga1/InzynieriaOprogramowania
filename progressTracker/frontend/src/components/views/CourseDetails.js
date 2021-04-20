@@ -29,8 +29,8 @@ export class Tasks extends Component {
             
     }
 
-    getTasks(){
-        fetch(localStorage.getItem('courseUrl')+'tasks', {
+    getCourseDatails(){
+        fetch(localStorage.getItem('url'), {
             method : 'GET',
             headers : {
                 Authorization : `Token ${localStorage.getItem('token')}`
@@ -71,26 +71,26 @@ export class Tasks extends Component {
 
 
     prepareView(){
-        if(this.state.loaded==false){
-            return (<Col xs={12} className="mb-5 mt-5"><Spinner/></Col>);
-        }
-        else{
-            return (  
-                <Row className="p-2">
-                    {this.state.tasks.map(task=> {
-                    return (
-                        <Col xs={12} key={task.name+task.deadline+task.url} className="mb-4">
-                            <TaskIcon
-                            task_name = {task.name}
-                            deadline = {task.deadline}
-                            task_details_path = {task.url}
-                            max_points = "/50"
-                            />
-                        </Col>
-                    )})}
-                </Row>
-            )
-        }
+        // if(this.state.loaded==false){
+        //     return (<Col xs={12} className="mb-5 mt-5"><Spinner/></Col>);
+        // }
+        // else{
+        //     return (  
+        //         <Row className="p-2">
+        //             {this.state.tasks.map(task=> {
+        //             return (
+        //                 <Col xs={12} key={task.name+task.deadline+task.url} className="mb-4">
+        //                     <TaskIcon
+        //                     task_name = {task.name}
+        //                     deadline = {task.deadline}
+        //                     task_details_path = {task.url}
+        //                     max_points = "/50"
+        //                     />
+        //                 </Col>
+        //             )})}
+        //         </Row>
+        //     )
+        // }
     }
 
 
