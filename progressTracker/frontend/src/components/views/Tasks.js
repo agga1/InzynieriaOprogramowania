@@ -31,7 +31,7 @@ export class Tasks extends Component {
     }
 
     getCourseName(){
-        fetch(localStorage.getItem('url'), {
+        fetch(localStorage.getItem('courseUrl'), {
             method : 'GET',
             headers : {
                 Authorization : `Token ${localStorage.getItem('token')}`
@@ -53,7 +53,7 @@ export class Tasks extends Component {
     }
 
     getTasks(){
-        fetch(localStorage.getItem('url')+'tasks', {
+        fetch(localStorage.getItem('courseUrl')+'tasks', {
             method : 'GET',
             headers : {
                 Authorization : `Token ${localStorage.getItem('token')}`

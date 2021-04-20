@@ -4,12 +4,11 @@ import StudentLoginPage from './StudentLoginPage'
 import TeacherLoginPage from './TeacherLoginPage'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom"
 import StudentCourses from './StudentCourses'
-import TeacherCourses from './TeacherCourses'
 import Tasks from './Tasks'
 import StudentsList from './StudentsList'
 import AddCourse from './AddCourse'
+import AddTask from './AddTask'
 import Footer from '../layout/Footer'
-
 
 
 export class HomePage extends Component {
@@ -32,10 +31,10 @@ export class HomePage extends Component {
                     <Route path='/student_login' component={StudentLoginPage}/>
                     <Route path='/teacher_login' component={TeacherLoginPage}/>
                     <Route path='/student/courses' component={StudentCourses}/>
-                    {/* <Route path='/teacher/courses' component={TeacherCourses}/> */}
                     <Route path='/student/course/tasks' component={Tasks}/>
                     <Route path='/student/course/students' component={StudentsList}/>
                     <Route path='/teacher/course/add' component={AddCourse}/>
+                    <Route path='/teacher/task/add' component={AddTask}/>
                 </Switch>
             </Router>
            
