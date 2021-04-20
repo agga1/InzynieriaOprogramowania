@@ -67,10 +67,6 @@ export class Tasks extends Component {
     localStorage.removeItem("token");
   };
 
-  onClick(){
-
-  }
-
   prepareView() {
     if (this.state.loaded == false) {
       return (
@@ -86,14 +82,12 @@ export class Tasks extends Component {
               <Col
                 xs={12}
                 key={task.name + task.deadline + task.url}
-                className="mb-4"
               >
                 <TaskIcon
                   task_name={task.name}
                   deadline={task.deadline}
                   url={task.url}
-                  onClick = {this.onClick()}
-                  max_points="/50"
+                  max_points={task.grade_max}
                 />
               </Col>
             );
