@@ -21,7 +21,7 @@ export class Task extends Component {
     componentDidMount(){
         console.log(localStorage.getItem('token'))
         if(localStorage.getItem('token')){
-            fetch(localStorage.getItem('url')+'tasks', {
+            fetch(localStorage.getItem('courseUrl')+'tasks', {
                 method : 'GET',
                 headers : {
                     Authorization : `Token ${localStorage.getItem('token')}`
@@ -42,7 +42,7 @@ export class Task extends Component {
                 };});
             });
 
-            fetch(localStorage.getItem('url'), {
+            fetch(localStorage.getItem('courseUrl'), {
                 method : 'GET',
                 headers : {
                     Authorization : `Token ${localStorage.getItem('token')}`
