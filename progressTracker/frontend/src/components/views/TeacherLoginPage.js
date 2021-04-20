@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
+import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import LoginForm from '../layout/LoginForm'
 
@@ -110,7 +111,8 @@ export class TeacherLoginPage extends Component {
                             </Row>
                         </Col>
                     </Row> 
-                </Container>   
+                </Container>  
+                <Footer/> 
             </Fragment>
         )
     }

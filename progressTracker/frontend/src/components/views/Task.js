@@ -4,6 +4,7 @@ import TaskIcon from '../layout/TaskIcon';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
+import Footer from '../layout/Footer';
 
 export class Task extends Component {
     constructor(props) {
@@ -121,7 +122,8 @@ export class Task extends Component {
                         </Col>
                     </Row>
                     
-                </Container>                   
+                </Container>
+                <Footer/>                   
             </Fragment>
         )
     }

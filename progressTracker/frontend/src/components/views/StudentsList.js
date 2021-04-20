@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col, Table } from 'reactstrap';
+import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import StudentRow from '../layout/StudentRow';
@@ -122,7 +123,8 @@ export class StudentsList extends Component {
                         </Col>
                     </Row>
                     
-                </Container>                   
+                </Container>    
+                <Footer/>               
             </Fragment>
         )
     }

@@ -1,6 +1,7 @@
 import React, {  Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import AddCourseForm from '../layout/AddCourseForm'
+import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 
 export class AddCourse extends Component {
@@ -157,7 +158,8 @@ export class AddCourse extends Component {
                         />
                         </Col>
                     </Row> 
-                </Container>                   
+                </Container>
+                <Footer/>                   
             </Fragment>
         )
     }

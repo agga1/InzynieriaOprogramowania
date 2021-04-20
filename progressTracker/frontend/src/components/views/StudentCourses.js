@@ -4,7 +4,8 @@ import CourseIcon from '../layout/CourseIcon';
 import Spinner from '../layout/Spinner';
 import Header from '../layout/Header';
 import AddCourseCard from '../layout/AddCourseCard';
-
+import Footer from '../layout/Footer';
+  
 
 export class StudentCourses extends Component {
 
@@ -109,7 +110,8 @@ export class StudentCourses extends Component {
                     <Row className="m-2">
                         {this.prepareView()}
                     </Row> 
-                </Container>                   
+                </Container>  
+                <Footer/>                 
             </Fragment>
         )
     }

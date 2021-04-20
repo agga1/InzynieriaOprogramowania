@@ -4,6 +4,7 @@ import TaskIcon from '../layout/TaskIcon';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
+import Footer from '../layout/Footer';
 
 export class Tasks extends Component {
     constructor(props) {
@@ -131,7 +132,8 @@ export class Tasks extends Component {
                         <Col xs={6} className="heading login_heading text-left">{this.state.name}</Col>                             
                     </Row>
                     {this.prepareView()}  
-                </Container>                   
+                </Container> 
+                <Footer/>                  
             </Fragment>
         )
     }
