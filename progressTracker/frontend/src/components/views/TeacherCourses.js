@@ -66,6 +66,11 @@ export class TeacherCourses extends Component {
         else{
             return (
                 <Fragment>
+                    <Col md={4} sm={6} xs={12} className="mb-4">
+                        <AddCourseCard
+                        path="/teacher/course/add"
+                        />
+                    </Col>
                     {this.state.data.map(course=> {
                     return (
                         <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
@@ -79,11 +84,7 @@ export class TeacherCourses extends Component {
                         </Col>
                     );
                     })}
-                    <Col md={4} sm={6} xs={12} className="mb-4">
-                        <AddCourseCard
-                        path="/teacher/course/add"
-                        />
-                    </Col>
+                    
                 </Fragment>
             );
         }

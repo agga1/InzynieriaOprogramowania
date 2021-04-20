@@ -38,7 +38,7 @@ export class AddCourseForm extends Component {
                 </Form.Group>
                 
 
-                <Button type="submit" onClick={this.props.handleSubmit} text="Add course">
+                <Button className="form-group" type="submit" onClick={this.props.handleSubmit} text="Add course">
                 </Button>
             </Form>
         )

@@ -110,10 +110,6 @@ export class AddCourse extends Component {
     prepareData(){
         var students_id = this.state.chosen_students;
         students_id = students_id.map(e => e.value);
-        if(students_id.length==0){
-            students_id=[];
-        }
-
         return{
             name: this.state.name,
             teacher: this.state.teacher_id,
@@ -145,7 +141,7 @@ export class AddCourse extends Component {
                         <Col xs={12} className="heading text-center login_heading">Add new course</Col>     
                                                                   
                     </Row>
-                    <Row className="mt-2">
+                    <Row className="mt-2 mb-5">
                         <Col xs={2}></Col>
                         <Col xs={8} >
                         <AddCourseForm

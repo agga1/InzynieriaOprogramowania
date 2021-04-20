@@ -1,7 +1,7 @@
 * {
   font-family: 'Karla', sans-serif;
   font-style: normal;
-  font-weight: 221;
+  font-weight: 329;
 }
 
 .navbar {
@@ -16,6 +16,10 @@
   font-size: 20px;
   line-height: 24px;
   margin: 0px 10px 0px 10px;
+}
+
+.btn-rev{
+  background-color: #483ebb !important;
 }
 
 #main_heading {
@@ -55,6 +59,10 @@
   font-weight: 500 !important;
   font-size: 20px !important;
   padding-left:10px;
+}
+
+.form-group{
+  padding: 0 20px;
 }
 
 .input_window {
