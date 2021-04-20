@@ -31,7 +31,7 @@ export class CourseIcon extends Component {
     render() {
         return (
             <div>
-                <Card className="icon">
+                <Card className="course-icon">
                     <CardBody>
                         <CardTitle tag="h1">{this.props.course_name}</CardTitle>
                         {this.getInfo(localStorage.getItem('isStudent'))}
