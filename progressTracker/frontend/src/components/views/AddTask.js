@@ -34,7 +34,7 @@ export class AddTask extends Component {
             })
             .then(res => res.json())
             .then(resp => {
-             if(resp.user.is_student!=false){
+             if(resp.user.is_student != false){
                  alert("Only teacher can add tasks");
                  window.location.href="/student/courses";
              }

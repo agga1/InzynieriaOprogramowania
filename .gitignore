@@ -9,3 +9,5 @@ logs
 
 node_modules
 bower_components
+
+progressTracker/frontend/static/frontend/main.js
