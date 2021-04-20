@@ -13,7 +13,6 @@ export class AddCourse extends Component {
             teacher : '',
             teacher_id : '',
             pass_threshold : '',
-            students: [],
             chosen_students : [],
        }
 
@@ -42,33 +41,15 @@ export class AddCourse extends Component {
                     teacher : resp.user.first_name + " " + resp.user.last_name,
                     teacher_id :resp.user.id
                 });
-                this.getStudents();
             }
             })
             .catch(err => console.log(err));
-            
         }
         else{
             alert('Log into to see the view');
             window.location.href="/";
         }
         
-    }
-
-    getStudents(){
-        fetch('/api/students', {
-            method : 'GET',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => res.json())
-        .then(resp => {
-            this.setState({
-                students : this.prepareStudents(resp)
-            });    
-        })
-        .catch(err => console.log(err)); 
     }
 
     handleName = event => {
@@ -119,17 +100,6 @@ export class AddCourse extends Component {
         }
     }
 
-    prepareStudents(students){
-        var tab = [];
-        var student;
-        for(student in students){
-            tab.push({
-                value: students[student].user.id,
-                label: students[student].user.first_name + students[student].user.last_name+"; ["+students[student].user.email+"]"
-            })
-        }
-        return tab
-    }
 
     render() {
         const { name, pass_threshold, chosen_students} = this.state;
@@ -149,7 +119,6 @@ export class AddCourse extends Component {
                             handleStudents = {this.handleStudents}
                             handleSubmit = {this.handleSubmit}
                             teacher = {this.state.teacher}
-                            students = {this.state.students}
                             name = {name}
                             pass_threshold = {pass_threshold}
                             chosen_students = {chosen_students} 
