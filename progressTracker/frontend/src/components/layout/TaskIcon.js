@@ -29,7 +29,6 @@ export class TaskIcon extends Component {
     }
 
     showChildren=() =>{
-        console.log(this.state.children.length==0)
         if(this.state.show && this.state.children.length!=0){
             return(
                 <Row className="p-2">
@@ -46,9 +45,8 @@ export class TaskIcon extends Component {
                             <TaskIcon
                                 task_name={task.name}
                                 deadline={task.deadline}
-                                // url={task.url}
-                                // onClick = {this.onClick()}
-                                max_points="/50"
+                                url={'/api/tasks/'+ task.id+'/'}
+                                max_points={task.grade_max}
                             />
                             </Col>
                         );
@@ -101,7 +99,7 @@ export class TaskIcon extends Component {
                         </CardBody>
                         </Col>
                         <Col xs={1} className="pt-3" >
-                            <h1>{this.props.max_points}</h1>
+                            <h1>/{this.props.max_points}</h1>
                         </Col>
                     </Row>
                     <Row>

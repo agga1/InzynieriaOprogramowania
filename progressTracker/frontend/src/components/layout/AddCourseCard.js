@@ -6,7 +6,7 @@ export class AddCourseCard extends Component {
     render() {
         return (
             <div>
-                <Card className="icon">
+                <Card className="course-icon">
                     <CardBody>
                         <CardTitle tag="h1">Add new course</CardTitle>
                             <div className="empty-icon" >
