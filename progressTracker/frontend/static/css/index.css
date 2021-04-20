@@ -47,6 +47,10 @@
   color: #ff8c42 !important;
 }
 
+.spinner{
+  margin: 25vh 0 !important;
+}
+
 .form {
   background: #483ebb !important;
   margin-top: 2vw !important;
@@ -76,6 +80,7 @@
 
 .icon{
   box-shadow: 2px 2px 7px gray;
+  height: 16rem;
 }
 
 .card-title{
@@ -107,5 +112,9 @@
   text-align: center;
 }
 .add-icon{
-  width: 3.5rem !important;
+  width: 7.3rem !important;
+}
+
+.footer{
+  margin-top:5rem !important;
 }

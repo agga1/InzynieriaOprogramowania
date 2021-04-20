@@ -10,7 +10,6 @@ export class Sidebar extends Component {
 
         this.state = {
              chosen_students: [],
-             students: [],
              show: false,
              isStudent: localStorage.getItem('isStudent'),
 		}
@@ -24,23 +23,6 @@ export class Sidebar extends Component {
         this.setState((state) => ({
             show: !state.show
         }));
-        this.getStudents();
-    }
-
-    getStudents(){
-        fetch('/api/students', {
-            method : 'GET',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => res.json())
-        .then(resp => {
-            this.setState({
-                students : this.prepareStudents(resp)
-            });    
-        })
-        .catch(err => console.log(err)); 
     }
 
     handleSubmit = (e) => {
@@ -71,17 +53,6 @@ export class Sidebar extends Component {
         this.setState({chosen_students: e});
     }
 
-    prepareStudents(students){
-        var tab = [];
-        var student;
-        for(student in students){
-            tab.push({
-                value: students[student].user.id,
-                label: students[student].user.first_name + students[student].user.last_name+"; ["+students[student].user.email+"]"
-            })
-        }
-        return tab
-    }
 
     prepareData(){
         var students_id = this.state.chosen_students;
@@ -90,9 +61,6 @@ export class Sidebar extends Component {
             students: students_id,
         }
     }
-
-
-
 
 
     chooseView(){
@@ -118,7 +86,6 @@ export class Sidebar extends Component {
                         show={this.state.show}
                         text = "Add students"
                         chosen_students = {this.state.chosen_students}
-                        students = {this.state.students}
                         handleStudents = {this.handleStudents}
                         handleSubmit = {this.handleSubmit}
                         handleCancel = {this.handleCancel}

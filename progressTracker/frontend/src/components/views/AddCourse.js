@@ -137,10 +137,8 @@ export class AddCourse extends Component {
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
                 <Container fluid>
-                    <Row className="mt-4 mb-5 ml-3">
-                        
-                        <Col xs={12} className="heading text-center login_heading">Add new course</Col>     
-                                                                  
+                    <Row className="mt-4 mb-4">
+                        <Col xs={12} className="heading text-center login_heading">Add new course</Col>                                                 
                     </Row>
                     <Row className="mt-2 mb-5">
                         <Col xs={2}></Col>
@@ -158,6 +156,7 @@ export class AddCourse extends Component {
                         />
                         </Col>
                     </Row> 
+                    <Row className="mb-5 mt-5" />
                 </Container>
                 <Footer/>                   
             </Fragment>

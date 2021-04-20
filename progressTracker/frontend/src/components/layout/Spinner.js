@@ -5,7 +5,7 @@ import Button from './Button'
 export class EmptyCard extends Component { 
     render() {
         return (
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center spinner">
                 <Spinner className="text-primary spinner-border-lg" role="status" />
             </div>
         )

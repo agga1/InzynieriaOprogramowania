@@ -63,7 +63,7 @@ export class StudentCourses extends Component {
 
     prepareView(){
         if(this.state.loaded==false){
-            return (<Col xs={12} className="mb-4"><Spinner/></Col>);
+            return (<Col xs={12}><Spinner/></Col>);
         }
         else{
             var comp;

@@ -11,7 +11,7 @@ export class Tasks extends Component {
 		super(props)
 
         this.state = {
-             name: '',
+             name: localStorage.getItem('courseName'),
 			 tasks: [],
              loaded: false,
 		}
@@ -20,7 +20,6 @@ export class Tasks extends Component {
 
     componentDidMount(){
         if(localStorage.getItem('token')){
-            this.getCourseName();
             this.getTasks();
         }   
         else{
@@ -28,28 +27,6 @@ export class Tasks extends Component {
             window.location.href="/";
         }
             
-    }
-
-    getCourseName(){
-        fetch(localStorage.getItem('courseUrl'), {
-            method : 'GET',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`
-            }
-        })
-        .then(response => {
-            if (response.status > 400) {
-                return this.setState(() => {
-                return { placeholder: "Something went wrong!" };
-            });}
-            return response.json();
-        })
-        .then(json => {
-            this.setState(() => {
-            return {
-                name: json.name
-            };});
-        });
     }
 
     getTasks(){
@@ -95,32 +72,26 @@ export class Tasks extends Component {
 
     prepareView(){
         if(this.state.loaded==false){
-            return (<Col xs={12} className="mb-4"><Spinner/></Col>);
+            return (<Col xs={12} className="mb-5 mt-5"><Spinner/></Col>);
         }
         else{
             return (  
-                <Row>
-                    <Col xs={2} className="ml-0 pl-0">
-                        <Sidebar/>
-                    </Col>
-                    <Col xs={10}>
-                        <Row className="p-2">
-                        {this.state.tasks.map(task=> {
-                        return (
-                            <Col xs={12} key={task.name+task.deadline} className="mb-4">
-                                <TaskIcon
-                                task_name = {task.name}
-                                deadline = {task.deadline}
-                                task_details_path = {task.url}
-                                />
-                            </Col>
-                        )})}
-                        </Row>
-                    </Col>
+                <Row className="p-2">
+                    {this.state.tasks.map(task=> {
+                    return (
+                        <Col xs={12} key={task.name+task.deadline} className="mb-4">
+                            <TaskIcon
+                            task_name = {task.name}
+                            deadline = {task.deadline}
+                            task_details_path = {task.url}
+                            />
+                        </Col>
+                    )})}
                 </Row>
             )
         }
     }
+
 
     render() { 
         return (
@@ -131,7 +102,14 @@ export class Tasks extends Component {
                         <Col xs={2}></Col>  
                         <Col xs={6} className="heading login_heading text-left">{this.state.name}</Col>                             
                     </Row>
-                    {this.prepareView()}  
+                    <Row>
+                        <Col xs={2} className="ml-0 pl-0">
+                            <Sidebar/>
+                        </Col>
+                        <Col xs={10}>
+                         {this.prepareView()}  
+                        </Col>
+                    </Row>
                 </Container> 
                 <Footer/>                  
             </Fragment>
