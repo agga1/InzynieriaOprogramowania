@@ -63,7 +63,7 @@ export class StudentCourses extends Component {
 
     prepareView(){
         if(this.state.loaded==false){
-            return (<Col xs={12} className="mb-4"><Spinner/></Col>);
+            return (<Col xs={12}><Spinner/></Col>);
         }
         else{
             var comp;
@@ -80,18 +80,18 @@ export class StudentCourses extends Component {
             return (
                 <Fragment>
                     {comp}
-                    {this.state.data.map(course=> {
-                        return (
-                            <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
-                                <CourseIcon
-                                course_name = {course.name}
-                                teacher_name = {course.teacher_name}
-                                course_url = {course.url}
-                                course_details_path = "/student/course/tasks"
-                                />
-                            </Col>
-                        );
-                    })}
+                        {this.state.data.map(course=> {
+                            return (
+                                <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
+                                    <CourseIcon
+                                    course_name = {course.name}
+                                    teacher_name = {course.teacher_name}
+                                    course_url = {course.url}
+                                    course_details_path = "/student/course/tasks"
+                                    />
+                                </Col>
+                            );
+                        })}
                 </Fragment>
             );
         }

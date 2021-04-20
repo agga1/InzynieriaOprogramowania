@@ -10,7 +10,7 @@ export class StudentsList extends Component {
 		super(props)
 
         this.state = {
-             name: '',
+             name: localStorage.getItem('courseName'),
 			 students: [],
              loaded: false,
 		}
@@ -18,7 +18,6 @@ export class StudentsList extends Component {
 	}
 
     componentDidMount(){
-        console.log(localStorage.getItem('token'))
         if(localStorage.getItem('token')){
             fetch(localStorage.getItem('courseUrl')+'students', {
                 method : 'GET',
@@ -41,25 +40,6 @@ export class StudentsList extends Component {
                 };});
             });
 
-            fetch(localStorage.getItem('courseUrl'), {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => {
-                if (response.status > 400) {
-                    return this.setState(() => {
-                    return { placeholder: "Something went wrong!" };
-                });}
-                return response.json();
-            })
-            .then(json => {
-                this.setState(() => {
-                return {
-                    name: json.name
-                };});
-            });
         }      
     }
 

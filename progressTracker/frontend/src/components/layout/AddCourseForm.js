@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import Form from 'react-bootstrap/Form'
-import { Link } from "react-router-dom"
 import Button from './Button'
-import Select from 'react-select'
+import SelectStudentsField from './SelectStudentsField'
 
 
 
@@ -10,7 +9,7 @@ export class AddCourseForm extends Component {
 
     render() {
         return(
-            <Form className="form">
+            <Form className="form mb-5">
                 <Form.Group controlId="formName">
                     <Form.Label className="form_text">Course name</Form.Label>
                     <Form.Control type="text" placeholder="Enter course name" className="input_window"  onChange={this.props.handleName} value={this.props.name || ''} />
@@ -28,12 +27,9 @@ export class AddCourseForm extends Component {
 
                 <Form.Group controlId="formStudents">
                     <Form.Label className="form_text">Enroll students</Form.Label>
-                        <Select 
-                        classNamePrefix="input_window "
-                        isMulti = {true}
-                        value = {this.props.chosen_students}
-                        onChange={this.props.handleStudents}
-                        options={this.props.students}
+                    <SelectStudentsField 
+                        chosen_students = {this.props.chosen_students}
+                        handleStudents={this.props.handleStudents}
                         />
                 </Form.Group>
                 

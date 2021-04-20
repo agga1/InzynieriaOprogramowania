@@ -1,8 +1,7 @@
 import React, {  Component, Fragment } from 'react'
 import { Modal,ModalHeader,ModalBody,ModalFooter } from 'reactstrap';
-import AddCourseForm from './AddCourseForm'
 import Button from './Button';
-import Select from 'react-select'
+import SelectStudentsField from './SelectStudentsField'
 
 export class AddStudents extends Component {
     render() {
@@ -10,12 +9,9 @@ export class AddStudents extends Component {
             <Modal isOpen={this.props.show} unmountOnClose={false}>
                 <ModalHeader >Add students</ModalHeader>
                 <ModalBody>
-                    <Select 
-                    classNamePrefix="input_window "
-                    isMulti = {true}
-                    value = {this.props.chosen_students}
-                    onChange={this.props.handleStudents}
-                    options={this.props.students}
+                <SelectStudentsField 
+                    chosen_students = {this.props.chosen_students}
+                    handleStudents={this.props.handleStudents}
                     />
                 </ModalBody>
                 <ModalFooter>  
