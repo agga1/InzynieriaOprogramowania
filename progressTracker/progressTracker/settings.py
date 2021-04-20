@@ -85,7 +85,6 @@ WSGI_APPLICATION = 'progressTracker.wsgi.application'
 
 AUTH_USER_MODEL = 'accounts.DefaultUser'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 #
