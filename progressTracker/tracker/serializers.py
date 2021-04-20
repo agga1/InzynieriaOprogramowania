@@ -14,7 +14,7 @@ class MockSerializer(serializers.ModelSerializer):
 class TaskListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
-        fields = ('url', 'name', 'deadline')
+        fields = ('url', 'name', 'deadline', 'parent_task')
 
 
 class TaskSerializer(serializers.ModelSerializer):

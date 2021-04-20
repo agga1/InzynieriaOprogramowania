@@ -52,6 +52,11 @@ class TaskViewSet(viewsets.ModelViewSet):
         task = serializer.save()
         return Response({"task": TaskSerializer(task).data})
 
+    @action(detail=True)    # todo permissions
+    def children(self, request, pk=None):
+        task = Task.objects.filter(parent_task=pk)
+        return Response({"children": TaskSerializer(task, many=True).data})
+
 
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [
