@@ -33,7 +33,7 @@ export class TeacherLoginPage extends Component {
                 this.setState({ 
                     username : resp.username
                 })
-                window.location.href="/teacher/courses"
+                window.location.href="/student/courses"
             }	
            })
            .catch(err => console.log(err));
@@ -74,7 +74,7 @@ export class TeacherLoginPage extends Component {
                 username : json.user.username,
                 password : json.user.password
             })
-            window.location.href="/teacher/courses";
+            window.location.href="/student/courses";
            }
        })
        .catch(error => {

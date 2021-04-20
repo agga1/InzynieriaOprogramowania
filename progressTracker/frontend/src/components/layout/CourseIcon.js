@@ -3,8 +3,8 @@ import { Card, CardBody, CardText, CardTitle, Col } from 'reactstrap';
 import Button from './Button'
 
 export class CourseIcon extends Component { 
-    getInfo(user){
-        if(user ==='student'){
+    getInfo(isStudent){
+        if(isStudent=='true'){
             return (<CardText className="card-text">
                 <dt className="col-xs-4">Teacher:</dt>
                 <dd className="col-xs-8">{this.props.teacher_name}</dd>
@@ -29,7 +29,7 @@ export class CourseIcon extends Component {
                 <Card className="icon">
                     <CardBody>
                         <CardTitle tag="h1">{this.props.course_name}</CardTitle>
-                        {this.getInfo(this.props.user)}
+                        {this.getInfo(localStorage.getItem('isStudent'))}
                     </CardBody>
 
                     <Col className="text-right mb-3">

@@ -106,7 +106,7 @@ export class Tasks extends Component {
                         <Row className="p-2">
                         {this.state.tasks.map(task=> {
                         return (
-                            <Col xs={12} key={task.url} className="mb-4">
+                            <Col xs={12} key={task.name+task.deadline} className="mb-4">
                                 <TaskIcon
                                 task_name = {task.name}
                                 deadline = {task.deadline}

@@ -30,7 +30,7 @@ export class HomePage extends Component {
                     <Route path='/student_login' component={StudentLoginPage}/>
                     <Route path='/teacher_login' component={TeacherLoginPage}/>
                     <Route path='/student/courses' component={StudentCourses}/>
-                    <Route path='/teacher/courses' component={TeacherCourses}/>
+                    {/* <Route path='/teacher/courses' component={TeacherCourses}/> */}
                     <Route path='/student/course/tasks' component={Tasks}/>
                     <Route path='/student/course/students' component={StudentsList}/>
                     <Route path='/teacher/course/add' component={AddCourse}/>

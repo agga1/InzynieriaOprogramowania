@@ -3,6 +3,8 @@ import { Container, Row, Col } from 'reactstrap';
 import CourseIcon from '../layout/CourseIcon';
 import Spinner from '../layout/Spinner';
 import Header from '../layout/Header';
+import AddCourseCard from '../layout/AddCourseCard';
+
 
 export class StudentCourses extends Component {
 
@@ -17,7 +19,6 @@ export class StudentCourses extends Component {
 	}
 
     componentDidMount(){
-        console.log(localStorage.getItem('token'))
         if(localStorage.getItem('token')){
             fetch('/api/courses', {
                 method : 'GET',
@@ -64,19 +65,34 @@ export class StudentCourses extends Component {
             return (<Col xs={12} className="mb-4"><Spinner/></Col>);
         }
         else{
-            return (this.state.data.map(course=> {
-                return (
-                    <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
-                        <CourseIcon
-                        user = "student"
-                        course_name = {course.name}
-                        teacher_name = {course.teacher_name}
-                        course_url = {course.url}
-                        course_details_path = "/student/course/tasks"
+            var comp;
+            if(localStorage.getItem('isStudent')=='false'){
+                comp =  
+                    <Col md={4} sm={6} xs={12} className="mb-4">
+                        <AddCourseCard
+                        path="/teacher/course/add"
                         />
                     </Col>
-                );
-            }));
+            }else{
+                comp = <div></div>
+            }
+            return (
+                <Fragment>
+                    {comp}
+                    {this.state.data.map(course=> {
+                        return (
+                            <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
+                                <CourseIcon
+                                course_name = {course.name}
+                                teacher_name = {course.teacher_name}
+                                course_url = {course.url}
+                                course_details_path = "/student/course/tasks"
+                                />
+                            </Col>
+                        );
+                    })}
+                </Fragment>
+            );
         }
     }
 
