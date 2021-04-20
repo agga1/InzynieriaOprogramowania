@@ -92,7 +92,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     def students(self, request, pk=None):
         course = Course.objects.get(pk=pk)
         students_ = course.student.all()
-        print(students_)
         return Response({"students": StudentSerializer(students_, many=True).data})
 
     @action(detail=True, methods=['POST'])
@@ -119,6 +118,12 @@ class CourseViewSet(viewsets.ModelViewSet):
     def tasks(self, request, pk=None):
         course = Course.objects.get(pk=pk)
         tasks_ = course.task_set.all()
+        return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
+
+    @action(detail=True)
+    def main_tasks(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        tasks_ = course.task_set.filter(parent_task=None)
         return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
 
 
