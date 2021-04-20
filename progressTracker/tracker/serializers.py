@@ -17,6 +17,12 @@ class TaskListSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name', 'deadline', 'parent_task')
 
 
+class TaskMainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ('url', 'name', 'deadline', 'grade_max')
+
+
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task

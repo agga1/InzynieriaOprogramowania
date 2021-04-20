@@ -8,7 +8,7 @@ from .models import Mock, Task, Course, Grade, Prize
 from rest_framework import viewsets, permissions
 from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     PrizeListSerializer, CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
-    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer
+    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer
 
 
 class MockViewSet(viewsets.ModelViewSet):
@@ -129,7 +129,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     def main_tasks(self, request, pk=None):
         course = Course.objects.get(pk=pk)
         tasks_ = course.task_set.filter(parent_task=None)
-        return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
+        return Response({"tasks": TaskMainSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
 
 
 class GradeViewSet(viewsets.ModelViewSet):
