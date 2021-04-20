@@ -160,3 +160,8 @@
 .stretched-link{
   text-decoration: none !important;
 }
+
+.custom-btn{
+  text-decoration: none !important;
+  color: #483ebb ;
+}

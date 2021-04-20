@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import {
   Card,
   CardBody,
+  Button,
   Row,
   CardTitle,
   Col,
@@ -21,7 +22,6 @@ export class TaskIcon extends Component {
       children: [],
     };
     this.onClick = this.onClick.bind(this);
-    this.showChildren = this.showChildren.bind(this);
   }
 
   onClick = () => {
@@ -47,7 +47,6 @@ export class TaskIcon extends Component {
             <Col xs={1}></Col>
             <Col xs={11}>
               {this.state.children.map((task) => {
-                console.log(task);
                 return (
                   <Col xs={12} key={task.name + task.deadline}>
                     <TaskIcon
@@ -111,11 +110,37 @@ export class TaskIcon extends Component {
       });
   }
 
+  prepareButtons(){
+      if(localStorage.getItem('isStudent')=='true'){
+          return(
+            <List>
+            <ListInlineItem  className="task-link">
+           <a href="#" className="custom-btn">Details</a>
+           </ListInlineItem>
+          </List>
+          )
+      }else{
+        return(
+           <List>
+           <ListInlineItem  className="task-link pr-3">
+             <a href="/teacher/task/add" className="custom-btn">+Task</a>
+           </ListInlineItem>
+           <ListInlineItem  className="task-link pr-3 ">
+           <a href="#" className="custom-btn">Rate</a>
+           </ListInlineItem>
+           <ListInlineItem  className="task-link">
+           <a href="#" className="custom-btn">Details</a>
+           </ListInlineItem>
+         </List>
+          )
+      }
+  }
+
   render() {
     return (
       <Fragment>
-        <a className="stretched-link" onClick={this.onClick}>
-          <Card className={`icon mb-4 ${this.state.style}`}>
+        {/* <a className="stretched-link" > */}
+          <Card onClick={this.onClick} className={`icon mb-4 ${this.state.style}`}>
             <Row>
               <Col xs={11}>
                 <CardBody className="pb-0">
@@ -141,24 +166,12 @@ export class TaskIcon extends Component {
               </Col>
 
               <Col xs={6} className="text-right task-btn">
-                <List>
-                  <ListInlineItem href="#" className="task-link pr-3">
-                    +Task
-                  </ListInlineItem>
-                  <ListInlineItem href="#" className="task-link pr-3 ">
-                    Rate
-                  </ListInlineItem>
-                  <a href="/">
-                  <ListInlineItem  className="task-link">
-                    Details
-                  </ListInlineItem>
-                  </a>
-                </List>
+                {this.prepareButtons()}
               </Col>
             </Row>
           </Card>
-        </a>
-        <div>{this.showChildren()}</div>
+        {/* </a> */}
+        {this.showChildren()}
       </Fragment>
     );
   }
