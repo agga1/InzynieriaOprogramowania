@@ -45,7 +45,7 @@ export class Sidebar extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        fetch(localStorage.getItem('url')+'add_students/', {
+        fetch(localStorage.getItem('courseUrl')+'add_students/', {
             method : 'POST',
             headers : {
                 Authorization : `Token ${localStorage.getItem('token')}`,
@@ -137,7 +137,7 @@ export class Sidebar extends Component {
                         <Button onClick={this.showModal} text="Add student"/>
                     </NavItem>
                     <NavItem className="m-3 text-center">
-                        <Button path="/teacher/course/addtask" text="Add task"/>
+                        <Button path="/teacher/task/add" text="Add task"/>
                     </NavItem>
                 </Nav>
                </div>

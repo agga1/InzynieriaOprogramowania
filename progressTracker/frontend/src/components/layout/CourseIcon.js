@@ -15,11 +15,16 @@ export class CourseIcon extends Component {
         }
     }
 
-    setUrl(url){
-        if(localStorage.getItem("url")){
-            localStorage.removeItem("url");
+    setCourse(courseName, courseUrl){
+        if (localStorage.getItem('courseUrl')){
+            localStorage.removeItem('courseUrl');
         }
-        localStorage.setItem("url", url);
+        localStorage.setItem('courseUrl', courseUrl);
+
+        if (localStorage.getItem('courseName')){
+            localStorage.removeItem('courseName');
+        }
+        localStorage.setItem('courseName', courseName);
     }
 
 
@@ -33,7 +38,11 @@ export class CourseIcon extends Component {
                     </CardBody>
 
                     <Col className="text-right mb-3">
-                        <Button variant="primary" path={this.props.course_details_path} onClick={() => this.setUrl(this.props.course_url)} text="View details"/>
+                        <Button variant="primary"
+                                path={this.props.course_details_path}
+                                onClick={() => this.setCourse(this.props.course_name, this.props.course_url)}
+                                text="View details"
+                        />
                     </Col>
                 </Card>
             </div>
