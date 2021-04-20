@@ -1,6 +1,7 @@
 * {
-  font-family: Montserrat;
-  font-style: italic;
+  font-family: 'Karla', sans-serif;
+  font-style: normal;
+  font-weight: 221;
 }
 
 .navbar {
@@ -52,11 +53,12 @@
 .form_text {
   color: #fffffa !important;
   font-weight: 500 !important;
-  font-size: 24px !important;
+  font-size: 20px !important;
+  padding-left:10px;
 }
 
 .input_window {
-  border-radius: 25px;
+  border-radius: 25px !important;
 }
 
 .log_image {
@@ -93,10 +95,9 @@
   font-style: normal;
 }
 
-.add-icon{
-  width: 3rem !important;
-}
-
 .empty-icon{
   text-align: center;
+}
+.add-icon{
+  width: 3.5rem !important;
 }

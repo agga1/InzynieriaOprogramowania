@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import CourseIcon from '../layout/CourseIcon';
-import EmptyCourseIcon from '../layout/EmptyCourseIcon';
+import AddCourseCard from '../layout/AddCourseCard';
 import Header from '../layout/Header';
 import Spinner from '../layout/Spinner';
 
@@ -80,7 +80,7 @@ export class TeacherCourses extends Component {
                     );
                     })}
                     <Col md={4} sm={6} xs={12} className="mb-4">
-                        <EmptyCourseIcon
+                        <AddCourseCard
                         path="/teacher/course/add"
                         />
                     </Col>
