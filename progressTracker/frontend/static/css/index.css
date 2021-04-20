@@ -90,16 +90,31 @@
 
 .icon{
   box-shadow: 2px 2px 7px gray;
-  /* height: 16rem; */
+}
+
+.clicked{
+  background-color: #ff8c42 !important;
+}
+
+.clicked .card-title{
+  color: #483ebb !important;
+}
+
+.clicked .card-text, .clicked .task-link{
+  color: #fffffa !important;
+}
+
+.course-icon{
+  height: 16rem;
 }
 
 .card-title{
-  color: #ff8c42 !important;
+  color: #ff8c42 ;
   font-weight:574;
 }
 
 .card-text{
-  color: #483ebb !important;
+  color: #483ebb;
   font-size: large;
 }
 
@@ -139,4 +154,8 @@
 
 .w-80{
   width:90% !important;
+}
+
+.stretched-link{
+  text-decoration: none !important;
 }
