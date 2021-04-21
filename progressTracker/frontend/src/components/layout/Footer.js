@@ -4,9 +4,9 @@ import Button from './Button'
 export class Footer extends Component{
     render(){
         return(
-            <div className="footer">
+            <footer className="footer">
                 footer
-            </div>
+            </footer>
         )
     }
 }
