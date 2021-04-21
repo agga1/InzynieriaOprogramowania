@@ -105,7 +105,7 @@ export class AddCourse extends Component {
         const { name, pass_threshold, chosen_students} = this.state;
         return (
             <Fragment>
-                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
+                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logou={true}/>
                 <Container fluid>
                     <Row className="mt-4 mb-4">
                         <Col xs={12} className="heading text-center login_heading">Add new course</Col>                                                 
