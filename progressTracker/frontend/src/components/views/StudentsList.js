@@ -14,7 +14,6 @@ export class StudentsList extends Component {
 			 students: [],
              loaded: false,
 		}
-        this.handleLogout = this.handleLogout.bind(this);
 	}
 
     componentDidMount(){
@@ -43,26 +42,10 @@ export class StudentsList extends Component {
         }      
     }
 
-    handleLogout = () => {
-        fetch('/api/auth/logout', {
-			crossDomain : true,
-			withCredentials : true,
-			async : true,
-			method : 'POST',
-			headers : {
-				Authorization : `Token ${localStorage.getItem('token')}`
-			},
-		})
-		.catch(error => {
-			console.log(error)
-		})
-		localStorage.removeItem('token');
-	}
-
     render() {
         return (
             <Fragment>
-                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
+                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true}/>
                 <Container fluid>
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={3}></Col>  

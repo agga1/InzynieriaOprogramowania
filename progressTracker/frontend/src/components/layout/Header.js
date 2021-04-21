@@ -4,7 +4,24 @@ import Button from './Button'
 export class Header extends Component{
     constructor(props){
         super(props);
+
+        this.handleLogout = this.handleLogout.bind(this);
     }
+
+    handleLogout = () => {
+        fetch("/api/auth/logout", {
+            crossDomain: true,
+            withCredentials: true,
+            async: true,
+            method: "POST",
+            headers: {
+                Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+        }).catch((error) => {
+            console.log(error);
+        });
+        localStorage.removeItem("token");
+    };
 
     render(){
         return(
@@ -19,7 +36,7 @@ export class Header extends Component{
                             <Button text={this.props.button1_text} path={this.props.button1_path} onClick={this.props.button1_handle}/>
                         </li>
                         <li>
-                            <Button text={this.props.button2_text} path={this.props.button2_path} onClick={this.props.button2_handle}/>
+                            <Button text={this.props.button2_text} path={this.props.button2_path} onClick={this.props.is_logout ? this.handleLogout : this.props.button2_handle}/>
                         </li>
                     </ul>
                 </div>

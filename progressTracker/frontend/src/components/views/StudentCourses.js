@@ -14,7 +14,6 @@ export class StudentCourses extends Component {
       data: [],
       loaded: false,
     };
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
@@ -43,21 +42,6 @@ export class StudentCourses extends Component {
         });
     }
   }
-
-  handleLogout = () => {
-    fetch("/api/auth/logout", {
-      crossDomain: true,
-      withCredentials: true,
-      async: true,
-      method: "POST",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    }).catch((error) => {
-      console.log(error);
-    });
-    localStorage.removeItem("token");
-  };
 
   prepareView() {
     if (this.state.loaded == false) {
@@ -105,7 +89,7 @@ export class StudentCourses extends Component {
           button2_text="Log Out"
           button1_path="/student/courses"
           button2_path="/"
-          button2_handle={this.handleLogout}
+          is_logout={true}
         />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">

@@ -15,7 +15,6 @@ export class Tasks extends Component {
 			 tasks: [],
              loaded: false,
 		}
-        this.handleLogout = this.handleLogout.bind(this);
 	}
 
     componentDidMount(){
@@ -53,23 +52,6 @@ export class Tasks extends Component {
        
     }
 
-    handleLogout = () => {
-        fetch('/api/auth/logout', {
-			crossDomain : true,
-			withCredentials : true,
-			async : true,
-			method : 'POST',
-			headers : {
-				Authorization : `Token ${localStorage.getItem('token')}`
-			},
-		})
-		.catch(error => {
-			console.log(error)
-		})
-		localStorage.removeItem('token');
-	}
-
-
     prepareView(){
         // if(this.state.loaded==false){
         //     return (<Col xs={12} className="mb-5 mt-5"><Spinner/></Col>);
@@ -97,7 +79,7 @@ export class Tasks extends Component {
     render() { 
         return (
             <Fragment>
-                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" button2_handle={this.handleLogout}/>
+                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true}/>
                 <Container fluid>
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={2}></Col>  
