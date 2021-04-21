@@ -142,13 +142,16 @@ export class TaskIcon extends Component {
         {/* <a className="stretched-link" > */}
           <Card onClick={this.onClick} className={`icon mb-4 ${this.state.style}`}>
             <Row>
-              <Col xs={11}>
+              <Col xs={10}>
                 <CardBody className="pb-0">
                   <CardTitle tag="h1">{this.props.task_name}</CardTitle>
                 </CardBody>
               </Col>
-              <Col xs={1} className="pt-3">
-                <h1>/{this.props.max_points}</h1>
+              <Col xs={2} className="text-right pl-0 pt-3">
+              <div className=" points">
+                <h1 className="your-points">{this.props.max_points}</h1>
+                <h1 className="max-points">/{this.props.max_points}</h1>
+              </div>
               </Col>
             </Row>
             <Row>

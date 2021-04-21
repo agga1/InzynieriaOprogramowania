@@ -70,13 +70,13 @@ export class Sidebar extends Component {
                 <div className="task-sidebar">
                     <Nav vertical className="pt-4 pb-4 text-center">
                         <NavItem className="m-3 text-center">
-                        <Button path="/student/course/tasks" text="Course tasks"/>
+                        <Button path="/student/course/tasks" className="w-80" text="Course tasks"/>
                     </NavItem>
                     <NavItem className="m-3 text-center">
-                        <Button path="/student/course/details" text="Course details"/>
+                        <Button path="/student/course/details" className="w-80" text="Course details"/>
                     </NavItem>
                     <NavItem className="m-3 text-center">
-                        <Button path="/teacher/course/leaderboard" text="Leaderboard"/>
+                        <Button path="/teacher/course/leaderboard" className="w-80" text="Leaderboard"/>
                     </NavItem>
                 </Nav>`
                </div>
@@ -94,22 +94,22 @@ export class Sidebar extends Component {
                         handleCancel = {this.handleCancel}
                     />
                     <Nav vertical className="pt-4 pb-4 text-center">
-                        <NavItem className="m-3 text-center">
+                        <NavItem className="m-3 w-80 text-center">
                             <Button path="/student/course/tasks" className="w-80" text="Course tasks"/>
                         </NavItem>
-                        <NavItem className="m-3 text-center">
+                        <NavItem className="m-3 w-80 text-center">
                             <Button path="/student/course/details" className="w-80" text="Course details"/>
                         </NavItem>
                         <NavItem className="m-3 w-80">
                             <Button path="/student/course/students" className="w-80"  text="Enrolled students"/>
                         </NavItem>
-                        <NavItem className="m-3 text-center">
+                        <NavItem className="m-3 w-80 text-center">
                             <Button onClick={this.showModal} className="w-80"  text="Add student"/>
                         </NavItem>
-                        <NavItem className="m-3 text-center">
+                        <NavItem className="m-3 w-80 text-center">
                             <Button path="/teacher/task/add" className="w-80"  text="Add task"/>
                         </NavItem>
-                        <NavItem className="m-3 text-center">
+                        <NavItem className="m-3 w-80 text-center">
                             <Button path="/teacher/course/leaderboard" className="w-80"  text="Leaderboard"/>
                         </NavItem>
                     </Nav>

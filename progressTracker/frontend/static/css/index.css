@@ -37,7 +37,7 @@ html, body{
   border-radius: 25px;
   color: #ffffff;
   font-weight: 800;
-  font-size: 20px;
+  /* font-size: 20px; */
   line-height: 30px;
   margin: 0px 10px 0px 10px;
 }
@@ -101,9 +101,18 @@ html, body{
   margin-left: 6vw !important;
 }
 
-
 .icon{
   box-shadow: 2px 2px 7px gray;
+}
+
+.your-points{
+  color: #483ebb ;
+  font-weight:574;
+}
+
+.max-points{
+  color: #ff8c42;
+  font-weight:574;
 }
 
 .clicked{
@@ -115,6 +124,11 @@ html, body{
 }
 
 .clicked .card-text, .clicked .task-link{
+  color: #fffffa !important;
+}
+
+
+.clicked .max-points{
   color: #fffffa !important;
 }
 
@@ -141,7 +155,6 @@ html, body{
 
 .task-sidebar{
   background-color: #483ebb !important;
-  height:70vh;
 }
 
 .task-btn{
@@ -179,3 +192,10 @@ html, body{
   text-decoration: none !important;
   color: #483ebb ;
 }
+
+.points{
+  display:inline-flex;
+  padding-right: 20px;
+}
+
+
