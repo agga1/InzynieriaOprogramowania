@@ -16,7 +16,7 @@ html, body{
 }
 
 #app .container-fluid{
-  padding-bottom: 35px;
+  padding-bottom: 15px;
 }
 
 .navbar {
@@ -29,7 +29,7 @@ html, body{
   /* margin-top:5rem !important; */
   bottom: 0;
   width: 100%;
-  height: 35px;
+  height: 15px;
 }
 
 .btn {
