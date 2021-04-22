@@ -110,7 +110,14 @@ export class TaskIcon extends Component {
       });
   }
 
-  prepareButtons(){
+  setTask(taskUrl) {
+    if (localStorage.getItem('taskUrl')){
+        localStorage.removeItem('taskUrl');
+    }
+    localStorage.setItem('taskUrl', taskUrl);
+  }
+
+  prepareButtons(taskUrl){
       if(localStorage.getItem('isStudent')=='true'){
           return(
             <List>
@@ -123,7 +130,7 @@ export class TaskIcon extends Component {
         return(
            <List>
            <ListInlineItem  className="task-link pr-3">
-             <a href="/teacher/task/add" className="custom-btn">+Task</a>
+             <a href="/teacher/task/add" className="custom-btn" onClick={() => this.setTask(taskUrl)}>+Task</a>
            </ListInlineItem>
            <ListInlineItem  className="task-link pr-3 ">
            <a href="#" className="custom-btn">Rate</a>
@@ -169,7 +176,7 @@ export class TaskIcon extends Component {
               </Col>
 
               <Col xs={6} className="text-right task-btn">
-                {this.prepareButtons()}
+                {this.prepareButtons(this.props.url)}
               </Col>
             </Row>
           </Card>

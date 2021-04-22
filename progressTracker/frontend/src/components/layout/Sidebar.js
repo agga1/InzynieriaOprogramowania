@@ -62,6 +62,11 @@ export class Sidebar extends Component {
         }
     }
 
+    deleteParentTask() {
+        if (localStorage.getItem('taskUrl')){
+            localStorage.removeItem('taskUrl');
+        }
+    }
 
     chooseView(){
         var isStudent = this.state.isStudent;
@@ -107,7 +112,7 @@ export class Sidebar extends Component {
                             <Button onClick={this.showModal} className="w-80"  text="Add student"/>
                         </NavItem>
                         <NavItem className="m-3 w-80 text-center">
-                            <Button path="/teacher/task/add" className="w-80"  text="Add task"/>
+                            <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add task"/>
                         </NavItem>
                         <NavItem className="m-3 w-80 text-center">
                             <Button path="/teacher/course/leaderboard" className="w-80"  text="Leaderboard"/>

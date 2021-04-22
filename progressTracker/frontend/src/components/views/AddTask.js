@@ -98,35 +98,58 @@ export class AddTask extends Component {
         .then(resp =>{
             if(resp.name == this.state.name) {
                 alert(`Task ${this.state.name} added successfully.\n`
-                + `grad min: ${this.state.gradeMin}\n`
+                    + `grade min: ${this.state.gradeMin}\n`
+                    + `grade max: ${this.state.gradeMax}\n`
+                    + `weight: ${this.state.weight}\n`
+                    + `deadline: ${this.state.deadline}\n`
                 );
             }
         })
         .catch(err => console.log(err));
     }
 
-    prepareData() {
-        let courseString = "";
-        const url = localStorage.getItem('courseUrl');
+    extractID(url) {
+        let idString = "";
         let slashes = 0;
         for (let i=0; i<url.length; i++) {
             if (url[i] === '/')
                 slashes++;
             if (slashes === 5 && url[i] !== '/')
-                courseString += url[i];
+                idString += url[i];
         }
-        const course = parseInt(courseString);
+        return parseInt(idString);
+    }
 
-        // omits parent_task when there is no parent task
-        return {
-            name: this.state.name,
-            grade_min: this.state.gradeMin,
-            grade_max: this.state.gradeMax,
-            is_extra: false,
-            weight: this.state.weight,
-            deadline: this.state.deadline,
-            aggregation_method: "AVG",
-            course: course
+    prepareData() {
+        const courseUrl = localStorage.getItem('courseUrl');
+        const course = this.extractID(courseUrl)
+        console.log("beforetask")
+        if (localStorage.getItem('taskUrl') == null) {
+            console.log("task")
+            return {
+                name: this.state.name,
+                grade_min: this.state.gradeMin,
+                grade_max: this.state.gradeMax,
+                is_extra: false,
+                weight: this.state.weight,
+                deadline: this.state.deadline,
+                aggregation_method: "AVG",
+                course: course
+            }
+        } else {
+            const taskUrl = localStorage.getItem('taskUrl');
+            const parent_task = this.extractID(taskUrl);
+            return {
+                name: this.state.name,
+                grade_min: this.state.gradeMin,
+                grade_max: this.state.gradeMax,
+                is_extra: false,
+                weight: this.state.weight,
+                deadline: this.state.deadline,
+                aggregation_method: "AVG",
+                course: course,
+                parent_task: parent_task
+            }
         }
     }
 
