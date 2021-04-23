@@ -92,7 +92,6 @@ export class Sidebar extends Component {
                 <div className="task-sidebar">
                     <AddStudents 
                         show={this.state.show}
-                        text = "Add students"
                         chosen_students = {this.state.chosen_students}
                         handleStudents = {this.handleStudents}
                         handleSubmit = {this.handleSubmit}

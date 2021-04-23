@@ -117,6 +117,13 @@ export class TaskIcon extends Component {
     localStorage.setItem('taskUrl', taskUrl);
   }
 
+  setTaskName(taskName) {
+    if (localStorage.getItem('taskName')){
+        localStorage.removeItem('taskName');
+    }
+    localStorage.setItem('taskName', taskName);
+  }
+
   prepareButtons(taskUrl){
       if(localStorage.getItem('isStudent')=='true'){
           return(
@@ -133,10 +140,10 @@ export class TaskIcon extends Component {
              <a href="/teacher/task/add" className="custom-btn" onClick={() => this.setTask(taskUrl)}>+Task</a>
            </ListInlineItem>
            <ListInlineItem  className="task-link pr-3 ">
-           <a href="#" className="custom-btn">Rate</a>
+           <a href="/teacher/task/rate" className="custom-btn" onClick={() => this.setTaskName(this.props.task_name)}>Rate</a>
            </ListInlineItem>
            <ListInlineItem  className="task-link">
-           <a href="#" className="custom-btn">Details</a>
+           <a href="#" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Details</a>
            </ListInlineItem>
          </List>
           )
@@ -149,12 +156,12 @@ export class TaskIcon extends Component {
         {/* <a className="stretched-link" > */}
           <Card onClick={this.onClick} className={`icon mb-4 ${this.state.style}`}>
             <Row>
-              <Col xs={10}>
+              <Col xs={9}>
                 <CardBody className="pb-0">
                   <CardTitle tag="h1">{this.props.task_name}</CardTitle>
                 </CardBody>
               </Col>
-              <Col xs={2} className="text-right pl-0 pt-3">
+              <Col xs={3} className="text-right pl-0 pt-3">
               <div className=" points">
                 <h1 className="your-points">{this.props.max_points}</h1>
                 <h1 className="max-points">/{this.props.max_points}</h1>
