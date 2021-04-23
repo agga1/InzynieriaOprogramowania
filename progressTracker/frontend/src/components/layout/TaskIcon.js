@@ -118,10 +118,10 @@ export class TaskIcon extends Component {
   }
 
   setTaskName(taskName) {
-    if (localStorage.getItem('taskName')){
-        localStorage.removeItem('taskName');
+    if (sessionStorage.getItem('taskName')){
+        sessionStorage.removeItem('taskName');
     }
-    localStorage.setItem('taskName', taskName);
+    sessionStorage.setItem('taskName', taskName);
   }
 
   prepareButtons(taskUrl){

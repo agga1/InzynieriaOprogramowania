@@ -4,53 +4,91 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import AddStudents from '../layout/AddStudents';
+import Modal from '../layout/Modal';
 
 export class RateStudents extends Component {
     constructor(props) {
 		super(props)
 
         this.state = {
-             name: localStorage.getItem('taskName'),
+             task: {},
 			 students: [],
              count: 0,
              show: false,
              loaded: false,
+             chosenStudent: {},
+             rate: '',
 		}
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
 	}
 
     componentDidMount(){
         if(localStorage.getItem('token')){
-            if(localStorage.getItem('isStudent')=='false'){
-                fetch(localStorage.getItem('courseUrl')+'students', {
-                    method : 'GET',
-                    headers : {
-                        Authorization : `Token ${localStorage.getItem('token')}`
-                    }
-                })
-                .then(response => {
-                    if (response.status > 400) {
-                        return this.setState(() => {
-                        return { placeholder: "Something went wrong!" };
-                    });}
-                    return response.json();
-                })
-                .then(data => {
-        
-                    this.setState(() => {
-                    return {
-                        students: data.students,
-                        loaded: true
-                    };});
-                });
-            }
-            else{
-                alert('Only teacher can rate students!!!');
-            }
+            this.getTask();
+            this.getStudents();
         }      
         else{
             alert('Log into to see the view');
             window.location.href="/";
+        }
+    }
+
+    getStudents(){
+        if(localStorage.getItem('isStudent')=='false'){
+            fetch(localStorage.getItem('courseUrl')+'students', {
+                method : 'GET',
+                headers : {
+                    Authorization : `Token ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => {
+                if (response.status > 400) {
+                    return this.setState(() => {
+                    return { placeholder: "Something went wrong!" };
+                });}
+                return response.json();
+            })
+            .then(data => {
+    
+                this.setState(() => {
+                return {
+                    students: data.students,
+                    loaded: true
+                };});
+            });
+        }
+        else{
+            alert('Only teacher can rate students!!!');
+        }
+    }
+
+
+    getTask(){
+        if(localStorage.getItem('isStudent')=='false'){
+            fetch(localStorage.getItem('taskUrl'), {
+                method : 'GET',
+                headers : {
+                    Authorization : `Token ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => {
+                if (response.status > 400) {
+                    return this.setState(() => {
+                    return { placeholder: "Something went wrong!" };
+                });}
+                return response.json();
+            })
+            .then(data => {
+                this.setState(() => {
+                return {
+                    task: data
+                };});
+            });
+        }
+        else{
+            alert('Only teacher can rate students!!!');
         }
     }
 
@@ -64,20 +102,47 @@ export class RateStudents extends Component {
         return this.state.count;
     };
 
-    showModal = () => {
+    showModal = (student) => {
         this.setState((state) => ({
+            chosenStudent: student,
+            rate: '',
             show: !state.show
         }));
     }
 
     handleCancel = () => {
         this.setState((state) => ({
+            chosenStudent: {},
+            rate: '',
             show: !state.show
         }))
     }
 
-    handleSubmit = () => {
-       
+    handleSubmit = (e) => {
+        e.preventDefault();
+        fetch(localStorage.getItem('courseUrl')+'add_students/', {
+            method : 'POST',
+            headers : {
+                Authorization : `Token ${localStorage.getItem('token')}`,
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify({
+                student: this.state.student.user.id,
+                task: this.state.task.id,
+                rate: this.state.rate
+            })
+        })
+        .then(res => res.json())
+        .then(
+            this.handleCancel()
+        )
+        .catch(err => console.log(err));
+    }
+
+    handleChange = (e) =>{
+        this.setState({
+            rate: e.target.value
+        })
     }
 
     prepareView() {
@@ -107,7 +172,7 @@ export class RateStudents extends Component {
                                 <td className="td-sm" scope="row">{this.state.students.indexOf(student)}</td>
                                 <td colSpan="3">{student.user.first_name} {student.user.last_name}</td>
                                 <td className="td-sm">{this.getStudentsGrade()}</td>
-                                <td className="td-sm"><a className='btn btn-sm' role="button" aria-pressed="true" onClick={this.showModal}>Rate</a></td>
+                                <td className="td-sm"><a className='btn' role="button" aria-pressed="true" onClick={this.showModal(student)}>Rate</a></td>
                                 <td className="td-sm"><a className='btn btn-sm' role="button" aria-pressed="true" onClick={this.props.onClick}>b</a></td>
                             </tr>  
                             );
@@ -119,21 +184,33 @@ export class RateStudents extends Component {
         }
       }
 
+    getFormField(){
+        return(<FormGroup>
+                <Label for="rateField">Rate</Label>
+                <Col xs={6}>
+                <Input type="text" value={this.state.rate} onChange={this.handleChange} className="input_window" name="rate" id="rateField"/>
+                </Col>
+                <Col xs={6}>
+                /{this.state.task.max_grade}
+                </Col>
+            </FormGroup>)
+    } 
+
     render() {
         return (
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true}/>
                 <Container fluid>
-                <AddStudents 
+                    <Modal
+                        title={"Rate "+ this.state.chosenStudent.user.first_name +" "+ this.state.chosenStudent.user.last_name} 
                         show={this.state.show}
-                        // chosen_students = {this.state.chosen_students}
-                        // handleStudents = {this.handleStudents}
                         handleSubmit = {this.handleSubmit}
                         handleCancel = {this.handleCancel}
+                        body={this.getFormField}
                     />
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={3}></Col>  
-                        <Col xs={6} className="heading login_heading text-left">{this.state.name}</Col>                             
+                        <Col xs={6} className="heading login_heading text-left">{this.state.task.name}</Col>                             
                     </Row>
 
                     <Row>
