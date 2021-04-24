@@ -8,7 +8,7 @@ from .models import Mock, Task, Course, Grade, Prize
 from rest_framework import viewsets, permissions
 from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     PrizeListSerializer, CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
-    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer
+    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer, GradeMinimalSerializer
 
 
 class MockViewSet(viewsets.ModelViewSet):
@@ -52,10 +52,30 @@ class TaskViewSet(viewsets.ModelViewSet):
         task = serializer.save()
         return Response({"task": TaskSerializer(task).data})
 
-    @action(detail=True)    # todo permissions
+    @action(detail=True)  # todo permissions
     def children(self, request, pk=None):
         task = Task.objects.filter(parent_task=pk)
         return Response({"children": TaskSerializer(task, many=True).data})
+
+    @action(detail=True)  # todo permissions
+    def grades(self, request, pk=None):
+        grades = Grade.objects.filter(task=pk)
+        return Response({"grades": GradeMinimalSerializer(grades, many=True).data})
+
+    @action(detail=True, methods=['POST'])
+    def add_grade(self, request, pk=None):
+        """ provide {"students" : [1,2,3..], "grades": [4,4,5..]}
+            (list of students ids to be added to course)"""
+        student_ids = request.data['students']
+        grade_values = request.data['grades']
+        task = Task.objects.get(pk=pk)
+        for student_id in student_ids:
+            student = Student.objects.get(pk=student_id)
+            grade = Grade.objects.create(task=task, value=grade_values[student_ids.index(student_id)],
+                                         student=student, course=task.course,
+                                         issued_by=task.course.teacher)
+            grade.save()
+        return Response({"status": 'ok'})
 
 
 class CourseViewSet(viewsets.ModelViewSet):

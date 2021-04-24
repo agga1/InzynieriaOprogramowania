@@ -86,6 +86,16 @@ class GradeDetailSerializer(serializers.ModelSerializer):
         )
 
 
+class GradeMinimalSerializer(serializers.ModelSerializer):
+    student_name = serializers.CharField(source='student', read_only=True)
+
+    class Meta:
+        model = Grade
+        fields = (
+            'student', 'student_name', 'value'
+        )
+
+
 class GradeListSerializer(serializers.HyperlinkedModelSerializer):
     issued_by_name = serializers.CharField(source='issued_by', read_only=True)
     student_name = serializers.CharField(source='student', read_only=True)
