@@ -36,7 +36,7 @@ export class RateStudents extends Component {
     }
 
     getStudents(){
-        if(localStorage.getItem('isStudent')=='false'){
+        if(sessionStorage.getItem('isStudent')=='false'){
             fetch(localStorage.getItem('courseUrl')+'students', {
                 method : 'GET',
                 headers : {
@@ -66,7 +66,7 @@ export class RateStudents extends Component {
 
 
     getTask(){
-        if(localStorage.getItem('isStudent')=='false'){
+        if(sessionStorage.getItem('isStudent')=='false'){
             fetch(localStorage.getItem('taskUrl'), {
                 method : 'GET',
                 headers : {
@@ -95,12 +95,6 @@ export class RateStudents extends Component {
     getStudentsGrade(student){
 
     }
-
-    
-    updateCount= () => {
-        // this.setState((state) => ({count:state.count+1}));
-        return this.state.count;
-    };
 
     showModal = (student) => {
         this.setState((state) => ({

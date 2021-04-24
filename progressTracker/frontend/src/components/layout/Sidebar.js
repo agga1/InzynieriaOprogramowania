@@ -11,7 +11,7 @@ export class Sidebar extends Component {
         this.state = {
              chosen_students: [],
              show: false,
-             isStudent: localStorage.getItem('isStudent'),
+             isStudent: sessionStorage.getItem('isStudent'),
 		}
         this.showModal = this.showModal.bind(this);
         this.handleStudents = this.handleStudents.bind(this);

@@ -94,9 +94,7 @@ export class TaskIcon extends Component {
     })
       .then((response) => {
         if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
+          console.log("Something went wrong!" );
         }
         return response.json();
       })
@@ -125,7 +123,7 @@ export class TaskIcon extends Component {
   }
 
   prepareButtons(taskUrl){
-      if(localStorage.getItem('isStudent')=='true'){
+      if(sessionStorage.getItem('isStudent')=='true'){
           return(
             <List>
             <ListInlineItem  className="task-link">
