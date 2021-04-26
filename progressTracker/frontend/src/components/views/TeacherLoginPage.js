@@ -88,7 +88,7 @@ export class TeacherLoginPage extends Component {
         
         return (
             <Fragment>
-                <Header button1_text="Teacher" button2_text="MainPage" button1_path="/teacher_login" button2_path="/"/>
+                <Header button1_text="Student" button2_text="Main Page" button1_path="/student_login" button2_path="/"/>
                 <Container fluid className="">
                     <Row className="mt-4 ml-3">
                         <Col xs={6} className="heading login_heading">Log into teacher's account</Col>     
