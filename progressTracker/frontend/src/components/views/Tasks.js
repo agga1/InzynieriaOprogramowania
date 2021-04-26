@@ -82,12 +82,13 @@ export class Tasks extends Component {
   }
 
   render() {
+    const coursesPath =  localStorage.getItem("isStudent") === "true" ? "/student/courses" : "/teacher/courses";
     return (
       <Fragment>
         <Header
           button1_text="My Courses"
           button2_text="Log Out"
-          button1_path="/student/courses"
+          button1_path={coursesPath}
           button2_path="/"
           is_logout={true}
         />

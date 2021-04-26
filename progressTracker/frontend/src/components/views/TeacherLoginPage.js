@@ -56,7 +56,7 @@ export class TeacherLoginPage extends Component {
    handleLogin = (e, data) => {
        e.preventDefault();
        console.log(data)
-       fetch('api/auth/login', {
+       fetch('/api/auth/login', {
            crossDomain : true,
            withCredentials : true,
            async : true,
@@ -75,7 +75,7 @@ export class TeacherLoginPage extends Component {
                 username : json.user.username,
                 password : json.user.password
             })
-            window.location.href="/student/courses";
+            window.location.href="/teacher/courses";
            }
        })
        .catch(error => {
@@ -88,7 +88,7 @@ export class TeacherLoginPage extends Component {
         
         return (
             <Fragment>
-                <Header button1_text="Student" button2_text="Main Page" button1_path="/student_login" button2_path="/"/>
+                <Header button1_text="Student" button2_text="Main Page" button1_path="/student/login" button2_path="/"/>
                 <Container fluid className="">
                     <Row className="mt-4 ml-3">
                         <Col xs={6} className="heading login_heading">Log into teacher's account</Col>     

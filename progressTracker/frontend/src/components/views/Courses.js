@@ -6,7 +6,7 @@ import Header from "../layout/Header";
 import AddCourseCard from "../layout/AddCourseCard";
 import Footer from "../layout/Footer";
 
-export class StudentCourses extends Component {
+export class Courses extends Component {
   constructor(props) {
     super(props);
 
@@ -65,13 +65,14 @@ export class StudentCourses extends Component {
         <Fragment>
           {comp}
           {this.state.data.map((course) => {
+            const tasksPath =  localStorage.getItem("isStudent") === "true" ? "/student/course/tasks" : "/teacher/course/tasks"
             return (
               <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
                 <CourseIcon
                   course_name={course.name}
                   teacher_name={course.teacher_name}
                   course_url={course.url}
-                  course_details_path="/student/course/tasks"
+                  course_details_path={tasksPath}
                 />
               </Col>
             );
@@ -82,12 +83,13 @@ export class StudentCourses extends Component {
   }
 
   render() {
+    const coursesPath =  localStorage.getItem("isStudent") === "true" ? "/student/courses" : "/teacher/courses"
     return (
       <Fragment>
         <Header
           button1_text="My Courses"
           button2_text="Log Out"
-          button1_path="/student/courses"
+          button1_path={coursesPath}
           button2_path="/"
           is_logout={true}
         />
@@ -106,4 +108,4 @@ export class StudentCourses extends Component {
   }
 }
 
-export default StudentCourses;
+export default Courses;

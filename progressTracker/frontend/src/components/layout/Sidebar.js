@@ -100,13 +100,13 @@ export class Sidebar extends Component {
                     />
                     <Nav vertical className="pt-4 pb-4 text-center">
                         <NavItem className="m-3 w-80 text-center">
-                            <Button path="/student/course/tasks" className="w-80" text="Course tasks"/>
+                            <Button path="/teacher/course/tasks" className="w-80" text="Course tasks"/>
                         </NavItem>
                         <NavItem className="m-3 w-80 text-center">
-                            <Button path="/student/course/details" className="w-80" text="Course details"/>
+                            <Button path="/teacher/course/details" className="w-80" text="Course details"/>
                         </NavItem>
                         <NavItem className="m-3 w-80">
-                            <Button path="/student/course/students" className="w-80"  text="Enrolled students"/>
+                            <Button path="/teacher/course/students" className="w-80"  text="Enrolled students"/>
                         </NavItem>
                         <NavItem className="m-3 w-80 text-center">
                             <Button onClick={this.showModal} className="w-80"  text="Add student"/>
