@@ -103,9 +103,10 @@ export class AddCourse extends Component {
 
     render() {
         const { name, pass_threshold, chosen_students} = this.state;
+        const coursesPath =  localStorage.getItem("isStudent") === "true" ? "/student/courses" : "/teacher/courses";
         return (
             <Fragment>
-                <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logou={true}/>
+                <Header button1_text="My Courses" button2_text="Log Out" button1_path={coursesPath} button2_path="/" is_logou={true}/>
                 <Container fluid>
                     <Row className="mt-4 mb-4">
                         <Col xs={12} className="heading text-center login_heading">Add new course</Col>                                                 

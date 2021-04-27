@@ -157,7 +157,7 @@ export class AddTask extends Component {
         const { name , description, gradeMin, gradeMax, weight, deadline} = this.state;
         return (
             <Fragment>
-                <Header button1_text="My Tasks" button2_text="Log Out" button1_path="/student/course/tasks" button2_path="/" is_logout={true}/>
+                <Header button1_text="My Tasks" button2_text="Log Out" button1_path="/teacher/course/tasks" button2_path="/" is_logout={true}/>
                 <Container fluid>
                     <Row xs={3} className="mt-4 mb-5 ml-3">
                         <Col xs={3} className="heading text-center login_heading">Add task</Col>
