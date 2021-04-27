@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col, Table } from  'reactstrap';
+import {Container, Row, Col, Table, Label, Input} from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Modal from '../layout/Modal';
+import {FormGroup} from "react-bootstrap";
 
 export class RateStudents extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export class RateStudents extends Component {
     }
 
     getStudents(){
-        if(sessionStorage.getItem('isStudent')=='false'){
+        if(sessionStorage.getItem('isStudent')==='false'){
             fetch(localStorage.getItem('courseUrl')+'students', {
                 method : 'GET',
                 headers : {
@@ -66,7 +67,7 @@ export class RateStudents extends Component {
 
 
     getTask(){
-        if(sessionStorage.getItem('isStudent')=='false'){
+        if(sessionStorage.getItem('isStudent')==='false'){
             fetch(localStorage.getItem('taskUrl'), {
                 method : 'GET',
                 headers : {
@@ -140,7 +141,7 @@ export class RateStudents extends Component {
     }
 
     prepareView() {
-        if (this.state.loaded == false) {
+        if (this.state.loaded === false) {
           return (
             <Col xs={12} className="mb-5 mt-5">
               <Spinner />
@@ -196,14 +197,14 @@ export class RateStudents extends Component {
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true}/>
                 <Container fluid>
                     <Modal
-                        title={"Rate "+ this.state.chosenStudent.user.first_name +" "+ this.state.chosenStudent.user.last_name} 
+                        title={"Rate "+ this.state.chosenStudent==='' ? '' : (this.state.chosenStudent.user.first_name +" "+ this.state.chosenStudent.user.last_name)}
                         show={this.state.show}
                         handleSubmit = {this.handleSubmit}
                         handleCancel = {this.handleCancel}
                         body={this.getFormField}
                     />
                     <Row className="mt-4 mb-5 ml-3">
-                        <Col xs={3}></Col>  
+                        <Col xs={3}/>
                         <Col xs={6} className="heading login_heading text-left">{this.state.task.name}</Col>                             
                     </Row>
 
