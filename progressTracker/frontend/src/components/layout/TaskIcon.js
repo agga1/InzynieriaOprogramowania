@@ -115,12 +115,12 @@ export class TaskIcon extends Component {
     localStorage.setItem('taskUrl', taskUrl);
   }
 
-  setTaskName(taskName) {
-    if (sessionStorage.getItem('taskName')){
-        sessionStorage.removeItem('taskName');
-    }
-    sessionStorage.setItem('taskName', taskName);
-  }
+  // setTaskName(taskName) {
+  //   if (sessionStorage.getItem('taskName')){
+  //       sessionStorage.removeItem('taskName');
+  //   }
+  //   sessionStorage.setItem('taskName', taskName);
+  // }
 
   prepareButtons(taskUrl){
       if(sessionStorage.getItem('isStudent')=='true'){
@@ -138,7 +138,7 @@ export class TaskIcon extends Component {
              <a href="/teacher/task/add" className="custom-btn" onClick={() => this.setTask(taskUrl)}>+Task</a>
            </ListInlineItem>
            <ListInlineItem  className="task-link pr-3 ">
-           <a href="/teacher/task/rate" className="custom-btn" onClick={() => this.setTaskName(this.props.task_name)}>Rate</a>
+           <a href="/teacher/task/rate" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Rate</a>
            </ListInlineItem>
            <ListInlineItem  className="task-link">
            <a href="#" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Details</a>

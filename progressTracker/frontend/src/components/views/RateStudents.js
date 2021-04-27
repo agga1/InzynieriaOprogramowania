@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import {Container, Row, Col, Table, Label, Input} from 'reactstrap';
+import {Container, Row, Col, Table} from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import Modal from '../layout/Modal';
-import {FormGroup} from "react-bootstrap";
+import Modal from '../layout/RateStudentModal';
+
 
 export class RateStudents extends Component {
     constructor(props) {
@@ -14,11 +14,12 @@ export class RateStudents extends Component {
         this.state = {
              task: {},
 			 students: [],
-             count: 0,
+             grades: [],
              show: false,
              loaded: false,
-             chosenStudent: {},
+             student_id: '',
              rate: '',
+             title: "Rate student"
 		}
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,6 +29,7 @@ export class RateStudents extends Component {
     componentDidMount(){
         if(localStorage.getItem('token')){
             this.getTask();
+            this.getStudentsGrades();
             this.getStudents();
         }      
         else{
@@ -37,7 +39,7 @@ export class RateStudents extends Component {
     }
 
     getStudents(){
-        if(sessionStorage.getItem('isStudent')==='false'){
+        if(sessionStorage.getItem('isStudent')=='false'){
             fetch(localStorage.getItem('courseUrl')+'students', {
                 method : 'GET',
                 headers : {
@@ -67,7 +69,7 @@ export class RateStudents extends Component {
 
 
     getTask(){
-        if(sessionStorage.getItem('isStudent')==='false'){
+        if(sessionStorage.getItem('isStudent')=='false'){
             fetch(localStorage.getItem('taskUrl'), {
                 method : 'GET',
                 headers : {
@@ -93,45 +95,73 @@ export class RateStudents extends Component {
         }
     }
 
-    getStudentsGrade(student){
-
+    getStudentsGrades(){
+        if(sessionStorage.getItem('isStudent')=='false'){
+            fetch(localStorage.getItem('taskUrl')+'grades', {
+                method : 'GET',
+                headers : {
+                    Authorization : `Token ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => {
+                if (response.status > 400) {
+                    return this.setState(() => {
+                    return { placeholder: "Something went wrong!" };
+                });}
+                return response.json();
+            })
+            .then(data => {
+                console.log(data.grades)
+                this.setState(() => {
+                return {
+                    grades: data.grades,
+                };});
+            });
+        }
+        else{
+            alert('Only teacher can rate students!!!');
+        }
+        
     }
 
     showModal = (student) => {
         this.setState((state) => ({
-            chosenStudent: student,
+            student_id: student.user.id,
             rate: '',
-            show: !state.show
+            show: !state.show,
+            title: "Rate "+student.user.first_name+ " "+student.user.last_name
         }));
     }
 
     handleCancel = () => {
         this.setState((state) => ({
-            chosenStudent: {},
+            student_id: '',
             rate: '',
-            show: !state.show
+            show: !state.show,
+            title: "Rate student"
         }))
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        fetch(localStorage.getItem('courseUrl')+'add_students/', {
-            method : 'POST',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`,
-                'Content-Type' : 'application/json',
-            },
-            body : JSON.stringify({
-                student: this.state.student.user.id,
-                task: this.state.task.id,
-                rate: this.state.rate
+        if(this.state.rate < this.state.task.grade_max && this.state.rate > this.state.task.grade_min){
+            fetch(localStorage.getItem('taskUrl')+'add_grade/', {
+                method : 'POST',
+                headers : {
+                    Authorization : `Token ${localStorage.getItem('token')}`,
+                    'Content-Type' : 'application/json',
+                },
+                body : JSON.stringify({
+                    students: [this.state.student_id],
+                    grades: [this.state.rate]
+                })
             })
-        })
-        .then(res => res.json())
-        .then(
-            this.handleCancel()
-        )
-        .catch(err => console.log(err));
+            .then(res => res.json())
+            .then(
+                this.handleCancel()
+            )
+            .catch(err => console.log(err));
+        }
     }
 
     handleChange = (e) =>{
@@ -140,8 +170,18 @@ export class RateStudents extends Component {
         })
     }
 
+
+    getGrade(student){
+        for(var grade in this.state.grades){
+            if(this.state.grades[grade].student == student.user.id){
+                return this.state.grades[grade].value;
+            }
+        }
+        return "-";
+    }
+
     prepareView() {
-        if (this.state.loaded === false) {
+        if (this.state.loaded == false) {
           return (
             <Col xs={12} className="mb-5 mt-5">
               <Spinner />
@@ -163,12 +203,12 @@ export class RateStudents extends Component {
                     <tbody>
                         {this.state.students.map(student=> {
                             return (
-                                <tr key={student.user.id}>
+                            <tr key={student.user.id}>
                                 <td className="td-sm" scope="row">{this.state.students.indexOf(student)}</td>
                                 <td colSpan="3">{student.user.first_name} {student.user.last_name}</td>
-                                <td className="td-sm">{this.getStudentsGrade()}</td>
-                                <td className="td-sm"><a className='btn' role="button" aria-pressed="true" onClick={this.showModal(student)}>Rate</a></td>
-                                <td className="td-sm"><a className='btn btn-sm' role="button" aria-pressed="true" onClick={this.props.onClick}>b</a></td>
+                                <td className="td-sm">{this.getGrade(student)}</td>
+                                <td className="td-sm"><a className='btn' role="button" aria-pressed="false" onClick={() => this.showModal(student)}>Rate</a></td>
+                                <td className="td-sm"><a className='btn btn-sm' role="button" aria-pressed="true" >b</a></td>
                             </tr>  
                             );
                         })} 
@@ -179,29 +219,21 @@ export class RateStudents extends Component {
         }
       }
 
-    getFormField(){
-        return(<FormGroup>
-                <Label for="rateField">Rate</Label>
-                <Col xs={6}>
-                <Input type="text" value={this.state.rate} onChange={this.handleChange} className="input_window" name="rate" id="rateField"/>
-                </Col>
-                <Col xs={6}>
-                /{this.state.task.max_grade}
-                </Col>
-            </FormGroup>)
-    } 
 
     render() {
+        const {rate} = this.state;
         return (
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true}/>
                 <Container fluid>
                     <Modal
-                        title={"Rate "+ this.state.chosenStudent==='' ? '' : (this.state.chosenStudent.user.first_name +" "+ this.state.chosenStudent.user.last_name)}
+                        title={this.state.title}
                         show={this.state.show}
                         handleSubmit = {this.handleSubmit}
                         handleCancel = {this.handleCancel}
-                        body={this.getFormField}
+                        handleChange = {this.handleChange}
+                        rate = {rate}
+                        max_grade = {this.state.task.grade_max}
                     />
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={3}/>
