@@ -52,7 +52,7 @@ export class Courses extends Component {
       );
     } else {
       var comp;
-      if (localStorage.getItem("isStudent") == "false") {
+      if (sessionStorage.getItem('isStudent') == "false") {
         comp = (
           <Col md={4} sm={6} xs={12} className="mb-4">
             <AddCourseCard path="/teacher/course/add" />

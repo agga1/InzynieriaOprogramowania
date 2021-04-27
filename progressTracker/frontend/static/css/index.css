@@ -163,7 +163,7 @@ html, body{
 }
 
 .students-list{
-  font-style: normal;
+  font-weight: 574;
 }
 
 .empty-icon{
@@ -198,4 +198,7 @@ html, body{
   padding-right: 20px;
 }
 
-
+.td-sm{
+  width:8vw;
+  text-align:center !important;
+}

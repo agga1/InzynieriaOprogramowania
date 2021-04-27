@@ -11,7 +11,7 @@ export class Sidebar extends Component {
         this.state = {
              chosen_students: [],
              show: false,
-             isStudent: localStorage.getItem('isStudent'),
+             isStudent: sessionStorage.getItem('isStudent'),
 		}
         this.showModal = this.showModal.bind(this);
         this.handleStudents = this.handleStudents.bind(this);
@@ -92,7 +92,6 @@ export class Sidebar extends Component {
                 <div className="task-sidebar">
                     <AddStudents 
                         show={this.state.show}
-                        text = "Add students"
                         chosen_students = {this.state.chosen_students}
                         handleStudents = {this.handleStudents}
                         handleSubmit = {this.handleSubmit}
