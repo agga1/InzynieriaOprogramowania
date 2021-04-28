@@ -2,7 +2,7 @@ from django.db.models import IntegerField, IntegerChoices
 from rest_framework import serializers
 
 from accounts.serializers import TeacherSerializer
-from .models import Mock, Task, Course, Grade, Prize
+from .models import Mock, Task, Course, Grade, Prize, Achievement
 
 
 class MockSerializer(serializers.ModelSerializer):
@@ -166,3 +166,13 @@ class CreatePrizeSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         Prize.objects.filter(pk=instance.id).update(**validated_data)
         return Prize.objects.get(pk=instance.id)
+
+class AchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achievement
+        fields = ('course', 'issued_at', 'kind', 'args')
+
+    def create(self, validated_data):
+        ach = Achievement.objects.create(**validated_data)
+        ach.save()
+        return ach
