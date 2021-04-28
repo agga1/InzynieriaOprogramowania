@@ -87,7 +87,7 @@ export class StudentsList extends Component {
                                                 first_name = {student.user.first_name}
                                                 last_name = {student.user.last_name}
                                                 email = {student.user.email}
-                                                index_nr = {student.index}
+                                                index_nr = {student.index_nr}
                                                 />
                                             );
                                         })} 

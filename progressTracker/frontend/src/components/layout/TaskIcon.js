@@ -141,7 +141,7 @@ export class TaskIcon extends Component {
            <a href="/teacher/task/rate" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Rate</a>
            </ListInlineItem>
            <ListInlineItem  className="task-link">
-           <a href="#" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Details</a>
+           <a href="/teacher/task/details" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Details</a>
            </ListInlineItem>
          </List>
           )
@@ -151,7 +151,6 @@ export class TaskIcon extends Component {
   render() {
     return (
       <Fragment>
-        {/* <a className="stretched-link" > */}
           <Card onClick={this.onClick} className={`icon mb-4 ${this.state.style}`}>
             <Row>
               <Col xs={9}>
@@ -161,8 +160,8 @@ export class TaskIcon extends Component {
               </Col>
               <Col xs={3} className="text-right pl-0 pt-3">
               <div className=" points">
-                <h1 className="your-points">{this.props.max_points}</h1>
-                <h1 className="max-points">/{this.props.max_points}</h1>
+                {sessionStorage.getItem('isStudent')=='false' ? "" : <h1 className="your-points">{this.props.max_points}/</h1>}
+                <h1 className="max-points">{this.props.max_points}</h1>
               </div>
               </Col>
             </Row>
@@ -185,7 +184,6 @@ export class TaskIcon extends Component {
               </Col>
             </Row>
           </Card>
-        {/* </a> */}
         {this.showChildren()}
       </Fragment>
     );

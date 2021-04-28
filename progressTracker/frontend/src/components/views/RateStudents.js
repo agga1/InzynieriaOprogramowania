@@ -27,17 +27,19 @@ export class RateStudents extends Component {
 	}
 
     async getData(){
+        let grades = await this.getStudentsGrades();
         let task = await getTask();
         let students = await getStudents();
         return {task: task,
+                grades: grades,
                 students: students}
     }
 
     componentDidMount(){
         if(localStorage.getItem('token')){
-            this.getStudentsGrades();
             this.getData().then((data) => {
                 this.setState(() => ({
+                    grades: data.grades,
                     task: data.task,
                     students: data.students,
                     loaded: true
@@ -55,7 +57,7 @@ export class RateStudents extends Component {
 
     getStudentsGrades(){
         if(sessionStorage.getItem('isStudent')=='false'){
-            fetch(localStorage.getItem('taskUrl')+'grades', {
+            return( fetch(localStorage.getItem('taskUrl')+'grades', {
                 method : 'GET',
                 headers : {
                     Authorization : `Token ${localStorage.getItem('token')}`
@@ -69,15 +71,13 @@ export class RateStudents extends Component {
                 return response.json();
             })
             .then(data => {
-                console.log(data.grades)
-                this.setState(() => {
-                return {
-                    grades: data.grades,
-                };});
-            });
+                data = data.grades;
+                return (data);
+            }
+            ))
         }
         else{
-            alert('Only teacher can rate students!!!');
+            throw new Error('Only teacher can rate students!!!');
         }
         
     }
@@ -178,7 +178,7 @@ export class RateStudents extends Component {
                                 <th colSpan="3">Name</th>
                                 <th className="td-sm">Points</th>
                                 <th className="td-sm">Rate</th>
-                                <th className="td-sm">Orderxd</th>
+                                <th className="td-sm">Prize</th>
                                 </tr>
                             </thead>
                             <tbody>
