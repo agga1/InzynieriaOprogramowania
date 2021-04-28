@@ -29,8 +29,6 @@ export class RateStudents extends Component {
     async getData(){
         let task = await getTask();
         let students = await getStudents();
-        console.log(task);
-        console.log(students);
         return {task: task,
                 students: students}
     }
@@ -39,8 +37,6 @@ export class RateStudents extends Component {
         if(localStorage.getItem('token')){
             this.getStudentsGrades();
             this.getData().then((data) => {
-                // console.log(data);
-                // console.log(data.students);
                 this.setState(() => ({
                     task: data.task,
                     students: data.students,
@@ -56,63 +52,6 @@ export class RateStudents extends Component {
             window.location.href="/";
         }
     }
-
-    // getStudents(){
-    //     if(sessionStorage.getItem('isStudent')=='false'){
-    //         fetch(localStorage.getItem('courseUrl')+'students', {
-    //             method : 'GET',
-    //             headers : {
-    //                 Authorization : `Token ${localStorage.getItem('token')}`
-    //             }
-    //         })
-    //         .then(response => {
-    //             if (response.status > 400) {
-    //                 return this.setState(() => {
-    //                 return { placeholder: "Something went wrong!" };
-    //             });}
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    
-    //             this.setState(() => {
-    //             return {
-    //                 students: data.students,
-    //                 loaded: true
-    //             };});
-    //         });
-    //     }
-    //     else{
-    //         alert('Only teacher can rate students!!!');
-    //     }
-    // }
-
-
-    // getTask(){
-    //     if(sessionStorage.getItem('isStudent')=='false'){
-    //         fetch(localStorage.getItem('taskUrl'), {
-    //             method : 'GET',
-    //             headers : {
-    //                 Authorization : `Token ${localStorage.getItem('token')}`
-    //             }
-    //         })
-    //         .then(response => {
-    //             if (response.status > 400) {
-    //                 return this.setState(() => {
-    //                 return { placeholder: "Something went wrong!" };
-    //             });}
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             this.setState(() => {
-    //             return {
-    //                 task: data
-    //             };});
-    //         });
-    //     }
-    //     else{
-    //         alert('Only teacher can rate students!!!');
-    //     }
-    // }
 
     getStudentsGrades(){
         if(sessionStorage.getItem('isStudent')=='false'){
@@ -164,7 +103,7 @@ export class RateStudents extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         var new_grade = parseFloat(this.state.rate.replace(",","."));
-        if(new_grade < this.state.task.grade_max && new_grade > this.state.task.grade_min){
+        if(new_grade <= this.state.task.grade_max && new_grade >= this.state.task.grade_min){
             fetch(localStorage.getItem('taskUrl')+'add_grade/', {
                 method : 'POST',
                 headers : {

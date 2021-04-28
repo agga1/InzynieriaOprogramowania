@@ -13,9 +13,8 @@ export const getStudents = () => {
             return response.json();
         })
         .then(data => {
-            console.log("students "+data)
-            console.log("students "+data.students)
-            return (data.student);
+            data = data.students;
+            return (data);
         }))
     }
     else{
