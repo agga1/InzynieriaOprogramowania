@@ -14,4 +14,5 @@ urlpatterns = [
     path('teacher/course/add', views.index),
     path('teacher/task/add', views.index),
     path('teacher/task/rate', views.index),
+    path('teacher/task/details', views.index),
 ]

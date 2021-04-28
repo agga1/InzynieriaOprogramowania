@@ -26,7 +26,6 @@ html, body{
 .footer{
   position:absolute;
   background-color: #483ebb;
-  /* margin-top:5rem !important; */
   bottom: 0;
   width: 100%;
   height: 15px;
@@ -37,7 +36,6 @@ html, body{
   border-radius: 25px;
   color: #ffffff;
   font-weight: 800;
-  /* font-size: 20px; */
   line-height: 30px;
   margin: 0px 10px 0px 10px;
 }
@@ -56,7 +54,7 @@ html, body{
 .login_heading {
   margin-top: 2vw !important;
   margin-bottom: 0vw !important;
-  font-size: 48px !important;
+  font-size: 48px ;
   font-weight: 800 !important;
   text-align: center;
 }
@@ -69,6 +67,10 @@ html, body{
 
 .heading {
   color: #ff8c42 !important;
+}
+
+.task-heading{
+  color: #483ebb !important;
 }
 
 .spinner{
@@ -201,4 +203,8 @@ html, body{
 .td-sm{
   width:8vw;
   text-align:center !important;
+}
+
+.display-flex{
+  display:flex;
 }
