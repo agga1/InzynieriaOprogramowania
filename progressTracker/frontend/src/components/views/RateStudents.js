@@ -5,7 +5,7 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Modal from '../layout/RateStudentModal';
-
+import {getStudents, getTask} from '../functions/getData'
 
 export class RateStudents extends Component {
     constructor(props) {
@@ -26,72 +26,30 @@ export class RateStudents extends Component {
         this.handleCancel = this.handleCancel.bind(this);
 	}
 
+    async getData(){
+        let task = await getTask();
+        let students = await getStudents();
+        return {task: task,
+                students: students}
+    }
+
     componentDidMount(){
         if(localStorage.getItem('token')){
-            this.getTask();
             this.getStudentsGrades();
-            this.getStudents();
+            this.getData().then((data) => {
+                this.setState(() => ({
+                    task: data.task,
+                    students: data.students,
+                    loaded: true
+                }))
+            })
+            .catch( (err) =>
+                alert(err.message)
+            )
         }      
         else{
             alert('Log into to see the view');
             window.location.href="/";
-        }
-    }
-
-    getStudents(){
-        if(sessionStorage.getItem('isStudent')=='false'){
-            fetch(localStorage.getItem('courseUrl')+'students', {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => {
-                if (response.status > 400) {
-                    return this.setState(() => {
-                    return { placeholder: "Something went wrong!" };
-                });}
-                return response.json();
-            })
-            .then(data => {
-    
-                this.setState(() => {
-                return {
-                    students: data.students,
-                    loaded: true
-                };});
-            });
-        }
-        else{
-            alert('Only teacher can rate students!!!');
-        }
-    }
-
-
-    getTask(){
-        if(sessionStorage.getItem('isStudent')=='false'){
-            fetch(localStorage.getItem('taskUrl'), {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => {
-                if (response.status > 400) {
-                    return this.setState(() => {
-                    return { placeholder: "Something went wrong!" };
-                });}
-                return response.json();
-            })
-            .then(data => {
-                this.setState(() => {
-                return {
-                    task: data
-                };});
-            });
-        }
-        else{
-            alert('Only teacher can rate students!!!');
         }
     }
 
@@ -145,7 +103,7 @@ export class RateStudents extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         var new_grade = parseFloat(this.state.rate.replace(",","."));
-        if(new_grade < this.state.task.grade_max && new_grade > this.state.task.grade_min){
+        if(new_grade <= this.state.task.grade_max && new_grade >= this.state.task.grade_min){
             fetch(localStorage.getItem('taskUrl')+'add_grade/', {
                 method : 'POST',
                 headers : {

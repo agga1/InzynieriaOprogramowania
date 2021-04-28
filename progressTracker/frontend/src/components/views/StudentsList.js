@@ -4,6 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import StudentRow from '../layout/StudentRow';
+import {getStudents, getTask} from '../functions/getData'
 
 export class StudentsList extends Component {
     constructor(props) {
@@ -18,26 +19,35 @@ export class StudentsList extends Component {
 
     componentDidMount(){
         if(localStorage.getItem('token')){
-            fetch(localStorage.getItem('courseUrl')+'students', {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => {
-                if (response.status > 400) {
-                    return this.setState(() => {
-                    return { placeholder: "Something went wrong!" };
-                });}
-                return response.json();
-            })
-            .then(data => {
-                this.setState(() => {
-                return {
-                    students: data.students,
+            getStudents().then((data) => {
+                this.setState(() => ({
+                    students: data,
                     loaded: true
-                };});
-            });
+                }))
+            })
+            .catch( (err) =>
+                alert(err.message)
+            )
+            // fetch(localStorage.getItem('courseUrl')+'students', {
+            //     method : 'GET',
+            //     headers : {
+            //         Authorization : `Token ${localStorage.getItem('token')}`
+            //     }
+            // })
+            // .then(response => {
+            //     if (response.status > 400) {
+            //         return this.setState(() => {
+            //         return { placeholder: "Something went wrong!" };
+            //     });}
+            //     return response.json();
+            // })
+            // .then(data => {
+            //     this.setState(() => {
+            //     return {
+            //         students: data.students,
+            //         loaded: true
+            //     };});
+            // });
 
         }      
     }
