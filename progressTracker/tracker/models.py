@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from accounts.models import Teacher, Student
+from django.utils.translation import gettext_lazy as _
 
 
 class Mock(models.Model):
@@ -53,3 +54,18 @@ class Prize(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     issued_at = models.DateTimeField(auto_now_add=True)
     kind = models.IntegerField(choices=PrizeKind.choices)
+
+class Achievement(models.Model):
+    class Kind(models.TextChoices):
+        ALL = 'ALL', _('pass all tasks')
+        MAX = 'MAX', _('get 100% from task x')
+        THRESH = 'THRESH', _('get x% from course')
+        BONUS = 'BONUS', _('complete bonus task')
+        STREAK = 'STREAK', _('100% from 3 tasks within a month')
+
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    student = models.ManyToManyField(Student, blank=True)
+    issued_at = models.DateTimeField(auto_now_add=True)
+    kind = models.CharField(max_length=10, choices=Kind.choices)
+    args = models.CharField(max_length=100, default="")
+

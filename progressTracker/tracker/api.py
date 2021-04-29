@@ -4,11 +4,12 @@ from rest_framework.response import Response
 
 from accounts.models import Student
 from accounts.serializers import StudentSerializer
-from .models import Mock, Task, Course, Grade, Prize
+from .models import Mock, Task, Course, Grade, Prize, Achievement
 from rest_framework import viewsets, permissions
 from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     PrizeListSerializer, CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
-    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer, GradeMinimalSerializer
+    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer, GradeMinimalSerializer, \
+    AchievementSerializer
 
 
 class MockViewSet(viewsets.ModelViewSet):
@@ -223,3 +224,30 @@ class PrizeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(teacher=self.request.user.teacher)
+
+class AchievementViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return AchievementSerializer
+        if self.action == 'retrieve':
+            return AchievementSerializer
+        if self.action == 'create':
+            return AchievementSerializer
+        if self.action == 'update':
+            return AchievementSerializer
+        return AchievementSerializer
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'teacher'):  # todo use .is_student ?
+            courses = self.request.user.teacher.course_set.all()
+            ach = Achievement.objects.filter(course__in=courses)
+            return ach
+        elif hasattr(self.request.user, 'student'):
+            student = self.request.user.student
+            return student.achievement_set.all()
+        return None
+
