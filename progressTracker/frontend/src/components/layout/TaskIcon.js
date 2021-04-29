@@ -127,7 +127,7 @@ export class TaskIcon extends Component {
           return(
             <List>
             <ListInlineItem  className="task-link">
-           <a href="#" className="custom-btn">Details</a>
+           <a href="/student/task/details" className="custom-btn">Details</a>
            </ListInlineItem>
           </List>
           )

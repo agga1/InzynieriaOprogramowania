@@ -88,7 +88,10 @@ html, body{
   color: #fffffa !important;
   font-weight: 500 !important;
   font-size: 20px !important;
-  padding-left:10px;
+}
+
+.padding-left-10{
+  padding-left: 10px;
 }
 
 .form-group{

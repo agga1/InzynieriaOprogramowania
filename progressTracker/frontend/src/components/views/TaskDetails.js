@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import {Container, Row, Col, Table} from 'reactstrap';
+import {Container, Row, Col} from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import Modal from '../layout/RateStudentModal';
-import {getStudents, getTask} from '../functions/getData'
-import CourseIcon from '../layout/CourseIcon';
+import {getTask} from '../functions/getData'
 import Button from '../layout/Button';
 
 export class RateStudents extends Component {
@@ -121,9 +119,11 @@ Następnie wywołaj swój program z takimi samymi opcjami i sprawdź, czy liczba
                         </Col>
                         </Row>
                     </Col>
-                    <Col xs={5} className="mt-4 pr-5 text-right">
-                        <Button path="/teacher/task/edit" text="Edit description"/>
-                    </Col>
+                    {sessionStorage.getItem('isStudent')=='true' ? <Col></Col> : 
+                        <Col xs={5} className="mt-4 pr-5 text-right">
+                            <Button path="/teacher/task/update" text="Edit description"/>
+                        </Col> 
+                    }
                 </Row>
             </Col>
           );
@@ -139,7 +139,7 @@ Następnie wywołaj swój program z takimi samymi opcjami i sprawdź, czy liczba
                 <Row className="mt-4 mb-5 ml-3">
                     <Col xs={2}/>
                     <Col xs={6} className="task-heading login_heading text-left">{this.state.task.name}</Col>                 
-                    <Col xs={3} className="task-heading login_heading text-right pr-5 pt-2" style={{"font-size":"40px"}}>{this.state.task.grade_max}</Col>                      
+                    <Col xs={3} className="task-heading login_heading text-right pr-5 pt-2" style={{"fontSize":"40px"}}>{this.state.task.grade_max}</Col>                      
                 </Row>
                 <Row>
                     <Col xs={2} className="ml-0 pl-0">
