@@ -10,6 +10,7 @@ import AddCourse from './AddCourse'
 import AddTask from './AddTask'
 import RateStudents from './RateStudents'
 import TaskDetails from './TaskDetails'
+import UpdateTask from './UpdateTask'
 import Footer from '../layout/Footer'
 
 
@@ -26,7 +27,7 @@ export class HomePage extends Component {
                         <Fragment>
                             <Header button1_text="Student" button2_text="Teacher" button1_path="/student/login" button2_path="teacher/login"/>
                             <h1 className="d-flex justify-content-center heading" id="main_heading">TeachRideExperience</h1>
-                            <img src="../../static/images/sleeping_students.png" className="mx-auto mb-5 d-block" alt="sleeping students furing lecture" />
+                            <img src="../../static/images/sleeping_students.png" className="mx-auto pb-5 d-block" alt="sleeping students furing lecture" />
                             <Footer/>
                         </Fragment>
                     </Route>
@@ -36,12 +37,13 @@ export class HomePage extends Component {
                     <Route path='/teacher/courses' component={Courses}/>
                     <Route path='/student/course/tasks' component={Tasks}/>
                     <Route path='/teacher/course/tasks' component={Tasks}/>
-                    <Route path='/student/course/students' component={StudentsList}/>
                     <Route path='/teacher/course/students' component={StudentsList}/>
                     <Route path='/teacher/course/add' component={AddCourse}/>
                     <Route path='/teacher/task/add' component={AddTask}/>
                     <Route path='/teacher/task/rate' component={RateStudents}/>
                     <Route path='/teacher/task/details' component={TaskDetails}/>
+                    <Route path='/student/task/details' component={TaskDetails}/>
+                    <Route path='/teacher/task/update' component={UpdateTask}/>
                 </Switch>
             </Router>
            

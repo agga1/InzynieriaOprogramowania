@@ -18,13 +18,13 @@ export const getStudents = () => {
         }))
     }
     else{
-        throw new Error("Only teacher can rate students!");
+        throw new Error("Only teacher can see this view!");
     }
 }
 
 
 export const getTask = () => {
-    if(sessionStorage.getItem('isStudent')=='false'){
+    // if(sessionStorage.getItem('isStudent')=='false'){
         return(fetch(localStorage.getItem('taskUrl'), {
             method : 'GET',
             headers : {
@@ -40,8 +40,8 @@ export const getTask = () => {
         .then(data => {
             return (data);
         }))
-    }
-    else{
-        throw new Error("Only teacher can rate students!");
-    }
+    // }
+    // else{
+    //     throw new Error("Only teacher can rate students!");
+    // }
 }

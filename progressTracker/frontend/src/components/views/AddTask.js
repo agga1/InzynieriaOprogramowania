@@ -167,6 +167,7 @@ export class AddTask extends Component {
                         <Col xs={1}></Col>
                         <Col xs={10} className="text-center">
                         <AddTaskForm
+                            buttonText = "Create"
                             handleName = {this.handleName}
                             handleDescription = {this.handleDescription}
                             handleGradeMin = {this.handleGradeMin}
@@ -180,6 +181,7 @@ export class AddTask extends Component {
                             gradeMax = {gradeMax}
                             weight = {weight}
                             deadline = {deadline}
+                            readOnly = {false}
                         />
                         </Col>
                     </Row>
