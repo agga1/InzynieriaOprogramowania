@@ -22,6 +22,7 @@ export class TaskIcon extends Component {
       children: [],
     };
     this.onClick = this.onClick.bind(this);
+    this.getChildren();
   }
 
   onClick = () => {
@@ -35,7 +36,6 @@ export class TaskIcon extends Component {
         show: !state.show,
         style: "clicked",
       }));
-      this.getChildren();
     }
   };
 
@@ -105,7 +105,7 @@ export class TaskIcon extends Component {
             loaded: true,
           };
         });
-      });
+      })
   }
 
   setTask(taskUrl) {
@@ -122,29 +122,49 @@ export class TaskIcon extends Component {
   //   sessionStorage.setItem('taskName', taskName);
   // }
 
-  prepareButtons(taskUrl){
-      if(sessionStorage.getItem('isStudent')=='true'){
-          return(
-            <List>
-            <ListInlineItem  className="task-link">
-           <a href="/student/task/details" className="custom-btn">Details</a>
-           </ListInlineItem>
-          </List>
-          )
-      }else{
-        return(
-           <List>
-           <ListInlineItem  className="task-link pr-3">
-             <a href="/teacher/task/add" className="custom-btn" onClick={() => this.setTask(taskUrl)}>+Task</a>
-           </ListInlineItem>
-           <ListInlineItem  className="task-link pr-3 ">
-           <a href="/teacher/task/rate" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Rate</a>
-           </ListInlineItem>
-           <ListInlineItem  className="task-link">
-           <a href="/teacher/task/details" className="custom-btn" onClick={() => this.setTask(taskUrl)}>Details</a>
-           </ListInlineItem>
-         </List>
-          )
+  prepareButtons(taskUrl) {
+      if (this.state.loaded) {
+          if (sessionStorage.getItem('isStudent') == 'true') {
+              return (
+                  <List>
+                      <ListInlineItem className="task-link">
+                          <a href="/student/task/details" className="custom-btn">Details</a>
+                      </ListInlineItem>
+                  </List>
+              )
+          } else if (this.state.children.length > 0) {
+              return (
+                  <List>
+                      <ListInlineItem className="task-link pr-3">
+                          <a href="/teacher/task/add" className="custom-btn"
+                             onClick={() => this.setTask(taskUrl)}>+Task</a>
+                      </ListInlineItem>
+                      <ListInlineItem className="task-link">
+                          <a href="/teacher/task/details" className="custom-btn"
+                             onClick={() => this.setTask(taskUrl)}>Details</a>
+                      </ListInlineItem>
+                  </List>
+              )
+          } else {
+              return (
+                  <List>
+                      <ListInlineItem className="task-link pr-3">
+                          <a href="/teacher/task/add" className="custom-btn"
+                             onClick={() => this.setTask(taskUrl)}>+Task</a>
+                      </ListInlineItem>
+                      <ListInlineItem className="task-link pr-3 ">
+                          <a href="/teacher/task/rate" className="custom-btn"
+                             onClick={() => this.setTask(taskUrl)}>Rate</a>
+                      </ListInlineItem>
+                      <ListInlineItem className="task-link">
+                          <a href="/teacher/task/details" className="custom-btn"
+                             onClick={() => this.setTask(taskUrl)}>Details</a>
+                      </ListInlineItem>
+                  </List>
+              )
+          }
+      }else {
+          return (<List></List>);
       }
   }
 
