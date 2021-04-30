@@ -15,6 +15,7 @@ class Course(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     student = models.ManyToManyField(Student, blank=True)
     pass_threshold = models.SmallIntegerField(default=0)
+    description = models.TextField(default="")
 
 
 class Task(models.Model):
@@ -30,6 +31,7 @@ class Task(models.Model):
     parent_task = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)
     weight = models.FloatField()
     deadline = models.DateTimeField()
+    description = models.TextField(default="")
     aggregation_method = models.CharField(max_length=4, choices=AggregationMethod.choices,
                                           default=AggregationMethod.AVERAGE)
 

@@ -44,7 +44,7 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'pass_threshold', 'teacher',
+            'name', 'pass_threshold', 'teacher', 'description'
         )
 
 
@@ -54,7 +54,7 @@ class CourseListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'url', 'name', 'teacher_name'
+            'url', 'name', 'teacher_name', 'description'
         )
 
 
@@ -62,7 +62,7 @@ class CreateCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = (
-            'name', 'teacher', 'student', 'pass_threshold'
+            'name', 'teacher', 'student', 'pass_threshold', 'description'
         )
 
     def create(self, validated_data):
