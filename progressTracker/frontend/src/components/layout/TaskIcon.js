@@ -78,7 +78,7 @@ export class TaskIcon extends Component {
         <Row className="p-2">
           <Col xs={1}></Col>
           <Col xs={11}>
-            <Spinner/>
+            <Spinner />
           </Col>
         </Row>
       );
@@ -94,7 +94,7 @@ export class TaskIcon extends Component {
     })
       .then((response) => {
         if (response.status > 400) {
-          console.log("Something went wrong!" );
+          console.log("Something went wrong!");
         }
         return response.json();
       })
@@ -105,14 +105,14 @@ export class TaskIcon extends Component {
             loaded: true,
           };
         });
-      })
+      });
   }
 
   setTask(taskUrl) {
-    if (localStorage.getItem('taskUrl')){
-        localStorage.removeItem('taskUrl');
+    if (localStorage.getItem("taskUrl")) {
+      localStorage.removeItem("taskUrl");
     }
-    localStorage.setItem('taskUrl', taskUrl);
+    localStorage.setItem("taskUrl", taskUrl);
   }
 
   // setTaskName(taskName) {
@@ -123,87 +123,121 @@ export class TaskIcon extends Component {
   // }
 
   prepareButtons(taskUrl) {
-      if (this.state.loaded) {
-          if (sessionStorage.getItem('isStudent') == 'true') {
-              return (
-                  <List>
-                      <ListInlineItem className="task-link">
-                          <a href="/student/task/details" className="custom-btn">Details</a>
-                      </ListInlineItem>
-                  </List>
-              )
-          } else if (this.state.children.length > 0) {
-              return (
-                  <List>
-                      <ListInlineItem className="task-link pr-3">
-                          <a href="/teacher/task/add" className="custom-btn"
-                             onClick={() => this.setTask(taskUrl)}>+Task</a>
-                      </ListInlineItem>
-                      <ListInlineItem className="task-link">
-                          <a href="/teacher/task/details" className="custom-btn"
-                             onClick={() => this.setTask(taskUrl)}>Details</a>
-                      </ListInlineItem>
-                  </List>
-              )
-          } else {
-              return (
-                  <List>
-                      <ListInlineItem className="task-link pr-3">
-                          <a href="/teacher/task/add" className="custom-btn"
-                             onClick={() => this.setTask(taskUrl)}>+Task</a>
-                      </ListInlineItem>
-                      <ListInlineItem className="task-link pr-3 ">
-                          <a href="/teacher/task/rate" className="custom-btn"
-                             onClick={() => this.setTask(taskUrl)}>Rate</a>
-                      </ListInlineItem>
-                      <ListInlineItem className="task-link">
-                          <a href="/teacher/task/details" className="custom-btn"
-                             onClick={() => this.setTask(taskUrl)}>Details</a>
-                      </ListInlineItem>
-                  </List>
-              )
-          }
-      }else {
-          return (<List></List>);
+    if (this.state.loaded) {
+      if (sessionStorage.getItem("isStudent") == "true") {
+        return (
+          <List>
+            <ListInlineItem className="task-link">
+              <a href="/student/task/details" className="custom-btn">
+                Details
+              </a>
+            </ListInlineItem>
+          </List>
+        );
+      } else if (this.state.children.length > 0) {
+        return (
+          <List>
+            <ListInlineItem className="task-link pr-3">
+              <a
+                href="/teacher/task/add"
+                className="custom-btn"
+                onClick={() => this.setTask(taskUrl)}
+              >
+                +Task
+              </a>
+            </ListInlineItem>
+            <ListInlineItem className="task-link">
+              <a
+                href="/teacher/task/details"
+                className="custom-btn"
+                onClick={() => this.setTask(taskUrl)}
+              >
+                Details
+              </a>
+            </ListInlineItem>
+          </List>
+        );
+      } else {
+        return (
+          <List>
+            <ListInlineItem className="task-link pr-3">
+              <a
+                href="/teacher/task/add"
+                className="custom-btn"
+                onClick={() => this.setTask(taskUrl)}
+              >
+                +Task
+              </a>
+            </ListInlineItem>
+            <ListInlineItem className="task-link pr-3 ">
+              <a
+                href="/teacher/task/rate"
+                className="custom-btn"
+                onClick={() => this.setTask(taskUrl)}
+              >
+                Rate
+              </a>
+            </ListInlineItem>
+            <ListInlineItem className="task-link">
+              <a
+                href="/teacher/task/details"
+                className="custom-btn"
+                onClick={() => this.setTask(taskUrl)}
+              >
+                Details
+              </a>
+            </ListInlineItem>
+          </List>
+        );
       }
+    } else {
+      return <List></List>;
+    }
   }
 
   render() {
     return (
       <Fragment>
-          <Card onClick={this.onClick} className={`icon mb-4 ${this.state.style}`}>
-            <Row>
-              <Col xs={9}>
-                <CardBody className="pb-0">
-                  <CardTitle tag="h1">{this.props.task_name}</CardTitle>
-                </CardBody>
-              </Col>
-              <Col xs={3} className="text-right pl-0 pt-3">
+        <Card
+          onClick={this.onClick}
+          className={`icon mb-4 ${this.state.style}`}
+        >
+          <Row>
+            <Col xs={9}>
+              <CardBody className="pb-0">
+                <CardTitle tag="h1">{this.props.task_name}</CardTitle>
+              </CardBody>
+            </Col>
+            <Col xs={3} className="text-right pl-0 pt-3">
               <div className=" points">
-                {sessionStorage.getItem('isStudent')=='false' ? "" : <h1 className="your-points">{this.props.max_points}/</h1>}
+                {sessionStorage.getItem("isStudent") == "false" ? (
+                  ""
+                ) : (
+                  <h1 className="your-points">{this.props.max_points}/</h1>
+                )}
                 <h1 className="max-points">{this.props.max_points}</h1>
               </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={6}>
-                <CardBody className="pt-0">
-                  <List>
-                    <ListInlineItem className="card-text">
-                      <b>Deadline:</b>
-                    </ListInlineItem>
-                    <ListInlineItem className="card-text">
-                      {this.props.deadline}
-                    </ListInlineItem>
-                  </List>
-                </CardBody>
-              </Col>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={6}>
+              <CardBody className="pt-0">
+                <List>
+                  <ListInlineItem className="card-text">
+                    <b>Deadline:</b>
+                  </ListInlineItem>
+                  <ListInlineItem className="card-text">
+                    {this.props.deadline}
+                  </ListInlineItem>
+                </List>
+              </CardBody>
+            </Col>
 
-              <Col xs={6} className="text-right task-btn">
-                {this.prepareButtons(this.props.url)}
-              </Col>
-            </Row>
-          </Card>
+            <Col xs={6} className="text-right task-btn">
+              {this.prepareButtons(this.props.url)}
+            </Col>
+          </Row>
+        </Card>
         {this.showChildren()}
       </Fragment>
     );

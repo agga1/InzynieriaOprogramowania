@@ -1,134 +1,127 @@
-import React, { Component, Fragment } from 'react'
-import { Container, Row, Col } from 'reactstrap';
-import AddTaskForm from '../layout/AddTaskForm'
-import Header from '../layout/Header';
-import {getTask} from '../functions/getData'
+import React, { Component, Fragment } from "react";
+import { Container, Row, Col } from "reactstrap";
+import AddTaskForm from "../layout/AddTaskForm";
+import Header from "../layout/Header";
+import { getTask } from "../functions/getData";
 
 export class AddTask extends Component {
-    constructor(props){
-        super(props)
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            task: {},
-            description: '',
-            loaded: false
-       }
-        this.handleDescription = this.handleDescription.bind(this);
-        this.handleNone = this.handleNone.bind(this);
-    }
+    this.state = {
+      task: {},
+      description: "",
+      loaded: false,
+    };
+    this.handleDescription = this.handleDescription.bind(this);
+    this.handleNone = this.handleNone.bind(this);
+  }
 
-    componentDidMount(){
-        if(localStorage.getItem('token')){
-            fetch('/api/auth/user', {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(res => res.json())
-            .then(resp => {
-             if(resp.user.is_student != false){
-                 alert("Only teacher can add tasks");
-                 window.location.href="/student/courses";
-             }
-            })
-            .catch(err => console.log(err));
-           
-            getTask().then((data) => {
-                this.setState(() => ({
-                    task: data,
-                    // id: data.id,
-                    // name: data.name,
-                    // description: data.description,
-                    // gradeMin: data.grade_min,
-                    // gradeMax: data.grade_max,
-                    // weight: data.weight,
-                    // deadline: data.deadline,
-                    loaded: true
-                }))
-            })
-            .catch( (err) =>
-                alert(err.message)
-            )
-        }
-        else{
-            alert('Log into to see the view');
-            window.location.href="/";
-        }
-    }
-
-	handleDescription = event => {
-        this.setState({
-            description : event.target.value
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      fetch("/api/auth/user", {
+        method: "GET",
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((resp) => {
+          if (resp.user.is_student != false) {
+            alert("Only teacher can add tasks");
+            window.location.href = "/student/courses";
+          }
         })
-	}
+        .catch((err) => console.log(err));
 
-	handleSubmit = (e) =>{
-       e.preventDefault();
-        fetch('/api/tasks/', {
-            method : 'PATCH',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`,
-                'Content-Type' : 'application/json',
-            },
-            body : JSON.stringify(this.prepareData())
+      getTask()
+        .then((data) => {
+          this.setState(() => ({
+            task: data,
+            description: data.description,
+            loaded: true,
+          }));
         })
-        .then(res => res.json())
-        .then(resp =>{
-            if(resp.name == this.state.task.name) {
-                alert(`Task ${this.state.task.name} updated successfully.\n`
-                );
-            }
-        })
-        .catch(err => console.log(err));
+        .catch((err) => alert(err.message));
+    } else {
+      alert("Log into to see the view");
+      window.location.href = "/";
     }
+  }
 
-    handleNone = (e) => {}
+  handleDescription = (event) => {
+    this.setState({
+      description: event.target.value,
+    });
+  };
 
-    prepareData() {
-        return {
-            id: this.state.task.id,
-            name: this.state.task.name,
-            description : this.state.description
-        }
-    }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(localStorage.getItem("taskUrl"), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.prepareData()),
+    })
+      .then(() => {
+        window.location.href = "/teacher/task/details";
+      })
+      .catch((err) => console.log(err));
+  };
 
-    render() {
-        const {description} = this.state;
-        return (
-            <Fragment>
-                <Header button1_text="My Tasks" button2_text="Log Out" button1_path="/teacher/course/tasks" button2_path="/" is_logout={true}/>
-                <Container fluid>
-                    <Row xs={3} className="mt-4 mb-5 ml-3">
-                        <Col xs={6} className="heading text-center login_heading">Update task</Col>
+  handleNone = (e) => { };
 
-                    </Row>
-                    <Row className="mt-2">
-                        <Col xs={1}></Col>
-                        <Col xs={10} className="text-center">
-                        <AddTaskForm
-                            buttonText = "Update"
-                            handleName = {this.handleNone}
-                            handleDescription = {this.handleDescription}
-                            handleGradeMin = {this.handleNone}
-                            handleGradeMax = {this.handleNone}
-                            handleWeight = {this.handleNone}
-                            handleDeadline = {this.handleNone}
-                            handleSubmit = {this.handleSubmit}
-                            name = {this.state.task.name}
-                            description = {description}
-                            gradeMin = {this.state.task.gradeMin}
-                            gradeMax = {this.state.task.gradeMax}
-                            weight = {this.state.task.weight}
-                            deadline = {this.state.task.deadline}
-                            readOnly = {true}
-                        />
-                        </Col>
-                    </Row>
-                </Container>
-            </Fragment>
-        )
-    }
+  prepareData() {
+    return {
+      description: this.state.description,
+    };
+  }
+
+  render() {
+    const { description } = this.state;
+    return (
+      <Fragment>
+        <Header
+          button1_text="My Tasks"
+          button2_text="Log Out"
+          button1_path="/teacher/course/tasks"
+          button2_path="/"
+          is_logout={true}
+        />
+        <Container fluid>
+          <Row xs={3} className="mt-4 mb-5 ml-3">
+            <Col xs={6} className="heading text-center login_heading">
+              Update task
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col xs={1}></Col>
+            <Col xs={10} className="text-center">
+              <AddTaskForm
+                buttonText="Update"
+                handleName={this.handleNone}
+                handleDescription={this.handleDescription}
+                handleGradeMin={this.handleNone}
+                handleGradeMax={this.handleNone}
+                handleWeight={this.handleNone}
+                handleDeadline={this.handleNone}
+                handleSubmit={this.handleSubmit}
+                name={this.state.task.name}
+                description={description}
+                gradeMin={this.state.task.gradeMin}
+                gradeMax={this.state.task.gradeMax}
+                weight={this.state.task.weight}
+                deadline={this.state.task.deadline}
+                readOnly={true}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </Fragment>
+    );
+  }
 }
 
-export default AddTask
+export default AddTask;
