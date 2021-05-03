@@ -16,183 +16,151 @@ export class Leaderboard extends Component {
              name: localStorage.getItem('courseName'),
 			       students: [],
              tasks: [],
-             grades: [],
+             grades: new Map(),
              loaded: false,
-             tasks_loaded: false,
 		}
 	}
 
-    componentDidMount() {
-        if (localStorage.getItem("token")) {
-          this.getStudentsList();
-          this.getTasks();
+  async getData() {
+    let promise1 = new Promise((resolve, reject) => {
+      resolve(getStudents());
+    })
+    let promise2 = new Promise((resolve, reject) => {
+      resolve(this.getTasks());
+    })
+    let students = await promise1;
+    let data = await promise2;
+    // let tasks = data.tasks
 
-        } else {
-          alert("Log in to see the view");
-          window.location.href = "/";
-        }
-      }
+    // let promise3 = new Promise((resolve, reject) => {
+    //   resolve(data.grades);
+    // })
 
-    getStudentsList(){
-        getStudents().then((data) => {
-            this.setState(() => ({
-                students: data,
-                loaded: true
-            }))
+    // let grades = await promise3;
+    // console.log(grades);
+    return { students: students, tasks: data.tasks, grades: data.grades };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      this.getData()
+        .then((data) => {
+          this.setState(() => ({
+            students: data.students,
+            tasks: data.tasks,
+            grades: data.grades,
+            loaded: true,
+          }));
         })
-        .catch( (err) =>
-            alert(err.message)
-        )
+        .catch((err) => alert(err.message));
+    } else {
+      alert("Log into to see the view");
+      window.location.href = "/";
     }
+  }
 
     getTasks() {
-        fetch(localStorage.getItem("courseUrl") + "main_tasks", {
+      return fetch(localStorage.getItem("courseUrl") + "main_tasks", {
+        method: "GET",
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response1) => {
+        if (response1.status > 400) {
+          return this.setState(() => {
+            return { placeholder: "Something went wrong!" };
+          });
+        }
+        return response1.json();
+      })
+      .then((data1) => {
+        let tasks = data1.tasks;
+        let grades_list = this.state.grades;
+        tasks.map( task => {
+        return fetch(task.url + "grades/", {
           method: "GET",
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
           },
         })
-          .then((response) => {
-            if (response.status > 400) {
-              return this.setState(() => {
-                return { placeholder: "Something went wrong!" };
-              });
-            }
-            return response.json();
-          })
-          .then((data) => {
-            this.setState(() => {
-              return {
-                tasks: data.tasks,
-                tasks_loaded: true,
-              };
+        .then((response2) => {
+          if (response2.status > 400) {
+            return this.setState(() => {
+              return { placeholder: "Something went wrong!" };
             });
-          });
-      }
-      
-      // getGrades(){
-      //   this.state.tasks.map( task => {
-      //     fetch(task.url + "grades/", {
-      //       method: "GET",
-      //       headers: {
-      //         Authorization: `Token ${localStorage.getItem("token")}`,
-      //       },
-      //     })
-      //     .then((response) => {
-      //       if (response.status > 400) {
-      //         return this.setState(() => {
-      //           return { placeholder: "Something went wrong!" };
-      //         });
-      //       }
-      //       return response.json();
-      //     })
-      //     .then((data) => {
-      //       data.grades.map((grade) =>{
-      //         this.setState((state)=> {
-      //           if(state.grades.has(task.url + grade.student));
-      //           state.grades = [...state.grades, { key: task.url +"_" + grade.student,
-      //           value: grade.value}];
-      //           // map[task.url + grade.student] = grade.value;
-      //           // state.grades[task.url + grade.student] = grade.value;
-      //           return{
-      //             grades: state.grades,
-      //           }
-      //         })
-      //       })
-      //     });
-      //   })
-      // }
-      // getStudentGradeForTask(task_id, student_id){
-      //   fetch(`/api/tasks/${task_id}/grades`, {
-      //     method: "GET",
-      //     headers: {
-      //       Authorization: `Token ${localStorage.getItem("token")}`,
-      //     },
-      //   })
-      //     .then((res) => res.json())
-      //     .then((data) => {
-      //       var grade =  data.grades.filter((tuple) => {
-      //         return tuple.student == student_id;
-      //       }) 
-      //       var toReturn;
-      //       grade.length > 0 ? toReturn = grade[0].value : toReturn = '-';
-      //       console.log(toReturn)
-      //       return toReturn
-      //     })
-      //     .catch((err) => console.log(err));
-      // }
-
-      getTasksGradesList(student_id){
-
-          let gradesPerTask=[];
-          this.state.tasks.map( task => {
-            return fetch(task.url + "grades/", {
-              method: "GET",
-              headers: {
-                Authorization: `Token ${localStorage.getItem("token")}`,
-              },
-            })
-            .then((response) => {
-              if (response.status > 400) {
-                return this.setState(() => {
-                  return { placeholder: "Something went wrong!" };
-                });
+          }
+          return response2.json();
+        })
+        .then((data2) => {
+          data2.grades.map((grade) =>{
+              if(!grades_list.has(task.url + "_" + grade.student)){
+                grades_list.set(task.url +"_" + grade.student, grade.value);
               }
-              return response.json();
             })
-            .then((data) => {
-              var grade
-              data == [] ? grade = [] : grade =  data.grades.filter((tuple) => {
-                return tuple.student == student_id;
-              }) 
-              return grade.length > 0 ? gradesPerTask.push(grade[0].value) : gradesPerTask.push("-");
-            });
-          })
-          return Promise.all([gradesPerTask])
-          .then(data => {
-            return data;
-          })
-      }
+        });
+      })
+      return {tasks: tasks, grades: grades_list}
+      });
+    }
+
+    getAllGrades(student_id){
+      let list = [];
+      let points = 0;
+      this.state.tasks.map(task => {
+        var key = task.url + "_" + student_id
+        if (this.state.grades.has(key)){
+          var value = this.state.grades.get(key);
+          points+=parseInt(value);
+          list.push(value);
+        } 
+        else
+          list.push("-");
+      });
+      console.log(list);
+      return { grades: list, points: points};
+    }
 
     prepareView() {
-        if (this.state.loaded == false) {
-          return (
-            <Col xs={10} className="mb-5 mt-5">
-              <Spinner />
-            </Col>
-          );
-        } else {
-          return (
-            <Col xs={10}>
-            <Table striped className="students-list">
-            <thead>
-                <tr>
-                <th></th>
-                <th>Name</th>
-                {this.state.tasks.map(task => {
-                    return <th>{task.name}</th>
-                })}
-                <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {this.state.students.map(student=> {
-                    return (
-                        <LeaderboardRow
-                            key = {this.state.students.indexOf(student)}
-                            id = {this.state.students.indexOf(student)}
-                            name = {student.user.first_name + " " + student.user.last_name}
-                            grades = {this.getTasksGradesList(student.user.id)}
-                            total = {90}
-                        />
-                    );
-            
-                })} 
-            </tbody>
-        </Table>
-        </Col>
-          );
-        }
+      if (this.state.loaded == false) {
+        return (
+          <Col xs={10} className="mb-5 mt-5">
+            <Spinner />
+          </Col>
+        );
+      } else {
+        return (
+          <Col xs={10}>
+          <Table striped className="students-list">
+          <thead>
+              <tr>
+              <th></th>
+              <th>Name</th>
+              {this.state.tasks.map(task => {
+                  return <th>{task.name}</th>
+              })}
+              <th>Total</th>
+              </tr>
+          </thead>
+          <tbody>
+              {this.state.students.map(student=> {
+                var result = this.getAllGrades(student.user.id);
+                  return (
+                      <LeaderboardRow
+                          key = {this.state.students.indexOf(student)}
+                          id = {this.state.students.indexOf(student)}
+                          name = {student.user.first_name + " " + student.user.last_name}
+                          grades = {result.grades}
+                          total = {result.points}
+                      />
+                  );
+          
+              })} 
+          </tbody>
+      </Table>
+      </Col>
+        );
+      }
     }
 
     render() {
