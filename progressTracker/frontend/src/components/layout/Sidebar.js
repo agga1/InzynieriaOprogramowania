@@ -36,8 +36,12 @@ export class Sidebar extends Component {
             body : JSON.stringify(this.prepareData())
         })
         .then(res => res.json())
-        .then(
-            this.handleCancel()
+        .then( () =>{
+            if(this.props.refresh!=undefined){
+                this.props.refresh();
+            };
+            this.handleCancel();
+        }
         )
         .catch(err => console.log(err));
     }
@@ -55,6 +59,7 @@ export class Sidebar extends Component {
 
 
     prepareData(){
+        console.log(this.props.refresh);
         var students_id = this.state.chosen_students;
         students_id = students_id.map(e => e.value);
         return{

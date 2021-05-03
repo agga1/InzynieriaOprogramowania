@@ -44,7 +44,7 @@ export class RateStudents extends Component {
             loaded: true,
           }));
         })
-        .catch((err) => alert(err.message));
+        .catch((err) => console.log(err.message));
     } else {
       alert("Log into to see the view");
       window.location.href = "/";
@@ -97,10 +97,7 @@ export class RateStudents extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     var new_grade = parseFloat(this.state.rate.replace(",", "."));
-    if (
-      new_grade <= this.state.task.grade_max &&
-      new_grade >= this.state.task.grade_min
-    ) {
+    if (new_grade <= this.state.task.grade_max && new_grade >= this.state.task.grade_min) {
       fetch(localStorage.getItem("taskUrl") + "add_grade/", {
         method: "POST",
         headers: {
@@ -119,11 +116,8 @@ export class RateStudents extends Component {
         .catch((err) => console.log(err));
     } else {
       alert(
-        "Enter proper grade from range: [" +
-        this.state.task.grade_min +
-        ", " +
-        this.state.task.grade_max +
-        "]!"
+        "Enter proper grade from range: [" + this.state.task.grade_min +
+        ", " + this.state.task.grade_max + "]!"
       );
     }
   };

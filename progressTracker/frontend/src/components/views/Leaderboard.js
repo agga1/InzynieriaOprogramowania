@@ -169,6 +169,7 @@ export class Leaderboard extends Component {
         );
       } else {
         return (
+<<<<<<< HEAD
           <Col xs={10}>   
             <MDBDataTable
               striped
@@ -179,6 +180,36 @@ export class Leaderboard extends Component {
               id="myTable"
             />
          </Col>
+=======
+          <Col xs={10} className="pr-4">
+          <Table striped className="students-list">
+          <thead>
+              <tr>
+              <th></th>
+              <th>Name</th>
+              {this.state.tasks.map(task => {
+                  return <th key={task.url} >{task.name}</th>
+              })}
+              <th>Total</th>
+              </tr>
+          </thead>
+          <tbody>
+              {this.state.students.map(student=> {
+                var result = this.getAllGrades(student.user.id);
+                  return (
+                      <LeaderboardRow
+                          key = {this.state.students.indexOf(student)}
+                          id = {this.state.students.indexOf(student)}
+                          name = {student.user.first_name + " " + student.user.last_name}
+                          grades = {result.grades}
+                          total = {result.points}
+                      />
+                  );
+              })} 
+          </tbody>
+      </Table>
+      </Col>
+>>>>>>> update students list after adding a new student
         );
       }
     }
