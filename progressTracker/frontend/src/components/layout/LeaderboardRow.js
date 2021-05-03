@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 export class LeaderboardRow extends Component {
   render() {
-    // console.log(this.props.grades);
     return (
       <tr>
         <th scope="row">{this.props.id}</th>

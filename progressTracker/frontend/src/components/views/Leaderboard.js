@@ -5,8 +5,7 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import LeaderboardRow from '../layout/LeaderboardRow';
-import {getStudents, getTask} from '../functions/getData'
-import { array } from 'prop-types';
+import {getStudents} from '../functions/getData'
 
 export class Leaderboard extends Component {
     constructor(props) {
@@ -16,8 +15,10 @@ export class Leaderboard extends Component {
              name: localStorage.getItem('courseName'),
 			       students: [],
              tasks: [],
+             tasks_len: -1,
              grades: new Map(),
              loaded: false,
+             grades_loaded: false,
 		}
 	}
 
@@ -26,19 +27,11 @@ export class Leaderboard extends Component {
       resolve(getStudents());
     })
     let promise2 = new Promise((resolve, reject) => {
-      resolve(this.getTasks());
+      resolve(this.getTasksAndGrades());
     })
     let students = await promise1;
-    let data = await promise2;
-    // let tasks = data.tasks
-
-    // let promise3 = new Promise((resolve, reject) => {
-    //   resolve(data.grades);
-    // })
-
-    // let grades = await promise3;
-    // console.log(grades);
-    return { students: students, tasks: data.tasks, grades: data.grades };
+    let tasks = await promise2;
+    return { students: students, tasks: tasks};
   }
 
   componentDidMount() {
@@ -48,8 +41,9 @@ export class Leaderboard extends Component {
           this.setState(() => ({
             students: data.students,
             tasks: data.tasks,
-            grades: data.grades,
+            tasks_len: Object.keys(data.tasks).length,
             loaded: true,
+            grades_loaded: false,
           }));
         })
         .catch((err) => alert(err.message));
@@ -59,50 +53,59 @@ export class Leaderboard extends Component {
     }
   }
 
-    getTasks() {
-      return fetch(localStorage.getItem("courseUrl") + "main_tasks", {
+  getTasksAndGrades() { 
+    return fetch(localStorage.getItem("courseUrl") + "main_tasks", {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response1) => {
+      if (response1.status > 400) {
+        return this.setState(() => {
+          return { placeholder: "Something went wrong!" };
+        });
+      }
+      return response1.json();
+    })
+    .then((data1) => {
+      let tasks = data1.tasks;
+      let counter = 0;
+      let grades_list = this.state.grades;
+      tasks.map( task => {
+      return fetch(task.url + "grades/", {
         method: "GET",
         headers: {
           Authorization: `Token ${localStorage.getItem("token")}`,
         },
       })
-      .then((response1) => {
-        if (response1.status > 400) {
+      .then((response2) => {
+        if (response2.status > 400) {
           return this.setState(() => {
             return { placeholder: "Something went wrong!" };
           });
         }
-        return response1.json();
+        return response2.json();
       })
-      .then((data1) => {
-        let tasks = data1.tasks;
-        let grades_list = this.state.grades;
-        tasks.map( task => {
-        return fetch(task.url + "grades/", {
-          method: "GET",
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response2) => {
-          if (response2.status > 400) {
-            return this.setState(() => {
-              return { placeholder: "Something went wrong!" };
-            });
-          }
-          return response2.json();
-        })
-        .then((data2) => {
-          data2.grades.map((grade) =>{
-              if(!grades_list.has(task.url + "_" + grade.student)){
-                grades_list.set(task.url +"_" + grade.student, grade.value);
-              }
-            })
-        });
-      })
-      return {tasks: tasks, grades: grades_list}
-      });
-    }
+      .then((data2) => {
+        counter++;
+        data2.grades.map((grade) =>{
+            if(!grades_list.has(task.url + "_" + grade.student)){
+              grades_list.set(task.url +"_" + grade.student, grade.value);
+            }
+          })
+          this.setState(() => ({
+            grades: grades_list,
+            grades_loaded: counter == this.state.tasks_len,
+            }
+          ))
+          console.log(this.state.grades_loaded);
+        }) 
+        
+    })
+    return tasks;
+  })
+}
 
     getAllGrades(student_id){
       let list = [];
@@ -117,12 +120,11 @@ export class Leaderboard extends Component {
         else
           list.push("-");
       });
-      console.log(list);
       return { grades: list, points: points};
     }
 
     prepareView() {
-      if (this.state.loaded == false) {
+      if (this.state.loaded == false || this.state.grades_loaded == false) {
         return (
           <Col xs={10} className="mb-5 mt-5">
             <Spinner />
@@ -154,7 +156,6 @@ export class Leaderboard extends Component {
                           total = {result.points}
                       />
                   );
-          
               })} 
           </tbody>
       </Table>
@@ -179,7 +180,6 @@ export class Leaderboard extends Component {
                         </Col>
                           {this.prepareView()}
                     </Row>
-                    
                 </Container>    
                 <Footer/>               
             </Fragment>
