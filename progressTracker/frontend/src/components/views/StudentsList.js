@@ -16,6 +16,7 @@ export class StudentsList extends Component {
 			 students: [],
              loaded: false,
 		}
+        this.refresh = this.refresh.bind(this);
 	}
 
     componentDidMount(){
@@ -33,6 +34,10 @@ export class StudentsList extends Component {
         }      
     }
 
+    refresh(){
+        window.location.reload();
+    }
+
     prepareView() {
         if (this.state.loaded == false) {
           return (
@@ -41,6 +46,7 @@ export class StudentsList extends Component {
             </Col>
           );
         } else {
+            this.state.refresh==true ? this.refresh() : null;
           return (
             <Col xs={10}>
             <Table striped className="students-list">
@@ -85,7 +91,7 @@ export class StudentsList extends Component {
 
                     <Row>
                         <Col xs={2} className="ml-0 pl-0">
-                            <Sidebar/>
+                            <Sidebar refresh={this.refresh} />
                         </Col>
                         
                           {this.prepareView()}

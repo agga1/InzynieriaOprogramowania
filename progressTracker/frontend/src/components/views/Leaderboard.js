@@ -131,7 +131,7 @@ export class Leaderboard extends Component {
         );
       } else {
         return (
-          <Col xs={10}>
+          <Col xs={10} className="pr-4">
           <Table striped className="students-list">
           <thead>
               <tr>
