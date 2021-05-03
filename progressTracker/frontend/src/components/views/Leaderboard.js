@@ -99,7 +99,6 @@ export class Leaderboard extends Component {
             grades_loaded: counter == this.state.tasks_len,
             }
           ))
-          console.log(this.state.grades_loaded);
         }) 
         
     })
@@ -115,10 +114,10 @@ export class Leaderboard extends Component {
         if (this.state.grades.has(key)){
           var value = this.state.grades.get(key);
           points+=parseInt(value);
-          list.push(value);
+          list.push({"key": key, "value": value});
         } 
         else
-          list.push("-");
+          list.push({"key": key, "value": "-"});
       });
       return { grades: list, points: points};
     }
@@ -139,7 +138,7 @@ export class Leaderboard extends Component {
               <th></th>
               <th>Name</th>
               {this.state.tasks.map(task => {
-                  return <th>{task.name}</th>
+                  return <th key={task.url} >{task.name}</th>
               })}
               <th>Total</th>
               </tr>

@@ -7,7 +7,7 @@ export class LeaderboardRow extends Component {
         <th scope="row">{this.props.id}</th>
         <td>{this.props.name}</td>
         {this.props.grades.map( (grade) => {
-          return <td>{grade}</td>
+          return <td key={grade["key"]}>{grade["value"]}</td>
         })}
         <td>{this.props.total}</td>
       </tr>
