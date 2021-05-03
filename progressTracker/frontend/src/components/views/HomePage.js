@@ -11,6 +11,7 @@ import AddTask from './AddTask'
 import RateStudents from './RateStudents'
 import TaskDetails from './TaskDetails'
 import UpdateTask from './UpdateTask'
+import Leaderboard from './Leaderboard'
 import Footer from '../layout/Footer'
 
 
@@ -44,6 +45,7 @@ export class HomePage extends Component {
                     <Route path='/teacher/task/details' component={TaskDetails}/>
                     <Route path='/student/task/details' component={TaskDetails}/>
                     <Route path='/teacher/task/update' component={UpdateTask}/>
+                    <Route path='/teacher/course/leaderboard' component={Leaderboard}/>
                 </Switch>
             </Router>
            

@@ -158,6 +158,10 @@ html, body{
   color: #483ebb !important;
 }
 
+.subtitle{
+  font-size: 64px;
+}
+
 .task-sidebar{
   background-color: #483ebb !important;
 }
