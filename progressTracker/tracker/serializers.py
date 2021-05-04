@@ -1,6 +1,6 @@
 from django.db.models import IntegerField, IntegerChoices
 from rest_framework import serializers
-
+import numpy as np
 from accounts.serializers import TeacherSerializer
 from .models import Mock, Task, Course, Grade, Prize, Achievement
 
@@ -121,11 +121,31 @@ class CreateGradeSerializer(serializers.ModelSerializer):
                                      student=validated_data['student'], course=validated_data['course'],
                                      issued_by=validated_data['issued_by'])
         grade.save()
+        self.recalculate_parent(grade.student, grade.task.parent_task)
         return grade
 
     def update(self, instance, validated_data):
         Grade.objects.filter(pk=instance.id).update(**validated_data)
+        if 'value' in validated_data.keys():
+            self.recalculate_parent(instance.student, instance.task.parent_task)
         return Grade.objects.get(pk=instance.id)
+
+
+    def recalculate_parent(self, student, parent_task):
+        if parent_task is None:  # nothing to update
+            return
+        parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
+        if parent_grade_set is None:
+            print("to create") # todo to implement - create new grade
+        parent_grade = parent_grade_set[0]
+        child_tasks = Task.objects.filter(parent_task=parent_task)
+        grades = Grade.objects.filter(student=student).filter(task__in=child_tasks)
+        values = np.array([grade.value for grade in grades])
+        agg = parent_task.aggregation_method
+        if agg == Task.AggregationMethod.AVERAGE:
+            Grade.objects.filter(pk=parent_grade.id).update(value=values.mean())
+        elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
+            pass # todo to implement
 
 
 class PrizeDetailSerializer(serializers.ModelSerializer):
