@@ -13,7 +13,7 @@ urlpatterns = [
     path('teacher/course/students', views.index),
     path('teacher/course/add', views.index),
     path('teacher/task/add', views.index),
-    path('teacher/task/rate', views.index),
+    path('teacher/task/grades', views.index),
     path('teacher/task/details', views.index),
     path('student/task/details', views.index),
     path('teacher/task/update', views.index),

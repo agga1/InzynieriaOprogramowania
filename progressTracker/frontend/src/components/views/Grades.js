@@ -7,7 +7,7 @@ import Spinner from "../layout/Spinner";
 import Modal from "../layout/RateStudentModal";
 import { getStudents, getTask } from "../functions/getData";
 
-export class RateStudents extends Component {
+export class Grades extends Component {
   constructor(props) {
     super(props);
 
@@ -180,55 +180,97 @@ export class RateStudents extends Component {
         </Col>
       );
     } else {
-      return (
-        <Col xs={10} className="pr-4">
-          <Table striped className="students-list">
-            <thead>
-              <tr>
-                <th className="td-sm">no.</th>
-                <th colSpan="3">Name</th>
-                <th className="td-sm">Points</th>
-                <th className="td-sm">Rate</th>
-                <th className="td-sm">Prize</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.students.map((student) => {
-                return (
-                  <tr key={student.user.id}>
-                    <td className="td-sm" scope="row">
-                      {this.state.students.indexOf(student)}
-                    </td>
-                    <td colSpan="3">
-                      {student.user.first_name} {student.user.last_name}
-                    </td>
-                    <td className="td-sm">{this.getGrade(student)}</td>
-                    <td className="td-sm">
-                      <a
-                        className="btn"
-                        role="button"
-                        aria-pressed="false"
-                        onClick={() => this.showModal(student)}
-                      >
-                        Rate
-                      </a>
-                    </td>
-                    <td className="td-sm">
-                      <a
-                        className="btn btn-sm"
-                        role="button"
-                        aria-pressed="true"
-                      >
-                        b
-                      </a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </Col>
-      );
+       if (localStorage.getItem("isParentTask") == "true") {
+         return (
+          <Col xs={10} className="pr-4">
+            <Table striped className="students-list">
+              <thead>
+                <tr>
+                  <th className="td-sm">no.</th>
+                  <th colSpan="3">Name</th>
+                  <th className="td-sm">Points</th>
+                  <th className="td-sm">Prize</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.students.map((student) => {
+                  return (
+                    <tr key={student.user.id}>
+                      <td className="td-sm" scope="row">
+                        {this.state.students.indexOf(student)}
+                      </td>
+                      <td colSpan="3">
+                        {student.user.first_name} {student.user.last_name}
+                      </td>
+                      <td className="td-sm">{this.getGrade(student)}</td>
+                      <td className="td-sm">
+                        <a
+                          className="btn btn-sm"
+                          role="button"
+                          aria-pressed="true"
+                        >
+                          b
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
+        );
+       } else {
+         return (
+          <Col xs={10} className="pr-4">
+            <Table striped className="students-list">
+              <thead>
+                <tr>
+                  <th className="td-sm">no.</th>
+                  <th colSpan="3">Name</th>
+                  <th className="td-sm">Points</th>
+                  <th className="td-sm">Rate</th>
+                  <th className="td-sm">Prize</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.students.map((student) => {
+                  return (
+                    <tr key={student.user.id}>
+                      <td className="td-sm" scope="row">
+                        {this.state.students.indexOf(student)}
+                      </td>
+                      <td colSpan="3">
+                        {student.user.first_name} {student.user.last_name}
+                      </td>
+                      <td className="td-sm">{this.getGrade(student)}</td>
+                      <td className="td-sm">
+                        <a
+                          className="btn"
+                          role="button"
+                          aria-pressed="false"
+                          onClick={() => this.showModal(student)}
+                        >
+                          Rate
+                        </a>
+                      </td>
+                      <td className="td-sm">
+                        <a
+                          className="btn btn-sm"
+                          role="button"
+                          aria-pressed="true"
+                        >
+                          b
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
+        );
+       }
+
     }
   }
 
@@ -272,4 +314,4 @@ export class RateStudents extends Component {
   }
 }
 
-export default RateStudents;
+export default Grades;

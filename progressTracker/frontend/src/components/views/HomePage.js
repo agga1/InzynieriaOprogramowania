@@ -8,7 +8,7 @@ import Tasks from './Tasks'
 import StudentsList from './StudentsList'
 import AddCourse from './AddCourse'
 import AddTask from './AddTask'
-import RateStudents from './RateStudents'
+import Grades from './Grades'
 import TaskDetails from './TaskDetails'
 import UpdateTask from './UpdateTask'
 import Leaderboard from './Leaderboard'
@@ -41,7 +41,7 @@ export class HomePage extends Component {
                     <Route path='/teacher/course/students' component={StudentsList}/>
                     <Route path='/teacher/course/add' component={AddCourse}/>
                     <Route path='/teacher/task/add' component={AddTask}/>
-                    <Route path='/teacher/task/rate' component={RateStudents}/>
+                    <Route path='/teacher/task/grades' component={Grades}/>
                     <Route path='/teacher/task/details' component={TaskDetails}/>
                     <Route path='/student/task/details' component={TaskDetails}/>
                     <Route path='/teacher/task/update' component={UpdateTask}/>

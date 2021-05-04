@@ -129,6 +129,13 @@ export class TaskIcon extends Component {
     localStorage.setItem("taskUrl", taskUrl);
   }
 
+  setIsParentTask(isParentTask) {
+    if (localStorage.getItem("isParentTask")) {
+      localStorage.removeItem("isParentTask");
+    }
+    localStorage.setItem("isParentTask", isParentTask);
+  }
+
   prepareButtons(taskUrl) {
     if (this.state.loaded) {
       if (sessionStorage.getItem("isStudent") == "true") {
@@ -136,29 +143,6 @@ export class TaskIcon extends Component {
           <List>
             <ListInlineItem className="task-link">
               <a href="/student/task/details" className="custom-btn">
-                Details
-              </a>
-            </ListInlineItem>
-          </List>
-        );
-      } else if (this.state.children.length > 0) {
-        return (
-          <List>
-            <ListInlineItem className="task-link pr-3">
-              <a
-                href="/teacher/task/add"
-                className="custom-btn"
-                onClick={() => this.setTask(taskUrl)}
-              >
-                +Task
-              </a>
-            </ListInlineItem>
-            <ListInlineItem className="task-link">
-              <a
-                href="/teacher/task/details"
-                className="custom-btn"
-                onClick={() => this.setTask(taskUrl)}
-              >
                 Details
               </a>
             </ListInlineItem>
@@ -178,11 +162,14 @@ export class TaskIcon extends Component {
             </ListInlineItem>
             <ListInlineItem className="task-link pr-3 ">
               <a
-                href="/teacher/task/rate"
+                href="/teacher/task/grades"
                 className="custom-btn"
-                onClick={() => this.setTask(taskUrl)}
+                onClick={() => {
+                  this.setTask(taskUrl);
+                  this.setIsParentTask(this.state.children.length > 0);
+                }}
               >
-                Rate
+                Grades
               </a>
             </ListInlineItem>
             <ListInlineItem className="task-link">
@@ -241,7 +228,7 @@ export class TaskIcon extends Component {
             </Col>
           </Row>
         </Card>
-        {this.showChildren()}
+        {this.showChildren(this.props.grades)}
       </Fragment>
     );
   }
