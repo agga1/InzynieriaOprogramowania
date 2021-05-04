@@ -82,11 +82,13 @@ export class StudentLoginPage extends Component {
             if(json.user.is_student){
                 localStorage.setItem('token', json.token);
                 sessionStorage.setItem('isStudent', true);
-			this.setState({
-				username : json.user.username,
-                password : json.user.password
-			})
-			window.location.href="/student/courses";
+
+                this.setState({
+                    username : json.user.username,
+                    password : json.user.password
+                })
+
+                window.location.href="/student/courses";
             }
 		})
 		.catch(error => {

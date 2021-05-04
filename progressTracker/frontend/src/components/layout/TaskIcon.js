@@ -20,6 +20,8 @@ export class TaskIcon extends Component {
       show: false,
       loaded: false,
       children: [],
+      grades: [],
+      grade: "-"
     };
     this.onClick = this.onClick.bind(this);
     this.getChildren();
@@ -39,7 +41,17 @@ export class TaskIcon extends Component {
     }
   };
 
-  showChildren = () => {
+  getGrade(taskName, grades) {
+    for (let i=0; i<grades.length; i++) {
+      if (grades[i].task_name == taskName) {
+        return grades[i].value.toString();
+      }
+    }
+
+    return "-";
+  }
+
+  showChildren = (grades) => {
     if (this.state.show && this.state.loaded) {
       if (this.state.show && this.state.children.length != 0) {
         return (
@@ -54,6 +66,8 @@ export class TaskIcon extends Component {
                       deadline={task.deadline}
                       url={"/api/tasks/" + task.id + "/"}
                       max_points={task.grade_max}
+                      grade={this.getGrade(task.name, grades)}
+                      grades={grades}
                     />
                   </Col>
                 );
@@ -114,13 +128,6 @@ export class TaskIcon extends Component {
     }
     localStorage.setItem("taskUrl", taskUrl);
   }
-
-  // setTaskName(taskName) {
-  //   if (sessionStorage.getItem('taskName')){
-  //       sessionStorage.removeItem('taskName');
-  //   }
-  //   sessionStorage.setItem('taskName', taskName);
-  // }
 
   prepareButtons(taskUrl) {
     if (this.state.loaded) {
@@ -210,11 +217,7 @@ export class TaskIcon extends Component {
             </Col>
             <Col xs={3} className="text-right pl-0 pt-3">
               <div className=" points">
-                {sessionStorage.getItem("isStudent") == "false" ? (
-                  ""
-                ) : (
-                  <h1 className="your-points">{this.props.max_points}/</h1>
-                )}
+                {sessionStorage.getItem('isStudent')=='false' ? "" : <h1 className="your-points">{this.props.grade}/</h1>}
                 <h1 className="max-points">{this.props.max_points}</h1>
               </div>
             </Col>

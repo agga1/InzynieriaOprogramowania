@@ -13,6 +13,7 @@ export class Tasks extends Component {
     this.state = {
       name: localStorage.getItem("courseName"),
       tasks: [],
+      grades: [],
       loaded: false,
     };
   }
@@ -20,6 +21,7 @@ export class Tasks extends Component {
   componentDidMount() {
     if (localStorage.getItem("token")) {
       this.getTasks();
+      this.getGrades();
     } else {
       alert("Log in to see the view");
       window.location.href = "/";
@@ -51,6 +53,50 @@ export class Tasks extends Component {
       });
   }
 
+  getGrades() {
+    fetch("/api/grades/", {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        if (response.status > 400) {
+          return this.setState(() => {
+            return { placeholder: "Something went wrong!" };
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        let grades = [];
+
+        for (let i=0; i<data.length; i++) {
+          if (data[i].course_name == this.state.name) {
+            grades.push(data[i]);
+          }
+        }
+
+        this.setState(() => {
+          return {
+            grades: grades
+          };
+        });
+
+      });
+  }
+
+  getGrade(taskName) {
+    for (let i=0; i<this.state.grades.length; i++) {
+      if (this.state.grades[i].task_name == taskName) {
+        return this.state.grades[i].value.toString();
+      }
+    }
+
+    return "-";
+  }
+
+
   prepareView() {
     if (this.state.loaded == false) {
       return (
@@ -72,6 +118,8 @@ export class Tasks extends Component {
                   deadline={task.deadline}
                   url={task.url}
                   max_points={task.grade_max}
+                  grade={this.getGrade(task.name)}
+                  grades={this.state.grades}
                 />
               </Col>
             );

@@ -18,6 +18,8 @@ export class Courses extends Component {
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
+      this.setID();
+
       fetch("/api/courses", {
         method: "GET",
         headers: {
@@ -42,6 +44,20 @@ export class Courses extends Component {
         });
     }
   }
+
+  setID() {
+        fetch('/api/auth/user', {
+            method: 'GET',
+            headers: {
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(resp => {
+                localStorage.setItem("userID", resp.user.id);
+            })
+            .catch(err => console.log(err));
+    }
 
   prepareView() {
     if (this.state.loaded == false) {
