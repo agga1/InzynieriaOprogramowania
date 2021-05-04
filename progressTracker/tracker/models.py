@@ -20,6 +20,7 @@ class Course(models.Model):
 
 class Task(models.Model):
     class AggregationMethod(models.TextChoices):
+        SUM = 'SUM'
         AVERAGE = 'AVG'
         WEIGHTED_AVERAGE = 'WAVG'
 
