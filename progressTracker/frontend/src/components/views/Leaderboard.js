@@ -176,7 +176,6 @@ export class Leaderboard extends Component {
               small
               order={['total', 'desc' ]}
               data={this.prepareData()}
-              id="myTable"
             />
          </Col>
         );
