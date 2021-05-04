@@ -12,7 +12,8 @@ export class StudentLoginPage extends Component {
         this.state = {
 			 logged_in : !!localStorage.getItem('token'),
 			 username : '',
-			 password : ''
+			 password : '',
+             error: '',
 		}
 
         this.handleLoginChange = this.handleLoginChange.bind(this);
@@ -62,7 +63,6 @@ export class StudentLoginPage extends Component {
 
 	handleLogin = (e, data) => {
 		e.preventDefault();
-		console.log(data)
 		fetch('/api/auth/login', {
 			crossDomain : true,
 			withCredentials : true,
@@ -75,6 +75,10 @@ export class StudentLoginPage extends Component {
 		})
 		.then(response => response.json())
 		.then(json => {
+            if(json.non_field_errors)
+                this.setState({
+                    error: json.non_field_errors[0]
+                })
             if(json.user.is_student){
                 localStorage.setItem('token', json.token);
                 sessionStorage.setItem('isStudent', true);
@@ -107,6 +111,7 @@ export class StudentLoginPage extends Component {
                             handlePasswordChange = {this.handlePasswordChange}
                             username = {username}
                             password = {password}/>
+                            {this.state.error != ''? <h3 className="card-title pt-3">Logowanie się nie powiodło: {this.state.error};</h3> : <p></p>}
                         </Col>
                         <Col xs={6}>
                             <Row className="mt-2 ml-3">

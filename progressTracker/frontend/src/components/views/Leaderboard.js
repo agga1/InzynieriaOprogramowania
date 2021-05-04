@@ -4,8 +4,8 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import LeaderboardRow from '../layout/LeaderboardRow';
 import {getStudents} from '../functions/getData'
+import { MDBDataTable } from 'mdbreact';
 
 export class Leaderboard extends Component {
     constructor(props) {
@@ -122,6 +122,44 @@ export class Leaderboard extends Component {
       return { grades: list, points: points};
     }
 
+    prepareData(){
+      const data = {
+        columns: [],
+        rows: [],
+      }
+      data.columns.push({
+        label: 'Name',
+        field: 'name',
+        sort: 'asc',
+      },)
+      this.state.tasks.map( (task) => {
+        data.columns.push({
+          label: task.name,
+          field: task.url,
+          sort: 'asc',
+        })
+        console.log(task.url);
+      })
+      data.columns.push({
+        label: 'Total',
+        field: 'total',
+        sort: 'desc',
+      })
+      this.state.students.map((student) => {
+        var result = this.getAllGrades(student.user.id);
+        var obj = {name: student.user.first_name + " " + student.user.last_name}
+        result.grades.map((res)=> {
+          var label = res["key"].split('_')[0];
+          var val = res["value"];
+          obj[[label]]=val;
+        })
+        obj["total"]= result.points;
+        data.rows.push(obj)
+      })
+      
+      return data;
+    }
+
     prepareView() {
       if (this.state.loaded == false || this.state.grades_loaded == false) {
         return (
@@ -131,34 +169,16 @@ export class Leaderboard extends Component {
         );
       } else {
         return (
-          <Col xs={10} className="pr-4">
-          <Table striped className="students-list">
-          <thead>
-              <tr>
-              <th></th>
-              <th>Name</th>
-              {this.state.tasks.map(task => {
-                  return <th key={task.url} >{task.name}</th>
-              })}
-              <th>Total</th>
-              </tr>
-          </thead>
-          <tbody>
-              {this.state.students.map(student=> {
-                var result = this.getAllGrades(student.user.id);
-                  return (
-                      <LeaderboardRow
-                          key = {this.state.students.indexOf(student)}
-                          id = {this.state.students.indexOf(student)}
-                          name = {student.user.first_name + " " + student.user.last_name}
-                          grades = {result.grades}
-                          total = {result.points}
-                      />
-                  );
-              })} 
-          </tbody>
-      </Table>
-      </Col>
+          <Col xs={10}>   
+            <MDBDataTable
+              striped
+              bordered
+              small
+              order={['total', 'desc' ]}
+              data={this.prepareData()}
+              id="myTable"
+            />
+         </Col>
         );
       }
     }
