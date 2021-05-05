@@ -46,7 +46,7 @@ export class Leaderboard extends Component {
             grades_loaded: false,
           }));
         })
-        .catch((err) => alert(err.message));
+        .catch((err) => console.log(err.message));
     } else {
       alert("Log into to see the view");
       window.location.href = "/";
@@ -160,6 +160,7 @@ export class Leaderboard extends Component {
       return data;
     }
 
+
     prepareView() {
       if (this.state.loaded == false || this.state.grades_loaded == false) {
         return (
@@ -169,7 +170,7 @@ export class Leaderboard extends Component {
         );
       } else {
         return (
-          <Col xs={10}>   
+          <Col xs={10} className="pr-4">   
             <MDBDataTable
               striped
               bordered

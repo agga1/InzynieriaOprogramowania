@@ -38,7 +38,7 @@ export class RateStudents extends Component {
 
 
     prepareView() {
-        if (this.state.loaded == false) {
+        if (!this.state.loaded) {
             return (
                 <Col xs={10} className="mb-5 mt-5">
                     <Spinner />

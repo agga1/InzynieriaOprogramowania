@@ -30,6 +30,7 @@ export class Grades extends Component {
     let grades = await this.getStudentsGrades();
     let task = await getTask();
     let students = await getStudents();
+    console.log(grades);
     return { task: task, grades: grades, students: students };
   }
 
@@ -94,33 +95,87 @@ export class Grades extends Component {
     }));
   };
 
+  gradeExists(){
+    let url = this.state.grades.filter(grade => grade.student==this.state.student_id).map(al => al);
+    return (url.length > 0 ? url : '');
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     var new_grade = parseFloat(this.state.rate.replace(",", "."));
+
     if (new_grade <= this.state.task.grade_max && new_grade >= this.state.task.grade_min) {
-      fetch(localStorage.getItem("taskUrl") + "add_grade/", {
-        method: "POST",
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          students: [this.state.student_id],
-          grades: [new_grade],
-        }),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          this.updateGradesList(new_grade);
+      // let grade = this.gradeExists();
+     
+      // if(grade!=''){
+      //   fetch(grade.url, {
+      //     method: "PATCH",
+      //     headers: {
+      //       Authorization: `Token ${localStorage.getItem("token")}`,
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       value: new_grade,
+      //     }),
+      //   })
+      //     .then((res) => res.json())
+      //     .then(() => {
+      //       this.setState((state)=>{
+      //           let list = state.grades.map((val) => {
+      //           if (val == grade) {
+      //             val.grade = new_grade;
+      //           } 
+      //             return val;
+      //           });
+      //           return {
+      //             grades: list,
+      //           }
+      //       })
+      //     })
+      //     .catch((err) => console.log(err));
+      //   }
+      
+      // else{
+        fetch("/api/grades/", {
+          method: "POST",
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(this.prepareData(new_grade)),
         })
+        .then(() => {
+          this.setState({loaded:false}, () => {
+            this.getStudentsGrades().then( (grades) => {
+               this.setState({grades: grades, loaded: true});
+            });
+          })
+          
+        } )
         .catch((err) => console.log(err));
-    } else {
+        }
+      // }
+     else {
       alert(
-        "Enter proper grade from range: [" + this.state.task.grade_min +
-        ", " + this.state.task.grade_max + "]!"
+        "Enter proper grade from range: [" +
+          this.state.task.grade_min +
+          ", " +
+          this.state.task.grade_max +
+          "]!"
       );
     }
+  
   };
+
+  prepareData(new_grade){
+    return {
+      "task": this.state.task.id,
+      "value": new_grade,
+      "student": this.state.student_id,
+      "course": this.state.task.course,
+      "issued_by": Number(sessionStorage.getItem('userID'))
+    }
+  }
 
   updateGradesList(new_grade) {
     let item = this.state.grades
@@ -180,30 +235,37 @@ export class Grades extends Component {
         </Col>
       );
     } else {
-         return (
-          <Col xs={10} className="pr-4">
-            <Table striped className="students-list">
-              <thead>
-                <tr>
-                  <th className="td-sm">no.</th>
-                  <th colSpan="3">Name</th>
-                  <th className="td-sm">Points</th>
-                  {localStorage.getItem("isParentTask") == "true" ? '' : (<th className="td-sm">Rate</th>)}
-                  <th className="td-sm">Prize</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.students.map((student) => {
-                  return (
-                    <tr key={student.user.id}>
-                      <td className="td-sm" scope="row">
-                        {this.state.students.indexOf(student)}
-                      </td>
-                      <td colSpan="3">
-                        {student.user.first_name} {student.user.last_name}
-                      </td>
-                      <td className="td-sm">{this.getGrade(student)}</td>
-                      {localStorage.getItem("isParentTask") == "true" ? '' : (<td className="td-sm">
+      return (
+        <Col xs={10} className="pr-4">
+          <Table striped className="students-list">
+            <thead>
+              <tr>
+                <th className="td-sm">no.</th>
+                <th colSpan="3">Name</th>
+                <th className="td-sm">Points</th>
+                {localStorage.getItem("isParentTask") == "true" ? (
+                  ""
+                ) : (
+                  <th className="td-sm">Rate</th>
+                )}
+                <th className="td-sm">Prize</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.students.map((student) => {
+                return (
+                  <tr key={student.user.id}>
+                    <td className="td-sm" scope="row">
+                      {this.state.students.indexOf(student)}
+                    </td>
+                    <td colSpan="3">
+                      {student.user.first_name} {student.user.last_name}
+                    </td>
+                    <td className="td-sm">{this.getGrade(student)}</td>
+                    {localStorage.getItem("isParentTask") == "true" ? (
+                      ""
+                    ) : (
+                      <td className="td-sm">
                         <a
                           className="btn"
                           role="button"
@@ -212,24 +274,24 @@ export class Grades extends Component {
                         >
                           Rate
                         </a>
-                        </td>)
-                      }
-                      <td className="td-sm">
-                        <a
-                          className="btn btn-sm"
-                          role="button"
-                          aria-pressed="true"
-                        >
-                          b
-                        </a>
                       </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Col>
-        );
+                    )}
+                    <td className="td-sm">
+                      <a
+                        className="btn btn-sm"
+                        role="button"
+                        aria-pressed="true"
+                      >
+                        b
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </Col>
+      );
     }
   }
 

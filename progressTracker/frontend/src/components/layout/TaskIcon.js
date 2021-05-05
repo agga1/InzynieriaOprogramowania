@@ -1,15 +1,6 @@
 import React, { Component, Fragment } from "react";
-import {
-  Card,
-  CardBody,
-  Button,
-  Row,
-  CardTitle,
-  Col,
-  List,
-  ListInlineItem,
-  Spinner,
-} from "reactstrap";
+import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reactstrap";
+import Spinner from "./Spinner"
 
 export class TaskIcon extends Component {
   constructor(props) {
@@ -21,7 +12,7 @@ export class TaskIcon extends Component {
       loaded: false,
       children: [],
       grades: [],
-      grade: "-"
+      grade: "-",
     };
     this.onClick = this.onClick.bind(this);
     this.getChildren();
@@ -42,7 +33,7 @@ export class TaskIcon extends Component {
   };
 
   getGrade(taskName, grades) {
-    for (let i=0; i<grades.length; i++) {
+    for (let i = 0; i < grades.length; i++) {
       if (grades[i].task_name == taskName) {
         return grades[i].value.toString();
       }
@@ -137,7 +128,7 @@ export class TaskIcon extends Component {
   }
 
   prepareButtons(taskUrl) {
-    if (this.state.loaded) {
+    // if (this.state.loaded) {
       if (sessionStorage.getItem("isStudent") == "true") {
         return (
           <List>
@@ -184,9 +175,9 @@ export class TaskIcon extends Component {
           </List>
         );
       }
-    } else {
-      return <List></List>;
-    }
+    // } else {
+    //   return <Spinner />;
+    // }
   }
 
   render() {
@@ -204,7 +195,7 @@ export class TaskIcon extends Component {
             </Col>
             <Col xs={3} className="text-right pl-0 pt-3">
               <div className=" points">
-                {sessionStorage.getItem('isStudent')=='false' ? "" : <h1 className="your-points">{this.props.grade}/</h1>}
+                {sessionStorage.getItem("isStudent") == "false" ? ( "" ) : ( <h1 className="your-points">{this.props.grade}/</h1>)}
                 <h1 className="max-points">{this.props.max_points}</h1>
               </div>
             </Col>
