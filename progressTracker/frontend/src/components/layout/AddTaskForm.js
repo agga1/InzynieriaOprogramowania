@@ -21,8 +21,8 @@ export class AddTaskForm extends Component {
             </Form.Group>
           </Col>
         </Row>
-        <Row>
-          <Col xs={12}>
+        <Row className="pt-3">
+          <Col xs={12} >
             <Form.Group controlId="formBasicDescription">
               <Form.Label className="form_text">Description</Form.Label>
               <Form.Control
@@ -37,8 +37,8 @@ export class AddTaskForm extends Component {
             </Form.Group>
           </Col>
         </Row>
-        <Row style={{ alignItems: "baseline" }}>
-          <Col xs={2}>
+        <Row className="pt-3" style={{ alignItems: "baseline" }}>
+          <Col md={2}>
             <Form.Group controlId="formBasicGradeMin">
               <Form.Label className="form_text">Grade min</Form.Label>
               <Form.Control
@@ -50,7 +50,7 @@ export class AddTaskForm extends Component {
               />
             </Form.Group>
           </Col>
-          <Col xs={2}>
+          <Col md={2}>
             <Form.Group controlId="formBasicGradeMax">
               <Form.Label className="form_text">Grade max</Form.Label>
               <Form.Control
@@ -62,21 +62,35 @@ export class AddTaskForm extends Component {
               />
             </Form.Group>
           </Col>
-          <Form.Group controlId="exampleForm.ControlSelect1">
-            <Form.Label>Example select</Form.Label>
-            <Form.Control
-              as="select"
-              className="input_window"
-              readOnly={this.props.readOnly}
-              value={this.props.aggregation}
-              onChange={this.props.handleAggregation}
-            >
-              {this.props.aggregationOptions.map((agr) => {
-                return <option>{agr}</option>;
-              })}
-            </Form.Control>
-          </Form.Group>
-          <Col xs={2}>
+          <Col md={4} xl={3}>
+            <Form.Group controlId="formBasicDeadline">
+              <Form.Label className="form_text"> Deadline </Form.Label>
+              <Form.Control
+                type="text"
+                className="input_window"
+                onChange={this.props.handleDeadline}
+                value={this.props.deadline || ""}
+                readOnly={this.props.readOnly}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={4} xl={3}>
+            <Form.Group controlId="formBasicAggregation">
+              <Form.Label className="form_text">Aggregation method</Form.Label>
+              <Form.Control
+                as="select"
+                className="input_window"
+                readOnly={this.props.readOnly}
+                value={this.props.aggregation}
+                onChange={this.props.handleAggregation}
+              >
+                {this.props.aggregationOptions.map((agr) => {
+                  return <option className="input_window" key={agr}>{agr}</option>;
+                })}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col md={2} style={{display: this.props.aggregation == "weighted average" ? 'block' : 'none' }}>
             <Form.Group controlId="formBasicWeight">
               <Form.Label className="form_text">Weight</Form.Label>
               <Form.Control
@@ -88,29 +102,14 @@ export class AddTaskForm extends Component {
               />
             </Form.Group>
           </Col>
-          <Col xs={3}>
-            <Form.Group controlId="formBasicDeadline">
-              <Form.Label
-                className="form_text"
-              >
-                Deadline
-              </Form.Label>
-              <Form.Control
-                type="text"
-                className="input_window"
-                onChange={this.props.handleDeadline}
-                value={this.props.deadline || ""}
-                readOnly={this.props.readOnly}
-              />
-            </Form.Group>
-          </Col>
-          <Col xs={3}>
+          
+          <Col md={2}>
             <Form.Group controlId="formBasicCheckbox">
-              <Form.Label className="form_text"></Form.Label>
+            <Form.Label className="form_text"></Form.Label>
               <Form.Check
-                className="form_text"
-                type="checkbox"
+                type="radio"
                 label="is extra?"
+                className="form_text"
                 onChange={this.props.handleExtra}
                 readOnly={this.props.readOnly}
               />

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import AddTaskForm from '../layout/AddTaskForm'
 import Header from '../layout/Header';
+import Footer from '../layout/Footer';
 
 export class AddTask extends Component {
     constructor(props){
@@ -137,9 +138,11 @@ export class AddTask extends Component {
                     + `is extra: ${this.state.isExtra}\n`
                     + `deadline: ${this.state.deadline}\n`
                 );
+                window.location.href="/";
             }
         })
         .catch(err => console.log(err));
+
     }
 
     extractID(url) {
@@ -170,7 +173,6 @@ export class AddTask extends Component {
             aggregation_method: this.state.aggregationOptions[agreg],
             course: course,
             parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))  
-            // parent_task: parent_task
         }
 
 
@@ -213,7 +215,9 @@ export class AddTask extends Component {
                         />
                         </Col>
                     </Row>
+                    <Row className="mb-5 mt-5" />
                 </Container>
+                <Footer/>   
             </Fragment>
         )
     }
