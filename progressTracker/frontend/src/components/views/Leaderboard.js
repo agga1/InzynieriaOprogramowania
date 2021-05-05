@@ -163,7 +163,7 @@ export class Leaderboard extends Component {
     prepareView() {
       if (this.state.loaded == false || this.state.grades_loaded == false) {
         return (
-          <Col xs={10} className="mb-5 mt-5">
+          <Col xs={10} className="mb-3 mt-5">
             <Spinner />
           </Col>
         );
