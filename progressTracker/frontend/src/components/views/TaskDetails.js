@@ -6,6 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import { getTask } from '../functions/getData'
 import Button from '../layout/Button';
+import parse from "html-react-parser";
 
 export class RateStudents extends Component {
     constructor(props) {
@@ -50,9 +51,9 @@ export class RateStudents extends Component {
                         <h4 className="task-heading font-weight-bold">Description:</h4>
                     </Row>
                     <Row className="pr-5 pl-5 ml-2 mb-4">
-                        <p>
-                            {this.state.task.description}
-                        </p>
+                        <div>
+                            {parse(this.state.task.description)}
+                        </div>
                     </Row>
                     <Row className="pr-5 pl-5 mb-4">
                         <Col xs={7}>

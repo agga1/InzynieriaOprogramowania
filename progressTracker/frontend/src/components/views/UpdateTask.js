@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { Container, Row, Col } from "reactstrap";
 import AddTaskForm from "../layout/AddTaskForm";
 import Header from "../layout/Header";
+import Footer from "../layout/Footer";
+import Spinner from "../layout/Spinner";
 import { getTask } from "../functions/getData";
 
 export class AddTask extends Component {
@@ -47,6 +49,7 @@ export class AddTask extends Component {
       alert("Log into to see the view");
       window.location.href = "/";
     }
+    console.log(this.state.task);
   }
 
   handleDescription = (event) => {
@@ -79,8 +82,44 @@ export class AddTask extends Component {
     };
   }
 
+  prepareView() {
+    if (this.state.loaded == false) {
+      return (
+        <Col xs={10} className="mb-5 mt-5">
+          <Spinner />
+        </Col>
+      );
+    } else {
+      const { description } = this.state;
+      return(
+        <Col xs={10} className="text-center">
+          <AddTaskForm
+            buttonText="Update"
+            handleName={this.handleNone}
+            handleDescription={this.handleDescription}
+            handleGradeMin={this.handleNone}
+            handleGradeMax={this.handleNone}
+            handleWeight={this.handleNone}
+            handleDeadline={this.handleNone}
+            handleExtra = {this.handleNone}
+            handleAggregation = {this.handleNone}
+            handleSubmit={this.handleSubmit}
+            name={this.state.task.name}
+            description={description}
+            gradeMin={this.state.task.gradeMin}
+            gradeMax={this.state.task.gradeMax}
+            weight={this.state.task.weight}
+            deadline={this.state.task.deadline}
+            readOnly={true}
+            isExtra = {this.state.task.is_extra}
+            aggregation = {{label:this.state.task.aggregation_method}}
+            aggregationOptions = {[]}
+          />
+      </Col>);
+    }}
+
+
   render() {
-    const { description } = this.state;
     return (
       <Fragment>
         <Header
@@ -98,27 +137,11 @@ export class AddTask extends Component {
           </Row>
           <Row className="mt-2">
             <Col xs={1}></Col>
-            <Col xs={10} className="text-center">
-              <AddTaskForm
-                buttonText="Update"
-                handleName={this.handleNone}
-                handleDescription={this.handleDescription}
-                handleGradeMin={this.handleNone}
-                handleGradeMax={this.handleNone}
-                handleWeight={this.handleNone}
-                handleDeadline={this.handleNone}
-                handleSubmit={this.handleSubmit}
-                name={this.state.task.name}
-                description={description}
-                gradeMin={this.state.task.gradeMin}
-                gradeMax={this.state.task.gradeMax}
-                weight={this.state.task.weight}
-                deadline={this.state.task.deadline}
-                readOnly={true}
-              />
-            </Col>
+            {this.prepareView()}
           </Row>
-        </Container>
+          <Row className="mb-5 mt-5" />
+          </Container>
+          <Footer/>
       </Fragment>
     );
   }

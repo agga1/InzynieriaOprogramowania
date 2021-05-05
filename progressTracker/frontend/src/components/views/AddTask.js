@@ -175,10 +175,6 @@ export class AddTask extends Component {
 
     }
 
-    prepateAggregationList(){
-
-    }
-
     render() {
         const { name , description, gradeMin, gradeMax, weight, isExtra, aggregation, deadline} = this.state;
         return (

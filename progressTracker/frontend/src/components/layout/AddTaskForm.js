@@ -30,7 +30,7 @@ export class AddTaskForm extends Component {
                 xs={12}
                 type="text"
                 as="textarea"
-                rows={7}
+                rows={10}
                 className="input_window"
                 onChange={this.props.handleDescription}
                 value={this.props.description || ""}
@@ -84,11 +84,11 @@ export class AddTaskForm extends Component {
                 value = {this.props.aggregation}
                 onChange={this.props.handleAggregation}
                 options={this.props.aggregationOptions}
-                readOnly={this.props.readOnly}
+                isDisabled={this.props.readOnly}
               />
             </Form.Group>
           </Col>
-          <Col md={2} style={{display: this.props.aggregation.value == "WAVG" ? 'block' : 'none' }}>
+          <Col md={2} style={{display: this.props.aggregation.value==undefined ? (this.props.aggregation == "WAVG" ? 'block' : 'none') : (this.props.aggregation.value == "WAVG" ? 'block' : 'none' )}}>
             <Form.Group controlId="formBasicWeight">
               <Form.Label className="form_text">Weight</Form.Label>
               <Form.Control
@@ -105,11 +105,11 @@ export class AddTaskForm extends Component {
             <Form.Group controlId="formBasicCheckbox">
             <Form.Label className="form_text"></Form.Label>
               <Form.Check
-                type="radio"
+                type="checkbox"
                 label="is extra?"
                 className="form_text"
                 onChange={this.props.handleExtra}
-                readOnly={this.props.readOnly}
+                // disabled={this.props.readOnly}
               />
             </Form.Group>
           </Col>
