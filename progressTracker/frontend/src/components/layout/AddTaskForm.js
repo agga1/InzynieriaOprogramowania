@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "./Button";
 import { Row, Col } from "reactstrap";
+import Select from 'react-select'
 
 export class AddTaskForm extends Component {
   render() {
@@ -77,20 +78,17 @@ export class AddTaskForm extends Component {
           <Col md={4} xl={3}>
             <Form.Group controlId="formBasicAggregation">
               <Form.Label className="form_text">Aggregation method</Form.Label>
-              <Form.Control
-                as="select"
-                className="input_window"
-                readOnly={this.props.readOnly}
-                value={this.props.aggregation}
+              <Select 
+                classNamePrefix="input_window "
+                isMulti = {false}
+                value = {this.props.aggregation}
                 onChange={this.props.handleAggregation}
-              >
-                {this.props.aggregationOptions.map((agr) => {
-                  return <option className="input_window" key={agr}>{agr}</option>;
-                })}
-              </Form.Control>
+                options={this.props.aggregationOptions}
+                readOnly={this.props.readOnly}
+              />
             </Form.Group>
           </Col>
-          <Col md={2} style={{display: this.props.aggregation == "weighted average" ? 'block' : 'none' }}>
+          <Col md={2} style={{display: this.props.aggregation.value == "WAVG" ? 'block' : 'none' }}>
             <Form.Group controlId="formBasicWeight">
               <Form.Label className="form_text">Weight</Form.Label>
               <Form.Control

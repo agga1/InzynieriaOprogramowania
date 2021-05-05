@@ -16,12 +16,12 @@ export class AddTask extends Component {
             weight: 0,
             isExtra: false,
             deadline: '2021-04-20T23:22:00Z',
-            aggregation: 'sum',
-            aggregationOptions:{
-                "average":"AVG",
-                "weighted average":"WAVG",
-                "sum":"SUM",
-            }
+            aggregation: {label:"sum", value:"SUM"},
+            aggregationOptions:[
+                {value:"AVG", label: "average"},
+                {label:"weighted average", value:"WAVG"},
+                {label:"sum", value:"SUM"},
+            ]
        }
 
         this.handleName = this.handleName.bind(this);
@@ -111,9 +111,8 @@ export class AddTask extends Component {
 	}
 
     handleAggregation = (event) => {
-        console.log(event.target.value);
         this.setState({
-            aggregation: event.target.value,    
+            aggregation: event,    
         })
 	}
 
@@ -158,10 +157,8 @@ export class AddTask extends Component {
     }
 
     prepareData() {
-        console.log(this.state.isExtra);
         const courseUrl = localStorage.getItem('courseUrl');
         const course = this.extractID(courseUrl)
-        let agreg = this.state.aggregation;
 
         return {
             name: this.state.name,
@@ -170,11 +167,15 @@ export class AddTask extends Component {
             is_extra: this.state.isExtra,
             weight: this.state.weight,
             deadline: this.state.deadline,
-            aggregation_method: this.state.aggregationOptions[agreg],
+            aggregation_method: this.state.aggregation,
             course: course,
             parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))  
         }
 
+
+    }
+
+    prepateAggregationList(){
 
     }
 
@@ -211,7 +212,7 @@ export class AddTask extends Component {
                             deadline = {deadline}
                             readOnly = {false}
                             aggregation = {aggregation}
-                            aggregationOptions = {Object.keys(this.state.aggregationOptions)}
+                            aggregationOptions = {this.state.aggregationOptions}
                         />
                         </Col>
                     </Row>

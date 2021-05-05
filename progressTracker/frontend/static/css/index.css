@@ -98,7 +98,7 @@ html, body{
   padding: 0 20px;
 }
 
-.input_window {
+.input_window, .input_window option {
   border-radius: 25px !important;
 }
 
