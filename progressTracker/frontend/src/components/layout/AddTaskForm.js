@@ -62,6 +62,20 @@ export class AddTaskForm extends Component {
               />
             </Form.Group>
           </Col>
+          <Form.Group controlId="exampleForm.ControlSelect1">
+            <Form.Label>Example select</Form.Label>
+            <Form.Control
+              as="select"
+              className="input_window"
+              readOnly={this.props.readOnly}
+              value={this.props.aggregation}
+              onChange={this.props.handleAggregation}
+            >
+              {this.props.aggregationOptions.map((agr) => {
+                return <option>{agr}</option>;
+              })}
+            </Form.Control>
+          </Form.Group>
           <Col xs={2}>
             <Form.Group controlId="formBasicWeight">
               <Form.Label className="form_text">Weight</Form.Label>
@@ -76,12 +90,28 @@ export class AddTaskForm extends Component {
           </Col>
           <Col xs={3}>
             <Form.Group controlId="formBasicDeadline">
-              <Form.Label className="form_text">Deadline</Form.Label>
+              <Form.Label
+                className="form_text"
+              >
+                Deadline
+              </Form.Label>
               <Form.Control
                 type="text"
                 className="input_window"
                 onChange={this.props.handleDeadline}
                 value={this.props.deadline || ""}
+                readOnly={this.props.readOnly}
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={3}>
+            <Form.Group controlId="formBasicCheckbox">
+              <Form.Label className="form_text"></Form.Label>
+              <Form.Check
+                className="form_text"
+                type="checkbox"
+                label="is extra?"
+                onChange={this.props.handleExtra}
                 readOnly={this.props.readOnly}
               />
             </Form.Group>
