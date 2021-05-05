@@ -117,27 +117,35 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        print("create")
         grade = Grade.objects.create(task=validated_data['task'], value=validated_data['value'],
                                      student=validated_data['student'], course=validated_data['course'],
                                      issued_by=validated_data['issued_by'])
         grade.save()
-        self.recalculate_parent(grade.student, grade.task.parent_task)
+        self.recalculate_parent(grade)
         return grade
 
     def update(self, instance, validated_data):
+        print("update")
         Grade.objects.filter(pk=instance.id).update(**validated_data)
         if 'value' in validated_data.keys():
-            self.recalculate_parent(instance.student, instance.task.parent_task)
+            self.recalculate_parent(instance)
         return Grade.objects.get(pk=instance.id)
 
 
-    def recalculate_parent(self, student, parent_task):
+    def recalculate_parent(self, grade):
+        student = grade.student
+        parent_task = grade.task.parent_task
         if parent_task is None:  # nothing to update
             return
         parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
-        if parent_grade_set is None:
-            print("to create") # todo to implement - create new grade
-        parent_grade = parent_grade_set[0]
+        if not parent_grade_set:
+            parent_grade = Grade.objects.create(task=parent_task, value=parent_task.grade_min,
+                                         student=student, course=grade.course,
+                                         issued_by=grade.issued_by)
+            parent_grade.save()
+        else:
+            parent_grade = parent_grade_set[0]
         child_tasks = Task.objects.filter(parent_task=parent_task)
         grades = Grade.objects.filter(student=student).filter(task__in=child_tasks)
         values = np.array([grade.value for grade in grades])
@@ -145,7 +153,11 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         if agg == Task.AggregationMethod.AVERAGE:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.mean())
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
-            pass # todo to implement
+            weights = np.array([grade.task.weight for grade in grades])
+            Grade.objects.filter(pk=parent_grade.id).update(value=np.average(values, weights))
+        elif agg == Task.AggregationMethod.SUM:
+            Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
+        self.recalculate_parent(parent_grade)
 
 
 class PrizeDetailSerializer(serializers.ModelSerializer):
