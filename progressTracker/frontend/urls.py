@@ -21,4 +21,6 @@ urlpatterns = [
     path('teacher/course/achievements', views.index),
     path('teacher/achievement/add', views.index),
     path('student/course/progress', views.index),
+    path('teacher/course/details', views.index),
+    path('student/course/details', views.index),
 ]

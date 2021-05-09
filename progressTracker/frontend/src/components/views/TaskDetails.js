@@ -7,7 +7,7 @@ import Spinner from '../layout/Spinner';
 import { getTask } from '../functions/getData'
 import Button from '../layout/Button';
 
-export class RateStudents extends Component {
+export class TaskDetails extends Component {
     constructor(props) {
         super(props)
 
@@ -111,4 +111,4 @@ export class RateStudents extends Component {
     }
 }
 
-export default RateStudents
+export default TaskDetails
