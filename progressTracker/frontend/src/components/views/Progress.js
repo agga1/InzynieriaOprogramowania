@@ -4,20 +4,101 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import { getTask } from '../functions/getData'
 import Button from '../layout/Button';
+import {ProgressBar} from "react-bootstrap";
 
 export class Progress extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            name: localStorage.getItem("courseName"),
+            points: 0,
+            total: 0,
             loaded: false,
         }
     }
 
+    getTotal() {
+        fetch(localStorage.getItem("courseUrl") + "main_tasks", {
+            method: "GET",
+            headers: {
+                Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((response) => {
+                if (response.status > 400) {
+                    return this.setState(() => {
+                        return { placeholder: "Something went wrong!" };
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                let total = 0;
+                data = data.tasks;
+                for (let i=0; i<data.length; i++) {
+                 total+=parseInt(data[i].grade_max);
+                }
+                this.setState(() => {
+                    return {
+                        total: total,
+                    };
+                });
+            });
+    }
+    getPoints() {
+        fetch("/api/grades/", {
+            method: "GET",
+            headers: {
+                Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((response) => {
+                if (response.status > 400) {
+                    return this.setState(() => {
+                        return { placeholder: "Something went wrong!" };
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                let points = 0;
+                for (let i=0; i<data.length; i++) {
+                    if (data[i].course_name === this.state.name) {
+                        points += parseInt(data[i].value);
+                    }
+                }
+
+                this.setState(() => {
+                    return {
+                        points: points
+                    };
+                });
+
+            });
+    }
+    setLevels(){
+        let grade = (this.state.points*100.0)/this.state.total;
+        let breaks = [50, 20, 20, 10];
+        let levels_values = [];
+        for(let b of breaks){
+            if(grade >= b){
+                levels_values.push(b);
+                grade-=b;
+            }
+            else{
+                levels_values.push(grade);
+                grade = 0;
+            }
+        }
+        return levels_values;
+    }
+
     componentDidMount() {
         if (localStorage.getItem('token')) {
+            this.getPoints();
+            this.getTotal();
              this.setState(() => ({
                  loaded: true
              }))
@@ -29,16 +110,25 @@ export class Progress extends Component {
     }
 
     prepareView() {
-        if (this.state.loaded == false) {
+        if (this.state.loaded === false) {
             return (
                 <Col xs={10} className="mb-5 mt-5">
                     <Spinner />
                 </Col>
             );
         } else {
+            let levels_values = this.setLevels();
             return (
                 <Col xs={10} className="pr-4">
                     <Row className="pr-5 pl-5 ml-2 mb-4">
+                        <Col xs={12} className="pr-5">
+                            <ProgressBar className="my-progressbar">
+                                <ProgressBar now={`${levels_values[0]}`} animated striped variant="danger" label={`Not enough!`} key={1} />
+                                <ProgressBar now={`${levels_values[1]}`} animated striped variant="warning" label={`Ok`} key={2} />
+                                <ProgressBar now={`${levels_values[2]}`} animated striped variant="info" label={`Good`} key={3} />
+                                <ProgressBar now={`${levels_values[3]}`} animated striped variant="success" label={`Very Good`} key={4} />
+                            </ProgressBar>
+                        </Col>
                     </Row>
                     <Row className="pr-5 pl-5 mb-4">
                         <Col xs={7}>
