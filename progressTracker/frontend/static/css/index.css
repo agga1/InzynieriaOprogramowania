@@ -90,6 +90,12 @@ html, body{
   font-size: 20px !important;
 }
 
+.form_text_variable {
+  color: #fffffa !important;
+  font-weight: 500 !important;
+  font-size: 25px !important;
+}
+
 .padding-left-10{
   padding-left: 10px;
 }

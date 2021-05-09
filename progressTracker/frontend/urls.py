@@ -18,4 +18,7 @@ urlpatterns = [
     path('student/task/details', views.index),
     path('teacher/task/update', views.index),
     path('teacher/course/leaderboard', views.index),
+    path('teacher/course/achievements', views.index),
+    path('teacher/achievement/add', views.index),
+    path('student/course/progress', views.index),
 ]

@@ -12,6 +12,9 @@ import Grades from './Grades'
 import TaskDetails from './TaskDetails'
 import UpdateTask from './UpdateTask'
 import Leaderboard from './Leaderboard'
+import Achievements from './Achievements'
+import AddAchievement from './AddAchievement'
+import Progress from './Progress'
 import Footer from '../layout/Footer'
 
 
@@ -46,6 +49,9 @@ export class HomePage extends Component {
                     <Route path='/student/task/details' component={TaskDetails}/>
                     <Route path='/teacher/task/update' component={UpdateTask}/>
                     <Route path='/teacher/course/leaderboard' component={Leaderboard}/>
+                    <Route path='/teacher/course/achievements' component={Achievements}/>
+                    <Route path='/teacher/achievement/add' component={AddAchievement}/>
+                    <Route path='/student/course/progress' component={Progress}/>
                 </Switch>
             </Router>
            
