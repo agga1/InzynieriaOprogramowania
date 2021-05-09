@@ -88,11 +88,10 @@ class GradeDetailSerializer(serializers.ModelSerializer):
 
 class GradeMinimalSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student', read_only=True)
-
     class Meta:
         model = Grade
         fields = (
-            'student', 'student_name', 'value'
+            'id', 'student', 'student_name', 'value'
         )
 
 

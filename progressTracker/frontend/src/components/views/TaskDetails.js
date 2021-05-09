@@ -8,7 +8,7 @@ import { getTask } from '../functions/getData'
 import Button from '../layout/Button';
 import parse from "html-react-parser";
 
-export class RateStudents extends Component {
+export class TaskDetails extends Component {
     constructor(props) {
         super(props)
 
@@ -112,4 +112,4 @@ export class RateStudents extends Component {
     }
 }
 
-export default RateStudents
+export default TaskDetails

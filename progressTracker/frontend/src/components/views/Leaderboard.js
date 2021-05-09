@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col, Table } from 'reactstrap';
+import { Container, Row, Col} from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import {getStudents} from '../functions/getData'
 import { MDBDataTable } from 'mdbreact';
+import {ProgressBar} from "react-bootstrap";
+
 
 export class Leaderboard extends Component {
     constructor(props) {
@@ -17,6 +19,7 @@ export class Leaderboard extends Component {
              tasks: [],
              tasks_len: -1,
              grades: new Map(),
+             max: 0,
              loaded: false,
              grades_loaded: false,
 		}
@@ -73,6 +76,7 @@ export class Leaderboard extends Component {
       let counter = 0;
       let grades_list = this.state.grades;
       tasks.map( task => {
+      let max = this.state.max + task.grade_max;
       return fetch(task.url + "grades/", {
         method: "GET",
         headers: {
@@ -97,6 +101,7 @@ export class Leaderboard extends Component {
           this.setState(() => ({
             grades: grades_list,
             grades_loaded: counter == this.state.tasks_len,
+            max: max,
             }
           ))
         }) 
@@ -132,13 +137,17 @@ export class Leaderboard extends Component {
         field: 'name',
         sort: 'asc',
       },)
+    data.columns.push({
+        label: 'Progress',
+        field: 'progress',
+        sort: 'asc',
+    },)
       this.state.tasks.map( (task) => {
         data.columns.push({
           label: task.name,
           field: task.url,
           sort: 'asc',
         })
-        console.log(task.url);
       })
       data.columns.push({
         label: 'Total',
@@ -154,6 +163,7 @@ export class Leaderboard extends Component {
           obj[[label]]=val;
         })
         obj["total"]= result.points;
+        obj["progress"] = <ProgressBar animated variant="warning" now={`${(result.points*100)/this.state.max}`} />
         data.rows.push(obj)
       })
       
@@ -162,7 +172,7 @@ export class Leaderboard extends Component {
 
 
     prepareView() {
-      if (this.state.loaded == false || this.state.grades_loaded == false) {
+      if (this.state.loaded === false || this.state.grades_loaded === false) {
         return (
           <Col xs={10} className="mb-3 mt-5">
             <Spinner />
@@ -199,7 +209,7 @@ export class Leaderboard extends Component {
                         </Col>
                           {this.prepareView()}
                     </Row>
-                </Container>    
+                </Container>
                 <Footer/>               
             </Fragment>
         )
