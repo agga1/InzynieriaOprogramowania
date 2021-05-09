@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col, Table } from 'reactstrap';
+import { Container, Row, Col, Table, Progress } from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import {getStudents} from '../functions/getData'
 import { MDBDataTable } from 'mdbreact';
+
 
 export class Leaderboard extends Component {
     constructor(props) {

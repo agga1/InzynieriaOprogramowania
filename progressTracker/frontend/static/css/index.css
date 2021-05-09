@@ -221,3 +221,9 @@ html, body{
 .display-flex{
   display:flex;
 }
+
+.my-progressbar{
+  height: 32px !important;
+  border-radius: 25px !important;
+  font-size: 30px !important;
+}
