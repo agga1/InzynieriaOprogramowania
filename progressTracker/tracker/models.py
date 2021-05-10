@@ -48,19 +48,6 @@ class Grade(models.Model):
     def __str__(self):
         return str(vars(self))
 
-
-class Prize(models.Model):
-    class PrizeKind(models.IntegerChoices):
-        DIAMOND = 1
-        GOLD = 2
-        SILVER = 3
-        BRONZE = 4
-
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    issued_at = models.DateTimeField(auto_now_add=True)
-    kind = models.IntegerField(choices=PrizeKind.choices)
-
 class Achievement(models.Model):
     class Kind(models.TextChoices):
         ALL = 'ALL', _('pass all tasks')

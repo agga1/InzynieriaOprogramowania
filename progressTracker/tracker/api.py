@@ -4,11 +4,11 @@ from rest_framework.response import Response
 
 from accounts.models import Student
 from accounts.serializers import StudentSerializer
-from .models import Mock, Task, Course, Grade, Prize, Achievement
+from .models import Mock, Task, Course, Grade, Achievement
 from rest_framework import viewsets, permissions
 from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
-    PrizeListSerializer, CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
-    GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer, GradeMinimalSerializer, \
+    CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
+    GradeListSerializer, TaskMainSerializer, GradeMinimalSerializer, \
     CreateAchievementSerializer, ListAchievementSerializer
 
 
@@ -120,6 +120,24 @@ class CourseViewSet(viewsets.ModelViewSet):
         students_ = course.student.all()
         return Response({"students": StudentSerializer(students_, many=True).data})
 
+    @action(detail=True)
+    def achievements(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        if hasattr(self.request.user, 'teacher'):
+            achievements_ = course.achievement_set.all()
+            return Response({"achievements": ListAchievementSerializer(achievements_, many=True).data})
+        elif hasattr(self.request.user, 'student'):
+            student = self.request.user.student
+            achievements_ = course.achievement_set.all()
+            earned = achievements_.filter(pk__in = student.achievement_set.all())
+            not_earned = achievements_.exclude(pk__in = student.achievement_set.all())
+            return Response({"achievements":
+                {
+                    "earned": ListAchievementSerializer(earned, many=True).data,
+                    "not_earned": ListAchievementSerializer(not_earned, many=True).data
+                 }
+             })
+
     @action(detail=True, methods=['POST'])
     def add_students(self, request, pk=None):
         """ provide {"students" : [1,2,3..]}
@@ -188,42 +206,6 @@ class GradeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(teacher=self.request.user.teacher)
 
-
-class PrizeViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.DjangoModelPermissions
-    ]
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return PrizeListSerializer
-        if self.action == 'retrieve':
-            return PrizeDetailSerializer
-        if self.action == 'create':
-            return CreatePrizeSerializer
-        if self.action == 'update':
-            return CreatePrizeSerializer
-        return CreatePrizeSerializer
-
-    def get_queryset(self):
-        if hasattr(self.request.user, 'teacher'):  # todo use .is_student ?
-            courses = self.request.user.teacher.course_set.all()
-            prizes = Prize.objects.filter(course__in=courses)
-            return prizes
-        elif hasattr(self.request.user, 'student'):
-            student = self.request.user.student
-            return student.proize_set.all()
-        return None
-
-    def partial_update(self, request, pk=None, **kwargs):
-        prize = Prize.objects.get(pk=pk)
-        serializer = self.get_serializer(prize, data=request.data, partial=True)
-        serializer.is_valid()
-        prize = serializer.save()
-        return Response({"prize": CreateGradeSerializer(prize).data})
-
-    def perform_create(self, serializer):
-        serializer.save(teacher=self.request.user.teacher)
 
 class AchievementViewSet(viewsets.ModelViewSet):
     permission_classes = [

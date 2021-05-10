@@ -2,7 +2,7 @@ from django.db.models import IntegerField, IntegerChoices
 from rest_framework import serializers
 import numpy as np
 from accounts.serializers import TeacherSerializer
-from .models import Mock, Task, Course, Grade, Prize, Achievement
+from .models import Mock, Task, Course, Grade, Achievement
 
 
 class MockSerializer(serializers.ModelSerializer):
@@ -164,45 +164,6 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         pass # todo implement
 
 
-class PrizeDetailSerializer(serializers.ModelSerializer):
-    kind_name = serializers.CharField(source='get_kind_display', read_only=True)
-
-    class Meta:
-        model = Prize
-        fields = (
-            'student', 'course', 'issued_at', 'kind', 'kind_name'
-        )
-
-
-class PrizeListSerializer(serializers.HyperlinkedModelSerializer):
-    student_name = serializers.CharField(source='student', read_only=True)
-    course_name = serializers.CharField(source='course.name', read_only=True)
-    kind_name = serializers.CharField(source='get_kind_display', read_only=True)
-
-    class Meta:
-        model = Prize
-        fields = (
-            'url', 'student_name', 'course_name', 'kind_name'
-        )
-
-
-class CreatePrizeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Prize
-        fields = (
-            'student', 'kind', 'course'
-        )
-
-    def create(self, validated_data):
-        prize = Prize.objects.create(student=validated_data['student'], kind=validated_data['kind'],
-                                     course=validated_data['course'])
-        prize.save()
-        return prize
-
-    def update(self, instance, validated_data):
-        Prize.objects.filter(pk=instance.id).update(**validated_data)
-        return Prize.objects.get(pk=instance.id)
-
 class CreateAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
@@ -216,4 +177,4 @@ class CreateAchievementSerializer(serializers.ModelSerializer):
 class ListAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = '__all__'
+        fields = ('id', 'course', 'kind', 'args')
