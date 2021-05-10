@@ -1,16 +1,9 @@
-from django.db.models import IntegerField, IntegerChoices
 from rest_framework import serializers
 import numpy as np
 from accounts.serializers import TeacherSerializer
-from .models import Mock, Task, Course, Grade, Achievement
+from .models import Task, Course, Grade, Achievement
 
-
-class MockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Mock
-        fields = '__all__'
-
-
+# Task Serializers ---------------------------------------------------
 class TaskListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
@@ -37,7 +30,7 @@ class TaskSerializer(serializers.ModelSerializer):
         Task.objects.filter(pk=instance.id).update(**validated_data)
         return Task.objects.get(pk=instance.id)
 
-
+# Course Serializers ---------------------------------------------------
 class CourseDetailSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
 
@@ -77,7 +70,7 @@ class CreateCourseSerializer(serializers.ModelSerializer):
         Course.objects.filter(pk=instance.id).update(**validated_data)
         return Course.objects.get(pk=instance.id)
 
-
+# Grade Serializers ---------------------------------------------------
 class GradeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
@@ -163,7 +156,7 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         for achievement in achievements:
             pass # todo check if achievement met
 
-
+# Achievement Serializers ---------------------------------------------------
 class CreateAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement

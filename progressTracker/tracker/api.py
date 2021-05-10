@@ -4,20 +4,12 @@ from rest_framework.response import Response
 
 from accounts.models import Student
 from accounts.serializers import StudentSerializer
-from .models import Mock, Task, Course, Grade, Achievement
+from .models import Task, Course, Grade, Achievement
 from rest_framework import viewsets, permissions
-from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
+from .serializers import TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
     GradeListSerializer, TaskMainSerializer, GradeMinimalSerializer, \
     CreateAchievementSerializer, ListAchievementSerializer
-
-
-class MockViewSet(viewsets.ModelViewSet):
-    queryset = Mock.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = MockSerializer
 
 
 class TaskViewSet(viewsets.ModelViewSet):

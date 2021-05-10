@@ -1,13 +1,6 @@
 from django.db import models
-
-# Create your models here.
 from accounts.models import Teacher, Student
 from django.utils.translation import gettext_lazy as _
-
-
-class Mock(models.Model):
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Course(models.Model):
