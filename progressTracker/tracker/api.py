@@ -9,7 +9,7 @@ from rest_framework import viewsets, permissions
 from .serializers import MockSerializer, TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     PrizeListSerializer, CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
     GradeListSerializer, PrizeDetailSerializer, CreatePrizeSerializer, TaskMainSerializer, GradeMinimalSerializer, \
-    AchievementSerializer
+    CreateAchievementSerializer, ListAchievementSerializer
 
 
 class MockViewSet(viewsets.ModelViewSet):
@@ -232,14 +232,14 @@ class AchievementViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return AchievementSerializer
+            return ListAchievementSerializer
         if self.action == 'retrieve':
-            return AchievementSerializer
+            return CreateAchievementSerializer
         if self.action == 'create':
-            return AchievementSerializer
+            return CreateAchievementSerializer
         if self.action == 'update':
-            return AchievementSerializer
-        return AchievementSerializer
+            return CreateAchievementSerializer
+        return CreateAchievementSerializer
 
     def get_queryset(self):
         if hasattr(self.request.user, 'teacher'):  # todo use .is_student ?

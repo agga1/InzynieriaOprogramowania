@@ -135,7 +135,8 @@ class CreateGradeSerializer(serializers.ModelSerializer):
     def recalculate_parent(self, grade):
         student = grade.student
         parent_task = grade.task.parent_task
-        if parent_task is None:  # nothing to update
+        if parent_task is None:  # highest level already - update achievements
+            self.update_achievements(grade)
             return
         parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
         if not parent_grade_set:
@@ -157,6 +158,10 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         elif agg == Task.AggregationMethod.SUM:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
         self.recalculate_parent(parent_grade)
+
+    def update_achievements(self, grade):
+        course = grade.course
+        pass # todo implement
 
 
 class PrizeDetailSerializer(serializers.ModelSerializer):
@@ -198,12 +203,17 @@ class CreatePrizeSerializer(serializers.ModelSerializer):
         Prize.objects.filter(pk=instance.id).update(**validated_data)
         return Prize.objects.get(pk=instance.id)
 
-class AchievementSerializer(serializers.ModelSerializer):
+class CreateAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ('course', 'issued_at', 'kind', 'args')
+        fields = ('course', 'kind', 'args')
 
     def create(self, validated_data):
         ach = Achievement.objects.create(**validated_data)
         ach.save()
         return ach
+
+class ListAchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achievement
+        fields = '__all__'

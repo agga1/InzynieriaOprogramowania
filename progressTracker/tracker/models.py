@@ -69,6 +69,9 @@ class Achievement(models.Model):
         BONUS = 'BONUS', _('complete bonus task')
         STREAK = 'STREAK', _('100% from 3 tasks within a month')
 
+    class Meta:
+        unique_together = ('course', 'kind', 'args',)
+
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     student = models.ManyToManyField(Student, blank=True)
     issued_at = models.DateTimeField(auto_now_add=True)
