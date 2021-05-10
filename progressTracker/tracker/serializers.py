@@ -137,7 +137,7 @@ class CreateGradeSerializer(serializers.ModelSerializer):
             self.update_achievements(grade)
             return
         parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
-        if not parent_grade_set:
+        if not parent_grade_set:  # create new grade
             parent_grade = Grade.objects.create(task=parent_task, value=parent_task.grade_min,
                                          student=student, course=grade.course,
                                          issued_by=grade.issued_by)
@@ -159,7 +159,9 @@ class CreateGradeSerializer(serializers.ModelSerializer):
 
     def update_achievements(self, grade):
         course = grade.course
-        pass # todo implement
+        achievements = course.achievement_set.all()
+        for achievement in achievements:
+            pass # todo check if achievement met
 
 
 class CreateAchievementSerializer(serializers.ModelSerializer):
