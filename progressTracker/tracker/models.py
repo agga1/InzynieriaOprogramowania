@@ -74,7 +74,6 @@ class Achievement(models.Model):
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     student = models.ManyToManyField(Student, blank=True)
-    issued_at = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=10, choices=Kind.choices)
     args = models.CharField(max_length=100, default="")
 
