@@ -117,9 +117,7 @@ class CreateGradeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print("create")
-        grade = Grade.objects.create(task=validated_data['task'], value=validated_data['value'],
-                                     student=validated_data['student'], course=validated_data['course'],
-                                     issued_by=validated_data['issued_by'])
+        grade = Grade.objects.create(**validated_data)
         grade.save()
         self.recalculate_parent(grade)
         return grade

@@ -204,7 +204,7 @@ class GradeViewSet(viewsets.ModelViewSet):
         return Response({"grade": CreateGradeSerializer(grade).data})
 
     def perform_create(self, serializer):
-        serializer.save(teacher=self.request.user.teacher)
+        serializer.save(issued_by=self.request.user.teacher)
 
 
 class AchievementViewSet(viewsets.ModelViewSet):
