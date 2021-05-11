@@ -1,16 +1,9 @@
-from django.db.models import IntegerField, IntegerChoices
 from rest_framework import serializers
 import numpy as np
 from accounts.serializers import TeacherSerializer
-from .models import Mock, Task, Course, Grade, Prize, Achievement
+from .models import Task, Course, Grade, Achievement
 
-
-class MockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Mock
-        fields = '__all__'
-
-
+# Task Serializers ---------------------------------------------------
 class TaskListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
@@ -37,7 +30,7 @@ class TaskSerializer(serializers.ModelSerializer):
         Task.objects.filter(pk=instance.id).update(**validated_data)
         return Task.objects.get(pk=instance.id)
 
-
+# Course Serializers ---------------------------------------------------
 class CourseDetailSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
 
@@ -77,7 +70,7 @@ class CreateCourseSerializer(serializers.ModelSerializer):
         Course.objects.filter(pk=instance.id).update(**validated_data)
         return Course.objects.get(pk=instance.id)
 
-
+# Grade Serializers ---------------------------------------------------
 class GradeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
@@ -117,9 +110,7 @@ class CreateGradeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print("create")
-        grade = Grade.objects.create(task=validated_data['task'], value=validated_data['value'],
-                                     student=validated_data['student'], course=validated_data['course'],
-                                     issued_by=validated_data['issued_by'])
+        grade = Grade.objects.create(**validated_data)
         grade.save()
         self.recalculate_parent(grade)
         return grade
@@ -135,10 +126,11 @@ class CreateGradeSerializer(serializers.ModelSerializer):
     def recalculate_parent(self, grade):
         student = grade.student
         parent_task = grade.task.parent_task
-        if parent_task is None:  # nothing to update
+        if parent_task is None:  # highest level already - update achievements
+            self.update_achievements(grade)
             return
         parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
-        if not parent_grade_set:
+        if not parent_grade_set:  # create new grade
             parent_grade = Grade.objects.create(task=parent_task, value=parent_task.grade_min,
                                          student=student, course=grade.course,
                                          issued_by=grade.issued_by)
@@ -158,52 +150,24 @@ class CreateGradeSerializer(serializers.ModelSerializer):
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
         self.recalculate_parent(parent_grade)
 
+    def update_achievements(self, grade):
+        course = grade.course
+        achievements = course.achievement_set.all()
+        for achievement in achievements:
+            pass # todo check if achievement met
 
-class PrizeDetailSerializer(serializers.ModelSerializer):
-    kind_name = serializers.CharField(source='get_kind_display', read_only=True)
-
-    class Meta:
-        model = Prize
-        fields = (
-            'student', 'course', 'issued_at', 'kind', 'kind_name'
-        )
-
-
-class PrizeListSerializer(serializers.HyperlinkedModelSerializer):
-    student_name = serializers.CharField(source='student', read_only=True)
-    course_name = serializers.CharField(source='course.name', read_only=True)
-    kind_name = serializers.CharField(source='get_kind_display', read_only=True)
-
-    class Meta:
-        model = Prize
-        fields = (
-            'url', 'student_name', 'course_name', 'kind_name'
-        )
-
-
-class CreatePrizeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Prize
-        fields = (
-            'student', 'kind', 'course'
-        )
-
-    def create(self, validated_data):
-        prize = Prize.objects.create(student=validated_data['student'], kind=validated_data['kind'],
-                                     course=validated_data['course'])
-        prize.save()
-        return prize
-
-    def update(self, instance, validated_data):
-        Prize.objects.filter(pk=instance.id).update(**validated_data)
-        return Prize.objects.get(pk=instance.id)
-
-class AchievementSerializer(serializers.ModelSerializer):
+# Achievement Serializers ---------------------------------------------------
+class CreateAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ('course', 'issued_at', 'kind', 'args')
+        fields = ('course', 'kind', 'args')
 
     def create(self, validated_data):
         ach = Achievement.objects.create(**validated_data)
         ach.save()
         return ach
+
+class ListAchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achievement
+        fields = ('id', 'course', 'kind', 'args')

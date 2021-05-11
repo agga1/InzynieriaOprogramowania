@@ -1,13 +1,6 @@
 from django.db import models
-
-# Create your models here.
 from accounts.models import Teacher, Student
 from django.utils.translation import gettext_lazy as _
-
-
-class Mock(models.Model):
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Course(models.Model):
@@ -48,19 +41,6 @@ class Grade(models.Model):
     def __str__(self):
         return str(vars(self))
 
-
-class Prize(models.Model):
-    class PrizeKind(models.IntegerChoices):
-        DIAMOND = 1
-        GOLD = 2
-        SILVER = 3
-        BRONZE = 4
-
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    issued_at = models.DateTimeField(auto_now_add=True)
-    kind = models.IntegerField(choices=PrizeKind.choices)
-
 class Achievement(models.Model):
     class Kind(models.TextChoices):
         ALL = 'ALL', _('pass all tasks')
@@ -69,9 +49,11 @@ class Achievement(models.Model):
         BONUS = 'BONUS', _('complete bonus task')
         STREAK = 'STREAK', _('100% from 3 tasks within a month')
 
+    class Meta:
+        unique_together = ('course', 'kind', 'args',)
+
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     student = models.ManyToManyField(Student, blank=True)
-    issued_at = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=10, choices=Kind.choices)
     args = models.CharField(max_length=100, default="")
 
