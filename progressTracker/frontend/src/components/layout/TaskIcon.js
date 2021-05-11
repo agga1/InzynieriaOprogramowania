@@ -132,8 +132,12 @@ export class TaskIcon extends Component {
       if (sessionStorage.getItem("isStudent") == "true") {
         return (
           <List>
-            <ListInlineItem className="task-link">
-              <a href="/student/task/details" className="custom-btn">
+            <ListInlineItem className="task-link pr-3">
+              <a
+                href="/student/task/details"
+                className="custom-btn"
+                onClick={() => this.setTask(taskUrl)}
+              >
                 Details
               </a>
             </ListInlineItem>
