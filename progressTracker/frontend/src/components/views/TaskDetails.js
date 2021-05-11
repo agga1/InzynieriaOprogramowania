@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import { getTask } from '../functions/getData'
+import { getTask } from '../functions/helpers'
 import Button from '../layout/Button';
 
 export class TaskDetails extends Component {

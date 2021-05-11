@@ -123,9 +123,7 @@ export class AddTask extends Component {
     prepareData() {
         const courseUrl = localStorage.getItem('courseUrl');
         const course = this.extractID(courseUrl)
-        console.log("beforetask")
         if (localStorage.getItem('taskUrl') == null) {
-            console.log("task")
             return {
                 name: this.state.name,
                 grade_min: this.state.gradeMin,

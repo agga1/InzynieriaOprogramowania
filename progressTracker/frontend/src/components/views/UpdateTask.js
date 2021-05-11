@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Container, Row, Col } from "reactstrap";
 import AddTaskForm from "../layout/AddTaskForm";
 import Header from "../layout/Header";
-import { getTask } from "../functions/getData";
+import { getTask } from "../functions/helpers";
 
 export class AddTask extends Component {
   constructor(props) {
