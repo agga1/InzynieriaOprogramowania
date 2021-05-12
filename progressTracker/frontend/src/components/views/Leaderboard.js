@@ -175,7 +175,7 @@ export class Leaderboard extends Component {
       if (this.state.loaded === false || this.state.grades_loaded === false) {
         return (
           <Col xs={10} className="mb-3 mt-5">
-            <Spinner />
+            <Spinner className="spinner"/>
           </Col>
         );
       } else {

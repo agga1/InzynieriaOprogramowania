@@ -70,7 +70,7 @@ export class TaskIcon extends Component {
         return (
           <Row className="p-2">
             <Col xs={1}></Col>
-            <Col xs={11}>
+            <Col xs={11} >
               <p>
                 Task "{this.props.task_name}"" does not have any child tasks
               </p>
@@ -82,8 +82,8 @@ export class TaskIcon extends Component {
       return (
         <Row className="p-2">
           <Col xs={1}></Col>
-          <Col xs={11}>
-            <Spinner />
+          <Col xs={11} className="pb-2" >
+            <Spinner className="spinner-no-style"/>
           </Col>
         </Row>
       );

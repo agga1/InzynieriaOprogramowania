@@ -105,37 +105,39 @@ export class Grades extends Component {
     var new_grade = parseFloat(this.state.rate.replace(",", "."));
 
     if (new_grade <= this.state.task.grade_max && new_grade >= this.state.task.grade_min) {
-      // let grade = this.gradeExists();
-     
-      // if(grade!=''){
-      //   fetch(grade.url, {
-      //     method: "PATCH",
-      //     headers: {
-      //       Authorization: `Token ${localStorage.getItem("token")}`,
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       value: new_grade,
-      //     }),
-      //   })
-      //     .then((res) => res.json())
-      //     .then(() => {
-      //       this.setState((state)=>{
-      //           let list = state.grades.map((val) => {
-      //           if (val == grade) {
-      //             val.grade = new_grade;
-      //           } 
-      //             return val;
-      //           });
-      //           return {
-      //             grades: list,
-      //           }
-      //       })
-      //     })
-      //     .catch((err) => console.log(err));
-      //   }
+      let grade = this.gradeExists()[0];
+
+      if(grade!=undefined){
+        fetch('/api/grades/'+grade.id+'/', {
+          method: "PATCH",
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            "value": new_grade
+          }),
+        })
+          .then((res) => res.json())
+          .then(() => {
+            this.handleCancel();
+            this.setState((state)=>{
+                let list = state.grades.map((val) => {
+                if (val == grade) {
+                  val.value = new_grade;
+                } 
+                  return val;
+                });
+                console.log(list);
+                return {
+                  grades: list,
+                }
+            })
+          })
+          .catch((err) => console.log(err));
+        }
       
-      // else{
+      else{
         fetch("/api/grades/", {
           method: "POST",
           headers: {
@@ -145,6 +147,7 @@ export class Grades extends Component {
           body: JSON.stringify(this.prepareData(new_grade)),
         })
         .then(() => {
+          this.handleCancel();
           this.setState({loaded:false}, () => {
             this.getStudentsGrades().then( (grades) => {
                this.setState({grades: grades, loaded: true});
@@ -154,7 +157,7 @@ export class Grades extends Component {
         } )
         .catch((err) => console.log(err));
         }
-      // }
+      }
      else {
       alert(
         "Enter proper grade from range: [" +
@@ -177,41 +180,6 @@ export class Grades extends Component {
     }
   }
 
-  updateGradesList(new_grade) {
-    let item = this.state.grades
-      .filter((grade) => grade.student == this.state.student_id)
-      .map((grade) => grade);
-
-    if (item[0] !== undefined) {
-      this.setState(
-        (state) => {
-          let list = state.grades.map((val) => {
-            if (val == item) {
-              return { student: state.student_id, value: new_grade };
-            } else {
-              return val;
-            }
-          });
-          console.log(list);
-          return { grades: list };
-        },
-        () => this.handleCancel()
-      );
-    } else {
-      this.setState(
-        (state) => {
-          return {
-            grades: [
-              ...state.grades,
-              { student: state.student_id, value: new_grade },
-            ],
-          };
-        },
-        () => this.handleCancel()
-      );
-    }
-  }
-
   handleChange = (e) => {
     this.setState({
       rate: e.target.value,
@@ -231,7 +199,7 @@ export class Grades extends Component {
     if (this.state.loaded == false) {
       return (
         <Col xs={10} className="mb-5 mt-5">
-          <Spinner />
+          <Spinner className="spinner"/>
         </Col>
       );
     } else {
@@ -244,7 +212,7 @@ export class Grades extends Component {
                 <th colSpan="3">Name</th>
                 <th className="td-sm">Points</th>
                 {localStorage.getItem("isParentTask") == "true" ? (
-                  ""
+                  <th></th>
                 ) : (
                   <th className="td-sm">Rate</th>
                 )}
@@ -263,7 +231,7 @@ export class Grades extends Component {
                     </td>
                     <td className="td-sm">{this.getGrade(student)}</td>
                     {localStorage.getItem("isParentTask") == "true" ? (
-                      ""
+                      <td></td>
                     ) : (
                       <td className="td-sm">
                         <a

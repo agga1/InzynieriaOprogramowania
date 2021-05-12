@@ -41,7 +41,7 @@ export class TaskDetails extends Component {
         if (!this.state.loaded) {
             return (
                 <Col xs={10} className="mb-5 mt-5">
-                    <Spinner />
+                    <Spinner className="spinner"/>
                 </Col>
             );
         } else {

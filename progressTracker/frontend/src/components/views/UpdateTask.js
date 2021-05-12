@@ -86,7 +86,7 @@ export class AddTask extends Component {
     if (this.state.loaded == false) {
       return (
         <Col xs={10} className="mb-5 mt-5">
-          <Spinner />
+          <Spinner className="spinner"/>
         </Col>
       );
     } else {

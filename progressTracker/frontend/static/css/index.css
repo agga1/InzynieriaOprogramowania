@@ -77,6 +77,10 @@ html, body{
   margin: 25vh 0 !important;
 }
 
+.spinner-no-style{
+
+}
+
 .form {
   background: #483ebb !important;
   margin-top: 2vw !important;
