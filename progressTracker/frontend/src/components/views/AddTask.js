@@ -137,7 +137,7 @@ export class AddTask extends Component {
                     + `is extra: ${this.state.isExtra}\n`
                     + `deadline: ${this.state.deadline}\n`
                 );
-                window.location.href="/";
+                window.location.href="/teacher/course/tasks";
             }
         })
         .catch(err => console.log(err));
@@ -167,7 +167,8 @@ export class AddTask extends Component {
             is_extra: this.state.isExtra,
             weight: this.state.weight,
             deadline: this.state.deadline,
-            aggregation_method: this.state.aggregation,
+            description: this.state.description,
+            aggregation_method: this.state.aggregation.value,
             course: course,
             parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))  
         }

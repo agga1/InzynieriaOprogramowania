@@ -30,6 +30,7 @@ export class Grades extends Component {
     let grades = this.getStudentsGrades();
     let task = getTask();
     let students = getStudents();
+
     Promise.all([grades, task, students])
       .then(([grades, task, students]) => {
         this.setState(() => ({
@@ -40,7 +41,7 @@ export class Grades extends Component {
         }));
       })
       .catch((err) => console.log(err.message));
-    }
+  }
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
@@ -94,49 +95,51 @@ export class Grades extends Component {
     }));
   };
 
-  gradeExists(){
-    let url = this.state.grades.filter(grade => grade.student==this.state.student_id).map(al => al);
-    return (url.length > 0 ? url : '');
+  gradeExists() {
+    let grade = this.state.grades
+      .filter((grade) => grade.student == this.state.student_id)
+      .map((p) => p);
+    return grade.length > 0 ? grade : "";
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
     var new_grade = parseFloat(this.state.rate.replace(",", "."));
 
-    if (new_grade <= this.state.task.grade_max && new_grade >= this.state.task.grade_min) {
+    if (
+      new_grade <= this.state.task.grade_max &&
+      new_grade >= this.state.task.grade_min
+    ) {
       let grade = this.gradeExists()[0];
 
-      if(grade!=undefined){
-        fetch('/api/grades/'+grade.id+'/', {
+      if (grade != undefined) {
+        fetch("/api/grades/" + grade.id + "/", {
           method: "PATCH",
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            "value": new_grade
+            value: new_grade,
           }),
         })
           .then((res) => res.json())
           .then(() => {
             this.handleCancel();
-            this.setState((state)=>{
-                let list = state.grades.map((val) => {
+            this.setState((state) => {
+              let list = state.grades.map((val) => {
                 if (val == grade) {
                   val.value = new_grade;
-                } 
-                  return val;
-                });
-                console.log(list);
-                return {
-                  grades: list,
                 }
-            })
+                return val;
+              });
+              console.log(list);
+              return {
+                grades: list,
+              };
+            });
           })
           .catch((err) => console.log(err));
-        }
-      
-      else{
+      } else {
         fetch("/api/grades/", {
           method: "POST",
           headers: {
@@ -145,19 +148,17 @@ export class Grades extends Component {
           },
           body: JSON.stringify(this.prepareData(new_grade)),
         })
-        .then(() => {
-          this.handleCancel();
-          this.setState({loaded:false}, () => {
-            this.getStudentsGrades().then( (grades) => {
-               this.setState({grades: grades, loaded: true});
+          .then(() => {
+            this.handleCancel();
+            this.setState({ loaded: false }, () => {
+              this.getStudentsGrades().then((grades) => {
+                this.setState({ grades: grades, loaded: true });
+              });
             });
           })
-          
-        } )
-        .catch((err) => console.log(err));
-        }
+          .catch((err) => console.log(err));
       }
-     else {
+    } else {
       alert(
         "Enter proper grade from range: [" +
           this.state.task.grade_min +
@@ -166,17 +167,16 @@ export class Grades extends Component {
           "]!"
       );
     }
-  
   };
 
-  prepareData(new_grade){
+  prepareData(new_grade) {
     return {
-      "task": this.state.task.id,
-      "value": new_grade,
-      "student": this.state.student_id,
-      "course": this.state.task.course,
-      "issued_by": Number(sessionStorage.getItem('userID'))
-    }
+      task: this.state.task.id,
+      value: new_grade,
+      student: this.state.student_id,
+      course: this.state.task.course,
+      issued_by: Number(sessionStorage.getItem("userID")),
+    };
   }
 
   handleChange = (e) => {
@@ -198,7 +198,7 @@ export class Grades extends Component {
     if (this.state.loaded == false) {
       return (
         <Col xs={10} className="mb-5 mt-5">
-          <Spinner className="spinner"/>
+          <Spinner className="spinner" />
         </Col>
       );
     } else {
