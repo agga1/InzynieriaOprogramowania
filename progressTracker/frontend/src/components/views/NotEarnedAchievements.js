@@ -4,10 +4,9 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import Button from '../layout/Button';
 import AchievementIcon from "../layout/AchievementIcon";
 
-export class Achievements extends Component {
+export class NotEarnedAchievements extends Component {
   constructor(props) {
     super(props)
 
@@ -44,7 +43,7 @@ export class Achievements extends Component {
     .then((data) => {
       this.setState(() => {
         return {
-          achievements: data.achievements,
+          achievements: data.achievements.not_earned,
           loaded: true,
         };
       });
@@ -76,12 +75,6 @@ export class Achievements extends Component {
               );
             })}
           </Row>
-          <Row className="pr-5 pl-5 mb-4">
-            <Col xs={7}></Col>
-            <Col xs={5} className="mt-4 pr-5 text-right">
-              <Button path="/teacher/achievement/add" text="Add achievement"/>
-            </Col>
-          </Row>
         </Col>
       );
     }
@@ -91,12 +84,12 @@ export class Achievements extends Component {
   render() {
     return (
       <Fragment>
-        <Header button1_text="My Courses" button2_text="Log Out" button1_path="/teacher/courses" button2_path="/"
+        <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/"
                 is_logout={true}/>
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}/>
-            <Col xs={10} className="task-heading title text-left">Achievements</Col>
+            <Col xs={10} className="task-heading title text-left">Achievements to get</Col>
           </Row>
           <Row>
             <Col xs={2} className="ml-0 pl-0">
@@ -112,4 +105,4 @@ export class Achievements extends Component {
   }
 }
 
-export default Achievements
+export default NotEarnedAchievements

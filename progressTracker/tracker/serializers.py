@@ -24,11 +24,34 @@ class TaskSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         task = Task.objects.create(**validated_data)
         task.save()
+        self.update_parents(task)
         return task
 
     def update(self, instance, validated_data):
         Task.objects.filter(pk=instance.id).update(**validated_data)
-        return Task.objects.get(pk=instance.id)
+        task = Task.objects.get(pk=instance.id)
+        self.update_parents(task)
+        return task
+
+    def update_parents(self, task):
+        parent_task = task.parent_task
+        if parent_task is None:
+            return
+        child_tasks = Task.objects.filter(parent_task=parent_task)
+        mins = [child.grade_min for child in child_tasks]
+        maxs = [child.grade_max for child in child_tasks]
+        agg = parent_task.aggregation_method
+        if agg == Task.AggregationMethod.AVERAGE:
+            parent_task.grade_min = sum(mins)/len(mins)
+            parent_task.grade_max = sum(maxs)/len(maxs)
+        elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
+            parent_task.grade_min = sum(mins) / len(mins)
+            parent_task.grade_max = sum(maxs) / len(maxs)
+        elif agg == Task.AggregationMethod.SUM:
+            parent_task.grade_min = sum(mins)
+            parent_task.grade_max = sum(maxs)
+
+
 
 # Course Serializers ---------------------------------------------------
 class CourseDetailSerializer(serializers.ModelSerializer):
@@ -60,7 +83,8 @@ class CreateCourseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         course = Course.objects.create(name=validated_data['name'], teacher=validated_data['teacher'],
-                                       pass_threshold=validated_data['pass_threshold'])
+                                       pass_threshold=validated_data['pass_threshold'],
+                                       description=validated_data['description'])
         for student in validated_data['student']:
             course.student.add(student)
         course.save()
@@ -145,7 +169,8 @@ class CreateGradeSerializer(serializers.ModelSerializer):
             Grade.objects.filter(pk=parent_grade.id).update(value=values.mean())
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
             weights = np.array([grade.task.weight for grade in grades])
-            Grade.objects.filter(pk=parent_grade.id).update(value=np.average(values, weights))
+            avg = np.average(a=values, weights=weights)
+            Grade.objects.filter(pk=parent_grade.id).update(value=avg)
         elif agg == Task.AggregationMethod.SUM:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
         self.recalculate_parent(parent_grade)
@@ -160,7 +185,7 @@ class CreateGradeSerializer(serializers.ModelSerializer):
 class CreateAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ('course', 'kind', 'args')
+        fields = ('course', 'kind', 'args', 'name')
 
     def create(self, validated_data):
         ach = Achievement.objects.create(**validated_data)
@@ -170,4 +195,4 @@ class CreateAchievementSerializer(serializers.ModelSerializer):
 class ListAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ('id', 'course', 'kind', 'args')
+        fields = ('id', 'course', 'kind', 'args', 'name')
