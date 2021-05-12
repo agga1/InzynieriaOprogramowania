@@ -71,6 +71,7 @@ export class TeacherLoginPage extends Component {
            if(!json.user.is_student){
             localStorage.setItem('token', json.token);
             sessionStorage.setItem('isStudent',false);
+            sessionStorage.setItem('userID',json.user.id);
             this.setState({
                 username : json.user.username,
                 password : json.user.password

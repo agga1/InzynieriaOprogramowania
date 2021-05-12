@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import AddTaskForm from '../layout/AddTaskForm'
 import Header from '../layout/Header';
+import Footer from '../layout/Footer';
 
 export class AddTask extends Component {
     constructor(props){
@@ -13,7 +14,14 @@ export class AddTask extends Component {
             gradeMin: 0,
             gradeMax: 0,
             weight: 0,
-            deadline: ''
+            isExtra: false,
+            deadline: '2021-04-20T23:22:00Z',
+            aggregation: {label:"sum", value:"SUM"},
+            aggregationOptions:[
+                {value:"AVG", label: "average"},
+                {label:"weighted average", value:"WAVG"},
+                {label:"sum", value:"SUM"},
+            ]
        }
 
         this.handleName = this.handleName.bind(this);
@@ -22,6 +30,8 @@ export class AddTask extends Component {
         this.handleGradeMax = this.handleGradeMax.bind(this);
         this.handleWeight = this.handleWeight.bind(this);
         this.handleDeadline = this.handleDeadline.bind(this);
+        this.handleExtra = this.handleExtra.bind(this);
+        this.handleAggregation = this.handleAggregation.bind(this);
     }
 
     componentDidMount(){
@@ -78,9 +88,31 @@ export class AddTask extends Component {
         })
 	}
 
+    handleExtra = () => {
+        this.setState( (state) => {
+            return {
+                isExtra: !state.isExtra,        
+            }   
+        })
+	}
+
+    handleAggregation = () => {
+        this.setState( (state) => {
+            return {
+                isExtra: !state.isExtra,        
+            }   
+        })
+	}
+
 	handleDeadline = event => {
         this.setState({
             deadline : event.target.value
+        })
+	}
+
+    handleAggregation = (event) => {
+        this.setState({
+            aggregation: event,    
         })
 	}
 
@@ -101,11 +133,15 @@ export class AddTask extends Component {
                     + `grade min: ${this.state.gradeMin}\n`
                     + `grade max: ${this.state.gradeMax}\n`
                     + `weight: ${this.state.weight}\n`
+                    + `aggregation method: ${this.state.aggregation}\n`
+                    + `is extra: ${this.state.isExtra}\n`
                     + `deadline: ${this.state.deadline}\n`
                 );
+                window.location.href="/teacher/course/tasks";
             }
         })
         .catch(err => console.log(err));
+
     }
 
     extractID(url) {
@@ -123,36 +159,25 @@ export class AddTask extends Component {
     prepareData() {
         const courseUrl = localStorage.getItem('courseUrl');
         const course = this.extractID(courseUrl)
-        if (localStorage.getItem('taskUrl') == null) {
-            return {
-                name: this.state.name,
-                grade_min: this.state.gradeMin,
-                grade_max: this.state.gradeMax,
-                is_extra: false,
-                weight: this.state.weight,
-                deadline: this.state.deadline,
-                aggregation_method: "AVG",
-                course: course
-            }
-        } else {
-            const taskUrl = localStorage.getItem('taskUrl');
-            const parent_task = this.extractID(taskUrl);
-            return {
-                name: this.state.name,
-                grade_min: this.state.gradeMin,
-                grade_max: this.state.gradeMax,
-                is_extra: false,
-                weight: this.state.weight,
-                deadline: this.state.deadline,
-                aggregation_method: "AVG",
-                course: course,
-                parent_task: parent_task
-            }
+
+        return {
+            name: this.state.name,
+            grade_min: this.state.gradeMin,
+            grade_max: this.state.gradeMax,
+            is_extra: this.state.isExtra,
+            weight: this.state.weight,
+            deadline: this.state.deadline,
+            description: this.state.description,
+            aggregation_method: this.state.aggregation.value,
+            course: course,
+            parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))  
         }
+
+
     }
 
     render() {
-        const { name , description, gradeMin, gradeMax, weight, deadline} = this.state;
+        const { name , description, gradeMin, gradeMax, weight, isExtra, aggregation, deadline} = this.state;
         return (
             <Fragment>
                 <Header button1_text="My Tasks" button2_text="Log Out" button1_path="/teacher/course/tasks" button2_path="/" is_logout={true}/>
@@ -173,17 +198,24 @@ export class AddTask extends Component {
                             handleWeight = {this.handleWeight}
                             handleDeadline = {this.handleDeadline}
                             handleSubmit = {this.handleSubmit}
+                            handleExtra = {this.handleExtra}
+                            handleAggregation = {this.handleAggregation}
                             name = {name}
                             description = {description}
                             gradeMin = {gradeMin}
                             gradeMax = {gradeMax}
                             weight = {weight}
+                            isExtra = {isExtra}
                             deadline = {deadline}
                             readOnly = {false}
+                            aggregation = {aggregation}
+                            aggregationOptions = {this.state.aggregationOptions}
                         />
                         </Col>
                     </Row>
+                    <Row className="mb-5 mt-5" />
                 </Container>
+                <Footer/>   
             </Fragment>
         )
     }

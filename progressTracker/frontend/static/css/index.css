@@ -77,6 +77,10 @@ html, body{
   margin: 25vh 0 !important;
 }
 
+.spinner-no-style{
+
+}
+
 .form {
   background: #483ebb !important;
   margin-top: 2vw !important;
@@ -104,7 +108,7 @@ html, body{
   padding: 0 20px;
 }
 
-.input_window {
+.input_window, .input_window option {
   border-radius: 25px !important;
 }
 

@@ -6,6 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import { getTask } from '../functions/helpers'
 import Button from '../layout/Button';
+import parse from "html-react-parser";
 
 export class TaskDetails extends Component {
     constructor(props) {
@@ -37,10 +38,10 @@ export class TaskDetails extends Component {
 
 
     prepareView() {
-        if (this.state.loaded == false) {
+        if (!this.state.loaded) {
             return (
                 <Col xs={10} className="mb-5 mt-5">
-                    <Spinner />
+                    <Spinner className="spinner"/>
                 </Col>
             );
         } else {
@@ -50,9 +51,9 @@ export class TaskDetails extends Component {
                         <h4 className="task-heading font-weight-bold">Description:</h4>
                     </Row>
                     <Row className="pr-5 pl-5 ml-2 mb-4">
-                        <p>
-                            {this.state.task.description}
-                        </p>
+                        <div>
+                            {parse(this.state.task.description)}
+                        </div>
                     </Row>
                     <Row className="pr-5 pl-5 mb-4">
                         <Col xs={7}>

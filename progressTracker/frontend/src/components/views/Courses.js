@@ -63,7 +63,7 @@ export class Courses extends Component {
     if (this.state.loaded == false) {
       return (
         <Col xs={12}>
-          <Spinner />
+          <Spinner className="spinner"/>
         </Col>
       );
     } else {
