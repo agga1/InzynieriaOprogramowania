@@ -53,7 +53,7 @@ export class Grades extends Component {
   }
 
   getStudentsGrades() {
-    if (sessionStorage.getItem("isStudent") == "false") {
+    if (localStorage.getItem("isStudent") == "false") {
       return fetch(localStorage.getItem("taskUrl") + "grades", {
         method: "GET",
         headers: {
@@ -175,7 +175,7 @@ export class Grades extends Component {
       value: new_grade,
       student: this.state.student_id,
       course: this.state.task.course,
-      issued_by: Number(sessionStorage.getItem("userID")),
+      issued_by: Number(localStorage.getItem("userID")),
     };
   }
 

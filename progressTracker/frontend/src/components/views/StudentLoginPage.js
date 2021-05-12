@@ -2,7 +2,7 @@ import React, { Component, Fragment} from 'react'
 import { Container, Row, Col } from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
-import LoginForm from '../layout/LoginForm'
+import LoginForm from '../layout/forms/LoginForm'
 
 
 export class StudentLoginPage extends Component {
@@ -81,7 +81,7 @@ export class StudentLoginPage extends Component {
                 })
             if(json.user.is_student){
                 localStorage.setItem('token', json.token);
-                sessionStorage.setItem('isStudent', true);
+                localStorage.setItem('isStudent', true);
 
                 this.setState({
                     username : json.user.username,

@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import {Container, Row, Col} from 'reactstrap';
-import AddAchievementForm from '../layout/AddAchievementForm'
+import AddAchievementForm from '../layout/forms/AddAchievementForm'
 import Header from '../layout/Header';
 import {extractID, getArgs, getFullRule} from '../functions/helpers';
 

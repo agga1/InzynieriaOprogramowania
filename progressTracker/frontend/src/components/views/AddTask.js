@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'reactstrap';
-import AddTaskForm from '../layout/AddTaskForm'
+import AddTaskForm from '../layout/forms/AddTaskForm'
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 

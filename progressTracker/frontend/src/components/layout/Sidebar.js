@@ -11,7 +11,7 @@ export class Sidebar extends Component {
         this.state = {
              chosen_students: [],
              show: false,
-             isStudent: sessionStorage.getItem('isStudent'),
+             isStudent: localStorage.getItem('isStudent'),
 		}
         this.showModal = this.showModal.bind(this);
         this.handleStudents = this.handleStudents.bind(this);
@@ -27,7 +27,6 @@ export class Sidebar extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        
         fetch(localStorage.getItem('courseUrl')+'add_students/', {
             method : 'POST',
             headers : {
@@ -45,7 +44,6 @@ export class Sidebar extends Component {
         }
         )
         .catch(err => console.log(err));
-        console.log('kura');
     }
 
     handleCancel = () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Form from 'react-bootstrap/Form'
-import Button from './Button'
-import SelectStudentsField from './SelectStudentsField'
+import Button from '../Button'
+import SelectStudentsField from '../SelectStudentsField'
 
 
 
@@ -21,8 +21,13 @@ export class AddCourseForm extends Component {
                 </Form.Group>
 
                 <Form.Group controlId="formPassThreshold">
-                    <Form.Label className="form_text text-left padding-left-10">Pass threshold</Form.Label>
+                <Form.Label className="form_text text-left padding-left-10">Pass threshold</Form.Label>
                     <Form.Control type="text" placeholder="Enter pass threshold" className="input_window" onChange={this.props.handlePassThreshold} value={this.props.pass_threshold || ''} />
+                </Form.Group>
+
+                <Form.Group controlId="formDescription">
+                    <Form.Label className="form_text text-left padding-left-10">Description</Form.Label>
+                    <Form.Control type="text" as="textarea" rows={7} placeholder="Enter description" className="input_window" onChange={this.props.handleDescription} value={this.props.description || ''} />
                 </Form.Group>
 
                 <Form.Group controlId="formStudents">

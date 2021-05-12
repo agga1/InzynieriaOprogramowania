@@ -129,7 +129,7 @@ export class TaskIcon extends Component {
 
   prepareButtons(taskUrl) {
     // if (this.state.loaded) {
-      if (sessionStorage.getItem("isStudent") == "true") {
+      if (localStorage.getItem("isStudent") == "true") {
         return (
           <List>
             <ListInlineItem className="task-link pr-3">
@@ -199,7 +199,7 @@ export class TaskIcon extends Component {
             </Col>
             <Col xs={3} className="text-right pl-0 pt-3">
               <div className=" points">
-                {sessionStorage.getItem("isStudent") == "false" ? ( "" ) : ( <h1 className="your-points">{this.props.grade}/</h1>)}
+                {localStorage.getItem("isStudent") == "false" ? ( "" ) : ( <h1 className="your-points">{this.props.grade}/</h1>)}
                 <h1 className="max-points">{this.props.max_points}</h1>
               </div>
             </Col>
