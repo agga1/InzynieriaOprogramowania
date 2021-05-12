@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Nav,NavItem } from 'reactstrap';
 import Button from './Button'
-import AddStudents from './AddStudents';
+import AddStudentsModal from './AddStudentsModal';
 
 
 export class Sidebar extends Component { 
@@ -98,7 +98,7 @@ export class Sidebar extends Component {
         else{
             return(
                 <div className="task-sidebar">
-                    <AddStudents 
+                    <AddStudentsModal 
                         show={this.state.show}
                         chosen_students = {this.state.chosen_students}
                         handleStudents = {this.handleStudents}

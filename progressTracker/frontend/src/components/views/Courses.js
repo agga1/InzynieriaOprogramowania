@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Container, Row, Col } from "reactstrap";
-import CourseIcon from "../layout/CourseIcon";
+import CourseIcon from "../layout/icons/CourseIcon";
 import Spinner from "../layout/Spinner";
 import Header from "../layout/Header";
-import AddCourseCard from "../layout/AddCourseCard";
+import AddCourseIcon from "../layout/icons/AddCourseIcon";
 import Footer from "../layout/Footer";
 
 export class Courses extends Component {
@@ -71,7 +71,7 @@ export class Courses extends Component {
       if (localStorage.getItem('isStudent') == "false") {
         comp = (
           <Col md={4} sm={6} xs={12} className="mb-4">
-            <AddCourseCard path="/teacher/course/add" />
+            <AddCourseIcon path="/teacher/course/add" />
           </Col>
         );
       } else {

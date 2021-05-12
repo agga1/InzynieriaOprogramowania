@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import AchievementIcon from "../layout/AchievementIcon";
+import AchievementIcon from "../layout/icons/AchievementIcon";
 
 export class NotEarnedAchievements extends Component {
   constructor(props) {

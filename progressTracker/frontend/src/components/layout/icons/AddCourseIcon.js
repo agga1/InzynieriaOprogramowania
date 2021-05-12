@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardText, CardTitle, Col } from "reactstrap";
-import Button from "./Button";
+import { Card, CardBody, CardTitle } from "reactstrap";
 
-export class AddCourseCard extends Component {
+export class AddCourseIcon extends Component {
   render() {
     return (
       <div>
@@ -25,4 +24,4 @@ export class AddCourseCard extends Component {
   }
 }
 
-export default AddCourseCard;
+export default AddCourseIcon;

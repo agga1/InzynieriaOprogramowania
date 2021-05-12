@@ -96,7 +96,7 @@ export class TaskDetails extends Component {
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={2} />
                         <Col xs={6} className="task-heading title text-left">{this.state.task.name}</Col>
-                        <Col xs={3} className="task-heading login_heading text-right pr-5 pt-2" style={{ "fontSize": "40px" }}>{this.state.task.grade_max}</Col>
+                        <Col xs={3} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.state.task.grade_max}</Col>
                     </Row>
                     <Row>
                         <Col xs={2} className="ml-0 pl-0">

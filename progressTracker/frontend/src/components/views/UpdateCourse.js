@@ -148,7 +148,7 @@ export class CourseUpdate extends Component {
         <Container fluid>
           <Row xs={3} className="mt-4 mb-5 ml-3">
             <Col xs={6} className="heading text-center login_heading">
-              Update task
+              Update course
             </Col>
           </Row>
           <Row className="mt-2">

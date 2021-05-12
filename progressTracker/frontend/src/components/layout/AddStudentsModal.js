@@ -1,9 +1,9 @@
-import React, {  Component, Fragment } from 'react'
+import React, {  Component } from 'react'
 import { Modal,ModalHeader,ModalBody,ModalFooter } from 'reactstrap';
 import Button from './Button';
 import SelectStudentsField from './SelectStudentsField'
 
-export class AddStudents extends Component {
+export class AddStudentsModal extends Component {
     render() {
         return (
             <Modal isOpen={this.props.show} unmountOnClose={false}>
@@ -23,4 +23,4 @@ export class AddStudents extends Component {
     }
 }
 
-export default AddStudents
+export default AddStudentsModal

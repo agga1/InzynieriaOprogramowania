@@ -4,7 +4,6 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import StudentRow from '../layout/StudentRow';
 import {getStudents, getTask} from '../functions/helpers'
 
 export class StudentsList extends Component {
@@ -60,14 +59,13 @@ export class StudentsList extends Component {
             <tbody>
               {this.state.students.map((student) => {
                 return (
-                  <StudentRow
-                    key={this.state.students.indexOf(student)}
-                    id={this.state.students.indexOf(student)}
-                    first_name={student.user.first_name}
-                    last_name={student.user.last_name}
-                    email={student.user.email}
-                    index_nr={student.index_nr}
-                  />
+                  <tr key={this.state.students.indexOf(student)}>
+                    <th scope="row">{this.state.students.indexOf(student)}</th>
+                    <td>{student.user.first_name}</td>
+                    <td>{student.user.last_name}</td>
+                    <td>{student.user.email}</td>
+                    <td>{student.index_nr}</td>
+                  </tr>
                 );
               })}
             </tbody>

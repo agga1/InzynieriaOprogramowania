@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardBody, CardText, CardTitle, Col } from 'reactstrap';
-import Button from './Button'
+import Button from '../Button'
 
 export class CourseIcon extends Component { 
     getInfo(isStudent){
