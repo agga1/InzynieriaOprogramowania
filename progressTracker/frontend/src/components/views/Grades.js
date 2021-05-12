@@ -5,7 +5,7 @@ import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Modal from "../layout/RateStudentModal";
-import { getStudents, getTask } from "../functions/getData";
+import { getStudents, getTask } from "../functions/helpers";
 
 export class Grades extends Component {
   constructor(props) {

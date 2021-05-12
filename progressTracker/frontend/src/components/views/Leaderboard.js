@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import {getStudents} from '../functions/getData'
+import {getStudents} from '../functions/helpers'
 import { MDBDataTable } from 'mdbreact';
 import {ProgressBar} from "react-bootstrap";
 

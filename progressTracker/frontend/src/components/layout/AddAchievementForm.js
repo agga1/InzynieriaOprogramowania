@@ -1,9 +1,24 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "./Button";
-import { Row, Col } from "reactstrap";
+import {Row, Col} from "reactstrap";
+import Select from 'react-select'
+import {options, convertAchievementRule} from '../functions/helpers'
+
 
 export class AddAchievementForm extends Component {
+  prepareOptions() {
+    let tab = [];
+    for (let option of options) {
+      tab.push({
+        value: convertAchievementRule(option),
+        label: option
+      })
+    }
+    return tab
+  }
+
+
   render() {
     return (
       <Form className="form">
@@ -40,18 +55,17 @@ export class AddAchievementForm extends Component {
           <Col xs={12}>
             <Form.Group controlId="formBasicDescription">
               <Form.Label className="form_text">Student will be granted this achievement once he/she:</Form.Label>
-              <Form.Control
-                xs={12}
-                type="text"
-                as="textarea"
-                className="input_window"
-                onChange={this.props.handleDescription}
-                value={this.props.description || ""}
+              <Select
+                classNamePrefix="input_window "
+                isMulti={false}
+                value={this.props.rule}
+                onChange={this.props.handleRule}
+                options={this.prepareOptions()}
               />
             </Form.Group>
           </Col>
         </Row>
-        <Row style={{ alignItems: "baseline" }}>
+        <Row style={{alignItems: "baseline"}}>
           <Col xs={2}>
             <Form.Group as={Row}>
               <Form.Label className="form_text_variable">X =</Form.Label>
@@ -75,20 +89,6 @@ export class AddAchievementForm extends Component {
                   className="input_window"
                   onChange={this.props.handleY}
                   value={this.props.y || 0}
-                  readOnly={this.props.readOnly}
-                />
-              </Col>
-            </Form.Group>
-          </Col>
-          <Col xs={2}>
-            <Form.Group as={Row}>
-              <Form.Label className="form_text_variable">Z =</Form.Label>
-              <Col>
-                <Form.Control
-                  type="text"
-                  className="input_window"
-                  onChange={this.props.handleZ}
-                  value={this.props.z || 0}
                   readOnly={this.props.readOnly}
                 />
               </Col>

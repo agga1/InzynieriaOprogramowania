@@ -199,6 +199,19 @@ html, body{
   font-size: 24px;
 }
 
+.achievement-name{
+  color: #ff8c42 !important;
+  font-size: 48px;
+  font-style: italic;
+  font-weight: 900;
+}
+
+.achievement-rule{
+  color: #483ebb !important;
+  font-size: 28px;
+  margin-top: 32px;
+}
+
 .w-80{
   width:90% !important;
 }
