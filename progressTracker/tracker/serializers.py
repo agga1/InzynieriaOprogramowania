@@ -145,7 +145,8 @@ class CreateGradeSerializer(serializers.ModelSerializer):
             Grade.objects.filter(pk=parent_grade.id).update(value=values.mean())
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
             weights = np.array([grade.task.weight for grade in grades])
-            Grade.objects.filter(pk=parent_grade.id).update(value=np.average(values, weights))
+            avg = np.average(a=values, weights=weights)
+            Grade.objects.filter(pk=parent_grade.id).update(value=avg)
         elif agg == Task.AggregationMethod.SUM:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
         self.recalculate_parent(parent_grade)
