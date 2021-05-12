@@ -1,21 +1,28 @@
 import React, { Component, Fragment } from "react";
 import { Container, Row, Col } from "reactstrap";
-import AddTaskForm from "../layout/forms/AddTaskForm";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Spinner from "../layout/Spinner";
-import { getTask } from "../functions/helpers";
+import { getCourse } from "../functions/helpers";
+import AddCourseForm from '../layout/forms/AddCourseForm'
 
-export class AddTask extends Component {
+export class CourseUpdate extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      task: {},
+      course: {},
       description: "",
+      name: "",
+      chosen_students: [],
+      teacher: '',
       loaded: false,
     };
+
+    this.handleName = this.handleName.bind(this);
+    this.handleStudents = this.handleStudents.bind(this);
     this.handleDescription = this.handleDescription.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNone = this.handleNone.bind(this);
   }
 
@@ -33,14 +40,20 @@ export class AddTask extends Component {
             alert("Only teacher can add tasks");
             window.location.href = "/student/courses";
           }
+          else{
+            this.setState({ 
+                teacher : resp.user.first_name + " " + resp.user.last_name,
+            });
+        }
         })
         .catch((err) => console.log(err));
 
-      getTask()
+      getCourse()
         .then((data) => {
           this.setState(() => ({
-            task: data,
+            course: data,
             description: data.description,
+            name: data.name,
             loaded: true,
           }));
         })
@@ -57,9 +70,21 @@ export class AddTask extends Component {
     });
   };
 
+  handleName = (event) => {
+    this.setState({
+      name: event.target.value,
+    });
+  };
+
+  handleStudents = (e) => {
+    this.setState({chosen_students: e});
+  }
+
+  handleNone = (e) => { };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    fetch(localStorage.getItem("taskUrl"), {
+    fetch(localStorage.getItem("courseUrl"), {
       method: "PATCH",
       headers: {
         Authorization: `Token ${localStorage.getItem("token")}`,
@@ -68,16 +93,16 @@ export class AddTask extends Component {
       body: JSON.stringify(this.prepareData()),
     })
       .then(() => {
-        window.location.href = "/teacher/task/details";
+        window.location.href = "/teacher/course/details";
       })
       .catch((err) => console.log(err));
   };
 
-  handleNone = (e) => { };
-
   prepareData() {
     return {
       description: this.state.description,
+      name: this.state.name,
+      student: this.state.student,
     };
   }
 
@@ -89,30 +114,22 @@ export class AddTask extends Component {
         </Col>
       );
     } else {
-      const { description } = this.state;
+      const { description, name, chosen_students } = this.state;
       return(
         <Col xs={10} className="text-center">
-          <AddTaskForm
-            buttonText="Update"
-            handleName={this.handleNone}
+          <AddCourseForm
+            buttonText="Update course"
+            handleName={this.handleName}
             handleDescription={this.handleDescription}
-            handleGradeMin={this.handleNone}
-            handleGradeMax={this.handleNone}
-            handleWeight={this.handleNone}
-            handleDeadline={this.handleNone}
-            handleExtra = {this.handleNone}
-            handleAggregation = {this.handleNone}
             handleSubmit={this.handleSubmit}
-            name={this.state.task.name}
-            description={description}
-            gradeMin={this.state.task.gradeMin}
-            gradeMax={this.state.task.gradeMax}
-            weight={this.state.task.weight}
-            deadline={this.state.task.deadline}
+            handleStudents = {this.handleStudents}
+            handlePassThreshold = {this.handleNone}
+            teacher = {this.state.teacher}
+            name = {name}
+            description = {description}
+            pass_threshold = {this.state.course.pass_threshold}
+            chosen_students = {chosen_students} 
             readOnly={true}
-            isExtra = {this.state.task.is_extra}
-            aggregation = {{label:this.state.task.aggregation_method}}
-            aggregationOptions = {[]}
           />
       </Col>);
     }}
@@ -146,4 +163,4 @@ export class AddTask extends Component {
   }
 }
 
-export default AddTask;
+export default CourseUpdate;

@@ -23,24 +23,25 @@ export class SelectStudentsField extends Component {
         })
         .then(res => res.json())
         .then(resp => {
-            this.setState({
-                students : this.prepareStudents(resp)
-            });    
+            this.prepareStudents(resp);
         })
         .catch(err => console.log(err)); 
     }
 
 
     prepareStudents(students){
-        var tab = [];
-        var student;
+        let tab = [];
+        let student;
         for(student in students){
             tab.push({
                 value: students[student].user.id,
-                label: students[student].user.first_name + students[student].user.last_name+"; ["+students[student].user.email+"]"
+                label: students[student].user.first_name +" "+ students[student].user.last_name+"; ["+students[student].user.email+"]"
             })
         }
-        return tab
+
+        this.setState({
+            students : tab,
+        });
     }
 
     render() {

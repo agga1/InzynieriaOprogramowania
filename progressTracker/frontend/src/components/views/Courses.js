@@ -86,6 +86,7 @@ export class Courses extends Component {
               <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
                 <CourseIcon
                   course_name={course.name}
+                  description={course.description}
                   teacher_name={course.teacher_name}
                   course_url={course.url}
                   course_details_path={tasksPath}

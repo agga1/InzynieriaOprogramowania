@@ -17,6 +17,7 @@ import AddAchievement from './AddAchievement'
 import Progress from './Progress'
 import Footer from '../layout/Footer'
 import CourseDetails from "./CourseDetails";
+import CourseUpdate from "./CourseUpdate";
 
 
 export class HomePage extends Component {
@@ -55,6 +56,7 @@ export class HomePage extends Component {
                     <Route path='/student/course/progress' component={Progress}/>
                     <Route path='/teacher/course/details' component={CourseDetails}/>
                     <Route path='/student/course/details' component={CourseDetails}/>
+                    <Route path='/teacher/course/update' component={CourseUpdate}/>
                 </Switch>
             </Router>
            

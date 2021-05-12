@@ -22,12 +22,12 @@ export class AddCourseForm extends Component {
 
                 <Form.Group controlId="formPassThreshold">
                 <Form.Label className="form_text text-left padding-left-10">Pass threshold</Form.Label>
-                    <Form.Control type="text" placeholder="Enter pass threshold" className="input_window" onChange={this.props.handlePassThreshold} value={this.props.pass_threshold || ''} />
+                    <Form.Control type="text" placeholder="Enter pass threshold" className="input_window" onChange={this.props.handlePassThreshold} value={this.props.pass_threshold || ''} readOnly={this.props.readOnly}/>
                 </Form.Group>
 
                 <Form.Group controlId="formDescription">
                     <Form.Label className="form_text text-left padding-left-10">Description</Form.Label>
-                    <Form.Control type="text" as="textarea" rows={7} placeholder="Enter description" className="input_window" onChange={this.props.handleDescription} value={this.props.description || ''} />
+                    <Form.Control type="text" as="textarea" rows={4} placeholder={this.props.readOnly==true ? "" : "Enter description"} className="input_window" onChange={this.props.handleDescription} value={this.props.description} />
                 </Form.Group>
 
                 <Form.Group controlId="formStudents">
@@ -39,7 +39,7 @@ export class AddCourseForm extends Component {
                 </Form.Group>
                 
 
-                <Button className="form-group mt-3" type="submit" onClick={this.props.handleSubmit} text="Add course">
+                <Button className="form-group mt-3" type="submit" onClick={this.props.handleSubmit} text={this.props.buttonText}>
                 </Button>
             </Form>
         )

@@ -161,7 +161,7 @@ export class CourseDetails extends Component {
                         </Col>
                         {localStorage.getItem('isStudent') === 'true' ? <Col></Col> :
                             <Col xs={5} className="pr-5 text-right">
-                                <Button path="/teacher/task/update" text="Edit description" />
+                                <Button path="/teacher/course/update" text="Edit description" />
                             </Col>
                         }
                     </Row>
