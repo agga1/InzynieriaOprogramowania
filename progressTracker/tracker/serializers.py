@@ -161,7 +161,7 @@ class CreateGradeSerializer(serializers.ModelSerializer):
 class CreateAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ('course', 'kind', 'args')
+        fields = ('course', 'kind', 'args', 'name')
 
     def create(self, validated_data):
         ach = Achievement.objects.create(**validated_data)
@@ -171,4 +171,4 @@ class CreateAchievementSerializer(serializers.ModelSerializer):
 class ListAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ('id', 'course', 'kind', 'args')
+        fields = ('id', 'course', 'kind', 'args', 'name')
