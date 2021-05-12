@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Container, Row, Col } from "reactstrap";
-import TaskIcon from "../layout/TaskIcon";
+import TaskIcon from "../layout/icons/TaskIcon";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";

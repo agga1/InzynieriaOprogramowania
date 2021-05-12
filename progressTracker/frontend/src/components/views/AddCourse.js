@@ -12,6 +12,7 @@ export class AddCourse extends Component {
             name : '',
             teacher : '',
             teacher_id : '',
+            description: "",
             pass_threshold : '',
             chosen_students : [],
        }
@@ -19,6 +20,7 @@ export class AddCourse extends Component {
         this.handleName = this.handleName.bind(this);
         this.handlePassThreshold = this.handlePassThreshold.bind(this);
         this.handleStudents = this.handleStudents.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -68,6 +70,12 @@ export class AddCourse extends Component {
         this.setState({chosen_students: e});
     }
 
+    handleDescription = event => {
+        this.setState({
+            description : event.target.value
+        })
+	}
+
     handleSubmit = (e) =>{
        e.preventDefault();
         fetch('/api/courses/', {
@@ -84,10 +92,15 @@ export class AddCourse extends Component {
                 alert("Course "+this.state.name+" added succesfully.\nteacher: "
                 +this.state.teacher+"\n"
                 +"pass threshold: "+this.state.pass_threshold);
+                window.location.href = "/teacher/courses";
             }
+            else{
+                alert("Course not added.")
+            }
+            
         })
         .catch(err => console.log(err));
-        }
+    }
 
     prepareData(){
         var students_id = this.state.chosen_students;
@@ -96,13 +109,14 @@ export class AddCourse extends Component {
             name: this.state.name,
             teacher: this.state.teacher_id,
             student: students_id,
+            description: this.state.description,
             pass_threshold: this.state.pass_threshold
         }
     }
 
 
     render() {
-        const { name, pass_threshold, chosen_students} = this.state;
+        const { name, pass_threshold, description, chosen_students} = this.state;
         const coursesPath =  localStorage.getItem("isStudent") === "true" ? "/student/courses" : "/teacher/courses";
         return (
             <Fragment>
@@ -115,14 +129,18 @@ export class AddCourse extends Component {
                         <Col xs={2}></Col>
                         <Col xs={8} >
                         <AddCourseForm
+                            buttonText="Add course"
                             handleName = {this.handleName}
                             handlePassThreshold = {this.handlePassThreshold}
                             handleStudents = {this.handleStudents}
                             handleSubmit = {this.handleSubmit}
+                            handleDescription = {this.handleDescription}
                             teacher = {this.state.teacher}
                             name = {name}
+                            description = {description}
                             pass_threshold = {pass_threshold}
-                            chosen_students = {chosen_students} 
+                            chosen_students = {chosen_students}
+                            readOnly={false} 
                         />
                         </Col>
                     </Row> 

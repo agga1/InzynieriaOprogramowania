@@ -5,12 +5,9 @@ import {
   Button,
   Row,
   CardTitle,
-  Col,
-  List,
-  ListInlineItem,
-  Spinner,
+  Col
 } from "reactstrap";
-import {getFullRule} from '../functions/helpers'
+import {getFullRule} from '../../functions/helpers'
 
 export class AchievementIcon extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reactstrap";
-import Spinner from "./Spinner"
+import Spinner from "../Spinner"
 
 export class TaskIcon extends Component {
   constructor(props) {
@@ -179,9 +179,6 @@ export class TaskIcon extends Component {
           </List>
         );
       }
-    // } else {
-    //   return <Spinner />;
-    // }
   }
 
   render() {

@@ -45,6 +45,29 @@ export const getTask = () => {
   // }
 }
 
+export const getCourse = () => {
+  // if(localStorage.getItem('isStudent')=='false'){
+  return (fetch(localStorage.getItem('courseUrl'), {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`
+    }
+  })
+    .then(response => {
+      if (response.status > 400) {
+        throw new Error("Something went wrong!");
+      }
+      return response.json();
+    })
+    .then(data => {
+      return (data);
+    }))
+  // }
+  // else{
+  //     throw new Error("Only teacher can rate students!");
+  // }
+}
+
 export const extractID = (url) => {
   let idString = "";
   let slashes = 0;

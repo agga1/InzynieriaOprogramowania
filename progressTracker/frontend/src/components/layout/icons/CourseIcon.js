@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardBody, CardText, CardTitle, Col } from 'reactstrap';
-import Button from './Button'
+import Button from '../Button'
 
 export class CourseIcon extends Component { 
     getInfo(isStudent){
@@ -8,10 +8,16 @@ export class CourseIcon extends Component {
             return (<CardText className="card-text">
                 <dt className="col-xs-4">Teacher:</dt>
                 <dd className="col-xs-8">{this.props.teacher_name}</dd>
+                <dt className="col-xs-4">Description:</dt>
+                <dd className="col-xs-8">{this.props.description}</dd>
                 </CardText> )
         }
         else{
-            return(<CardText></CardText>);
+            return(<CardText>
+                    <dt className="col-xs-4">Description:</dt>
+                    <dd className="col-xs-8">{this.props.description}</dd>
+                </CardText>
+            );
         }
     }
 

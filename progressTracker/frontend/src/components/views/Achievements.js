@@ -5,7 +5,7 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
-import AchievementIcon from "../layout/AchievementIcon";
+import AchievementIcon from "../layout/icons/AchievementIcon";
 
 export class Achievements extends Component {
   constructor(props) {

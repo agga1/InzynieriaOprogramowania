@@ -1,8 +1,8 @@
-import React, { Component, Fragment, useState } from 'react'
+import React, { Component, Fragment } from 'react'
 import Header from '../layout/Header'
 import StudentLoginPage from './StudentLoginPage'
 import TeacherLoginPage from './TeacherLoginPage'
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Courses from './Courses'
 import Tasks from './Tasks'
 import StudentsList from './StudentsList'
@@ -17,6 +17,7 @@ import AddAchievement from './AddAchievement'
 import Progress from './Progress'
 import Footer from '../layout/Footer'
 import CourseDetails from "./CourseDetails";
+import UpdateCourse from "./UpdateCourse";
 import {NotEarnedAchievements} from "./NotEarnedAchievements";
 
 
@@ -57,6 +58,7 @@ export class HomePage extends Component {
                     <Route path='/student/course/not-earned-achievements' component={NotEarnedAchievements}/>
                     <Route path='/teacher/course/details' component={CourseDetails}/>
                     <Route path='/student/course/details' component={CourseDetails}/>
+                    <Route path='/teacher/course/update' component={UpdateCourse}/>
                 </Switch>
             </Router>
            

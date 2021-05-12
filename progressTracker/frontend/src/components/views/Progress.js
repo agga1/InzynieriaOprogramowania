@@ -6,7 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import {ProgressBar} from "react-bootstrap";
-import AchievementIcon from "../layout/AchievementIcon";
+import AchievementIcon from "../layout/icons/AchievementIcon";
 
 export class Progress extends Component {
   constructor(props) {
