@@ -27,6 +27,7 @@ export class Sidebar extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        
         fetch(localStorage.getItem('courseUrl')+'add_students/', {
             method : 'POST',
             headers : {
@@ -44,6 +45,7 @@ export class Sidebar extends Component {
         }
         )
         .catch(err => console.log(err));
+        console.log('kura');
     }
 
     handleCancel = () => {
