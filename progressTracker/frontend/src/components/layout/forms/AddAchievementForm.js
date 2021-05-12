@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
-import Button from "./Button";
+import Button from "../Button";
 import {Row, Col} from "reactstrap";
 import Select from 'react-select'
-import {options, convertAchievementRule} from '../functions/helpers'
+import {options, convertAchievementRule} from '../../functions/helpers'
 
 
 export class AddAchievementForm extends Component {

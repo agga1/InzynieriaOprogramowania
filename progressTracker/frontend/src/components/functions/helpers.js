@@ -1,5 +1,5 @@
 export const getStudents = () => {
-  if (sessionStorage.getItem('isStudent') == 'false') {
+  if (localStorage.getItem('isStudent') == 'false') {
     return (fetch(localStorage.getItem('courseUrl') + 'students', {
       method: 'GET',
       headers: {
@@ -23,7 +23,7 @@ export const getStudents = () => {
 
 
 export const getTask = () => {
-  // if(sessionStorage.getItem('isStudent')=='false'){
+  // if(localStorage.getItem('isStudent')=='false'){
   return (fetch(localStorage.getItem('taskUrl'), {
     method: 'GET',
     headers: {

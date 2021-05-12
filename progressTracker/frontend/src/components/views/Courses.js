@@ -46,17 +46,17 @@ export class Courses extends Component {
   }
 
   setID() {
-        fetch('/api/auth/user', {
-            method: 'GET',
-            headers: {
-                Authorization: `Token ${localStorage.getItem('token')}`
-            }
+    fetch('/api/auth/user', {
+        method: 'GET',
+        headers: {
+            Authorization: `Token ${localStorage.getItem('token')}`
+        }
+    })
+        .then(res => res.json())
+        .then(resp => {
+            localStorage.setItem("userID", resp.user.id);
         })
-            .then(res => res.json())
-            .then(resp => {
-                localStorage.setItem("userID", resp.user.id);
-            })
-            .catch(err => console.log(err));
+        .catch(err => console.log(err));
     }
 
   prepareView() {
@@ -68,7 +68,7 @@ export class Courses extends Component {
       );
     } else {
       var comp;
-      if (sessionStorage.getItem('isStudent') == "false") {
+      if (localStorage.getItem('isStudent') == "false") {
         comp = (
           <Col md={4} sm={6} xs={12} className="mb-4">
             <AddCourseCard path="/teacher/course/add" />
@@ -81,7 +81,7 @@ export class Courses extends Component {
         <Fragment>
           {comp}
           {this.state.data.map((course) => {
-            const tasksPath =  localStorage.getItem("isStudent") === "true" ? "/student/course/tasks" : "/teacher/course/tasks"
+            const tasksPath =  localStorage.getItem("isStudent") == "true" ? "/student/course/tasks" : "/teacher/course/tasks"
             return (
               <Col md={4} sm={6} xs={12} className="mb-4" key={course.url}>
                 <CourseIcon

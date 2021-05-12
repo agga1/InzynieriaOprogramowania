@@ -34,7 +34,7 @@ export class CourseIcon extends Component {
                 <Card className="course-icon">
                     <CardBody>
                         <CardTitle tag="h1">{this.props.course_name}</CardTitle>
-                        {this.getInfo(sessionStorage.getItem('isStudent'))}
+                        {this.getInfo(localStorage.getItem('isStudent'))}
                     </CardBody>
 
                     <Col className="text-right mb-3">
