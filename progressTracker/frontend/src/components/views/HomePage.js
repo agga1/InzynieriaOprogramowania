@@ -17,6 +17,7 @@ import AddAchievement from './AddAchievement'
 import Progress from './Progress'
 import Footer from '../layout/Footer'
 import CourseDetails from "./CourseDetails";
+import {NotEarnedAchievements} from "./NotEarnedAchievements";
 
 
 export class HomePage extends Component {
@@ -53,6 +54,7 @@ export class HomePage extends Component {
                     <Route path='/teacher/course/achievements' component={Achievements}/>
                     <Route path='/teacher/achievement/add' component={AddAchievement}/>
                     <Route path='/student/course/progress' component={Progress}/>
+                    <Route path='/student/course/not-earned-achievements' component={NotEarnedAchievements}/>
                     <Route path='/teacher/course/details' component={CourseDetails}/>
                     <Route path='/student/course/details' component={CourseDetails}/>
                 </Switch>
