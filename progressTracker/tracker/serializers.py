@@ -24,11 +24,34 @@ class TaskSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         task = Task.objects.create(**validated_data)
         task.save()
+        self.update_parents(task)
         return task
 
     def update(self, instance, validated_data):
         Task.objects.filter(pk=instance.id).update(**validated_data)
-        return Task.objects.get(pk=instance.id)
+        task = Task.objects.get(pk=instance.id)
+        self.update_parents(task)
+        return task
+
+    def update_parents(self, task):
+        parent_task = task.parent_task
+        if parent_task is None:
+            return
+        child_tasks = Task.objects.filter(parent_task=parent_task)
+        mins = [child.grade_min for child in child_tasks]
+        maxs = [child.grade_max for child in child_tasks]
+        agg = parent_task.aggregation_method
+        if agg == Task.AggregationMethod.AVERAGE:
+            parent_task.grade_min = sum(mins)/len(mins)
+            parent_task.grade_max = sum(maxs)/len(maxs)
+        elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
+            parent_task.grade_min = sum(mins) / len(mins)
+            parent_task.grade_max = sum(maxs) / len(maxs)
+        elif agg == Task.AggregationMethod.SUM:
+            parent_task.grade_min = sum(mins)
+            parent_task.grade_max = sum(maxs)
+
+
 
 # Course Serializers ---------------------------------------------------
 class CourseDetailSerializer(serializers.ModelSerializer):
@@ -60,7 +83,8 @@ class CreateCourseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         course = Course.objects.create(name=validated_data['name'], teacher=validated_data['teacher'],
-                                       pass_threshold=validated_data['pass_threshold'])
+                                       pass_threshold=validated_data['pass_threshold'],
+                                       description=validated_data['description'])
         for student in validated_data['student']:
             course.student.add(student)
         course.save()
