@@ -25,31 +25,25 @@ export class Leaderboard extends Component {
 		}
 	}
 
-  async getData() {
-    let promise1 = new Promise((resolve, reject) => {
-      resolve(getStudents());
-    })
-    let promise2 = new Promise((resolve, reject) => {
-      resolve(this.getTasksAndGrades());
-    })
-    let students = await promise1;
-    let tasks = await promise2;
-    return { students: students, tasks: tasks};
-  }
+  getData() {
+    let tasks = this.getTasksAndGrades();
+    let students = getStudents();
+    Promise.all([tasks, students])
+      .then(([tasks, students]) => {
+        this.setState(() => ({
+          students: students,
+          tasks: tasks,
+          tasks_len: Object.keys(tasks).length,
+          loaded: true,
+          grades_loaded: false,
+        }));
+      })
+      .catch((err) => console.log(err.message));
+    }
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
-      this.getData()
-        .then((data) => {
-          this.setState(() => ({
-            students: data.students,
-            tasks: data.tasks,
-            tasks_len: Object.keys(data.tasks).length,
-            loaded: true,
-            grades_loaded: false,
-          }));
-        })
-        .catch((err) => console.log(err.message));
+      this.getData();
     } else {
       alert("Log into to see the view");
       window.location.href = "/";

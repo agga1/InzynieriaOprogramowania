@@ -26,26 +26,25 @@ export class Grades extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  async getData() {
-    let grades = await this.getStudentsGrades();
-    let task = await getTask();
-    let students = await getStudents();
-    console.log(grades);
-    return { task: task, grades: grades, students: students };
-  }
+  getData() {
+    let grades = this.getStudentsGrades();
+    let task = getTask();
+    let students = getStudents();
+    Promise.all([grades, task, students])
+      .then(([grades, task, students]) => {
+        this.setState(() => ({
+          grades: grades,
+          task: task,
+          students: students,
+          loaded: true,
+        }));
+      })
+      .catch((err) => console.log(err.message));
+    }
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
-      this.getData()
-        .then((data) => {
-          this.setState(() => ({
-            grades: data.grades,
-            task: data.task,
-            students: data.students,
-            loaded: true,
-          }));
-        })
-        .catch((err) => console.log(err.message));
+      this.getData();
     } else {
       alert("Log into to see the view");
       window.location.href = "/";

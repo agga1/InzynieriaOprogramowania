@@ -4,7 +4,7 @@ import AddTaskForm from "../layout/AddTaskForm";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Spinner from "../layout/Spinner";
-import { getTask } from "../functions/getData";
+import { getTask } from "../functions/helpers";
 
 export class AddTask extends Component {
   constructor(props) {
