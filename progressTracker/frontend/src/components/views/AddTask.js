@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import AddTaskForm from '../layout/forms/AddTaskForm'
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
+import { checkUser } from '../functions/helpers';
 
 export class AddTask extends Component {
     constructor(props){
@@ -35,27 +36,7 @@ export class AddTask extends Component {
     }
 
     componentDidMount(){
-        if(localStorage.getItem('token')){
-            fetch('/api/auth/user', {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(res => res.json())
-            .then(resp => {
-             if(resp.user.is_student != false){
-                 alert("Only teacher can add tasks");
-                 window.location.href="/student/courses";
-             }
-            })
-            .catch(err => console.log(err));
-
-        }
-        else{
-            alert('Log into to see the view');
-            window.location.href="/";
-        }
+        checkUser("/student/courses");
     }
 
     handleName = event => {
@@ -158,18 +139,17 @@ export class AddTask extends Component {
 
     prepareData() {
         const courseUrl = localStorage.getItem('courseUrl');
-        const course = this.extractID(courseUrl)
 
         return {
             name: this.state.name,
-            grade_min: this.state.gradeMin,
-            grade_max: this.state.gradeMax,
+            grade_min: parseInt(this.state.gradeMin),
+            grade_max: parseInt(this.state.gradeMax),
             is_extra: this.state.isExtra,
             weight: this.state.weight,
             deadline: this.state.deadline,
             description: this.state.description,
             aggregation_method: this.state.aggregation.value,
-            course: course,
+            course: this.extractID(courseUrl),
             parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))  
         }
 

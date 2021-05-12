@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import LoginForm from '../layout/forms/LoginForm'
+import { getElement } from '../functions/helpers';
 
 
 export class StudentLoginPage extends Component {
@@ -23,13 +24,7 @@ export class StudentLoginPage extends Component {
 
     componentDidMount(){
 		if(localStorage.getItem('token')){
-			fetch('/api/auth/login', {
-				method : 'GET',
-				headers : {
-					Authorization : `Token ${localStorage.getItem('token')}`
-				}
-			})
-			.then(res => res.json())
+            getElement('/api/auth/login')
 			.then(resp => {
                 if(resp.is_student){
                     this.setState({ 

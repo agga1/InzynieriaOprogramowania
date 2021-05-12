@@ -5,6 +5,7 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import AchievementIcon from "../layout/icons/AchievementIcon";
+import { getElement } from '../functions/helpers';
 
 export class NotEarnedAchievements extends Component {
   constructor(props) {
@@ -26,20 +27,7 @@ export class NotEarnedAchievements extends Component {
   }
 
   getAchievements() {
-    fetch(localStorage.getItem("courseUrl") + "achievements", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      if (response.status > 400) {
-        return this.setState(() => {
-          return { placeholder: "Something went wrong!" };
-        });
-      }
-      return response.json();
-    })
+    getElement(localStorage.getItem("courseUrl") + "achievements")
     .then((data) => {
       this.setState(() => {
         return {

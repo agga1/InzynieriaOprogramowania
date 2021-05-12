@@ -3,7 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Spinner from "../layout/Spinner";
-import { getCourse } from "../functions/helpers";
+import { checkUser, getElement } from "../functions/helpers";
 import AddCourseForm from '../layout/forms/AddCourseForm'
 
 export class CourseUpdate extends Component {
@@ -27,41 +27,24 @@ export class CourseUpdate extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      fetch("/api/auth/user", {
-        method: "GET",
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((resp) => {
-          if (resp.user.is_student != false) {
-            alert("Only teacher can add tasks");
-            window.location.href = "/student/courses";
-          }
-          else{
-            this.setState({ 
-                teacher : resp.user.first_name + " " + resp.user.last_name,
-            });
-        }
-        })
-        .catch((err) => console.log(err));
+    checkUser("/student/courses").then((resp) => {
+      if(resp != null){
+        this.setState({ 
+          teacher : resp.user.first_name + " " + resp.user.last_name,
+        });
+      }
+    })
 
-      getCourse()
-        .then((data) => {
-          this.setState(() => ({
-            course: data,
-            description: data.description,
-            name: data.name,
-            loaded: true,
-          }));
-        })
-        .catch((err) => alert(err.message));
-    } else {
-      alert("Log into to see the view");
-      window.location.href = "/";
-    }
+    getElement(localStorage.getItem('courseUrl'))
+      .then((data) => {
+        this.setState(() => ({
+          course: data,
+          description: data.description,
+          name: data.name,
+          loaded: true,
+        }));
+      })
+      .catch((err) => alert(err.message));
   }
 
   handleDescription = (event) => {

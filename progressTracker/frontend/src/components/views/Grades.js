@@ -5,7 +5,7 @@ import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Modal from "../layout/RateStudentModal";
-import { getStudents, getTask } from "../functions/helpers";
+import { getStudents, getElement } from "../functions/helpers";
 
 export class Grades extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export class Grades extends Component {
 
   getData() {
     let grades = this.getStudentsGrades();
-    let task = getTask();
+    let task = getElement(localStorage.getItem('taskUrl'));
     let students = getStudents();
 
     Promise.all([grades, task, students])
@@ -54,24 +54,11 @@ export class Grades extends Component {
 
   getStudentsGrades() {
     if (localStorage.getItem("isStudent") == "false") {
-      return fetch(localStorage.getItem("taskUrl") + "grades", {
-        method: "GET",
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((response) => {
-          if (response.status > 400) {
-            return this.setState(() => {
-              return { placeholder: "Something went wrong!" };
-            });
-          }
-          return response.json();
-        })
+      return (getElement(localStorage.getItem("taskUrl") + "grades")
         .then((data) => {
           data = data.grades;
           return data;
-        });
+        }));
     } else {
       throw new Error("Only teacher can rate students!!!");
     }
