@@ -43,15 +43,15 @@ class TaskSerializer(serializers.ModelSerializer):
         maxs = [child.grade_max for child in child_tasks]
         agg = parent_task.aggregation_method
         if agg == Task.AggregationMethod.AVERAGE:
-            parent_task.grade_min = sum(mins)/len(mins)
-            parent_task.grade_max = sum(maxs)/len(maxs)
+            Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins)/len(mins), grade_max=sum(maxs)/len(maxs))
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
             weights = [child.weight for child in child_tasks]
-            parent_task.grade_min = sum(mins) / len(mins)  # todo consider weights
-            parent_task.grade_max = sum(maxs) / len(maxs)
+            avg_min = np.average(a=mins, weights=weights)
+            avg_max = np.average(a=maxs, weights=weights)
+            Task.objects.filter(pk=parent_task.id).update(grade_min=avg_min, grade_max=avg_max)
         elif agg == Task.AggregationMethod.SUM:
-            parent_task.grade_min = sum(mins)
-            parent_task.grade_max = sum(maxs)
+            print(f"new grade_max {sum(maxs)} for {parent_task.name}")
+            Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins), grade_max=sum(maxs))
 
 
 
