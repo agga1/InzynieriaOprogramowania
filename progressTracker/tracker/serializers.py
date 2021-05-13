@@ -170,8 +170,9 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         if agg == Task.AggregationMethod.AVERAGE:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum()/len(child_tasks))
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
-            weights = np.array([grade.task.weight for grade in grades]) # todo doesnt work correctly with unexistent grades
-            avg = np.average(a=values, weights=weights)
+            sum_weights = sum([task.weight for task in child_tasks])
+            sum_grades_with_weights = sum([grade.value*grade.task.weight for grade in grades])
+            avg = sum_grades_with_weights/sum_weights
             Grade.objects.filter(pk=parent_grade.id).update(value=avg)
         elif agg == Task.AggregationMethod.SUM:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
