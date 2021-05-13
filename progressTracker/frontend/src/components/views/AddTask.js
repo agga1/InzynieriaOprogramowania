@@ -145,7 +145,7 @@ export class AddTask extends Component {
             grade_min: parseInt(this.state.gradeMin),
             grade_max: parseInt(this.state.gradeMax),
             is_extra: this.state.isExtra,
-            weight: this.state.weight,
+            weight: parseInt(this.state.weight),
             deadline: this.state.deadline,
             description: this.state.description,
             aggregation_method: this.state.aggregation.value,

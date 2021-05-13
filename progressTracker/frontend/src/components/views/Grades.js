@@ -198,11 +198,10 @@ export class Grades extends Component {
                 <th colSpan="3">Name</th>
                 <th className="td-sm">Points</th>
                 {localStorage.getItem("isParentTask") == "true" ? (
-                  <th></th>
+                  <th colSpan="0"></th>
                 ) : (
                   <th className="td-sm">Rate</th>
                 )}
-                <th className="td-sm">Prize</th>
               </tr>
             </thead>
             <tbody>
@@ -217,7 +216,7 @@ export class Grades extends Component {
                     </td>
                     <td className="td-sm">{this.getGrade(student)}</td>
                     {localStorage.getItem("isParentTask") == "true" ? (
-                      <td></td>
+                      <td colSpan="0"></td>
                     ) : (
                       <td className="td-sm">
                         <a
@@ -230,15 +229,6 @@ export class Grades extends Component {
                         </a>
                       </td>
                     )}
-                    <td className="td-sm">
-                      <a
-                        className="btn btn-sm"
-                        role="button"
-                        aria-pressed="true"
-                      >
-                        b
-                      </a>
-                    </td>
                   </tr>
                 );
               })}
