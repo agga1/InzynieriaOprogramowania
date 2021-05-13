@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react'
 import {Container, Row, Col} from 'reactstrap';
 import AddAchievementForm from '../layout/forms/AddAchievementForm'
 import Header from '../layout/Header';
-import {extractID, getArgs, getFullRule} from '../functions/helpers';
+import {checkUser, extractID, getArgs, getFullRule} from '../functions/helpers';
 
 export class AddAchievement extends Component {
   constructor(props) {
@@ -23,26 +23,7 @@ export class AddAchievement extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem('token')) {
-      fetch('/api/auth/user', {
-        method: 'GET',
-        headers: {
-          Authorization: `Token ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => res.json())
-        .then(resp => {
-          if (resp.user.is_student != false) {
-            alert("Only teacher can add tasks");
-            window.location.href = "/student/courses";
-          }
-        })
-        .catch(err => console.log(err));
-
-    } else {
-      alert('Log into to see the view');
-      window.location.href = "/";
-    }
+    checkUser("/student/courses");
   }
 
   handleName = event => {

@@ -5,6 +5,7 @@ import Spinner from "../layout/Spinner";
 import Header from "../layout/Header";
 import AddCourseIcon from "../layout/icons/AddCourseIcon";
 import Footer from "../layout/Footer";
+import { getElement } from "../functions/helpers";
 
 export class Courses extends Component {
   constructor(props) {
@@ -19,21 +20,7 @@ export class Courses extends Component {
   componentDidMount() {
     if (localStorage.getItem("token")) {
       this.setID();
-
-      fetch("/api/courses", {
-        method: "GET",
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((response) => {
-          if (response.status > 400) {
-            return this.setState(() => {
-              return { placeholder: "Something went wrong!" };
-            });
-          }
-          return response.json();
-        })
+      getElement("/api/courses")
         .then((data) => {
           this.setState(() => {
             return {
@@ -46,17 +33,11 @@ export class Courses extends Component {
   }
 
   setID() {
-    fetch('/api/auth/user', {
-        method: 'GET',
-        headers: {
-            Authorization: `Token ${localStorage.getItem('token')}`
-        }
-    })
-        .then(res => res.json())
-        .then(resp => {
-            localStorage.setItem("userID", resp.user.id);
-        })
-        .catch(err => console.log(err));
+    getElement('/api/auth/user')
+      .then(resp => {
+          localStorage.setItem("userID", resp.user.id);
+      })
+      .catch(err => console.log(err));
     }
 
   prepareView() {

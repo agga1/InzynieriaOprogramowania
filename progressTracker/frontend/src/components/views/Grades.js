@@ -5,7 +5,7 @@ import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Modal from "../layout/RateStudentModal";
-import { getStudents, getTask } from "../functions/helpers";
+import { getStudents, getElement } from "../functions/helpers";
 
 export class Grades extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export class Grades extends Component {
 
   getData() {
     let grades = this.getStudentsGrades();
-    let task = getTask();
+    let task = getElement(localStorage.getItem('taskUrl'));
     let students = getStudents();
 
     Promise.all([grades, task, students])
@@ -54,24 +54,11 @@ export class Grades extends Component {
 
   getStudentsGrades() {
     if (localStorage.getItem("isStudent") == "false") {
-      return fetch(localStorage.getItem("taskUrl") + "grades", {
-        method: "GET",
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((response) => {
-          if (response.status > 400) {
-            return this.setState(() => {
-              return { placeholder: "Something went wrong!" };
-            });
-          }
-          return response.json();
-        })
+      return (getElement(localStorage.getItem("taskUrl") + "grades")
         .then((data) => {
           data = data.grades;
           return data;
-        });
+        }));
     } else {
       throw new Error("Only teacher can rate students!!!");
     }
@@ -211,11 +198,10 @@ export class Grades extends Component {
                 <th colSpan="3">Name</th>
                 <th className="td-sm">Points</th>
                 {localStorage.getItem("isParentTask") == "true" ? (
-                  <th></th>
+                  <th colSpan="0"></th>
                 ) : (
                   <th className="td-sm">Rate</th>
                 )}
-                <th className="td-sm">Prize</th>
               </tr>
             </thead>
             <tbody>
@@ -230,7 +216,7 @@ export class Grades extends Component {
                     </td>
                     <td className="td-sm">{this.getGrade(student)}</td>
                     {localStorage.getItem("isParentTask") == "true" ? (
-                      <td></td>
+                      <td colSpan="0"></td>
                     ) : (
                       <td className="td-sm">
                         <a
@@ -243,15 +229,6 @@ export class Grades extends Component {
                         </a>
                       </td>
                     )}
-                    <td className="td-sm">
-                      <a
-                        className="btn btn-sm"
-                        role="button"
-                        aria-pressed="true"
-                      >
-                        b
-                      </a>
-                    </td>
                   </tr>
                 );
               })}

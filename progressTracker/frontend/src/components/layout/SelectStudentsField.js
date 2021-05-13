@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import { getElement } from '../functions/helpers';
 
 export class SelectStudentsField extends Component { 
     constructor(props) {
@@ -15,13 +16,7 @@ export class SelectStudentsField extends Component {
     }
 
     getStudents(){
-        fetch('/api/students', {
-            method : 'GET',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => res.json())
+        getElement('/api/students')
         .then(resp => {
             this.prepareStudents(resp);
         })

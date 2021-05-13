@@ -7,6 +7,7 @@ import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import {ProgressBar} from "react-bootstrap";
 import AchievementIcon from "../layout/icons/AchievementIcon";
+import { getElement } from '../functions/helpers';
 
 export class Progress extends Component {
   constructor(props) {
@@ -22,20 +23,7 @@ export class Progress extends Component {
   }
 
   getTotal() {
-    fetch(localStorage.getItem("courseUrl") + "main_tasks", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return {placeholder: "Something went wrong!"};
-          });
-        }
-        return response.json();
-      })
+    getElement(localStorage.getItem("courseUrl") + "main_tasks")
       .then((data) => {
         let total = 0;
         data = data.tasks;
@@ -51,20 +39,7 @@ export class Progress extends Component {
   }
 
   getPoints() {
-    fetch("/api/grades/", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return {placeholder: "Something went wrong!"};
-          });
-        }
-        return response.json();
-      })
+    getElement("/api/grades/")
       .then((data) => {
         let points = 0;
         for (let i = 0; i < data.length; i++) {
@@ -99,20 +74,7 @@ export class Progress extends Component {
   }
 
   getAchievements() {
-    fetch(localStorage.getItem("courseUrl") + "achievements", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      if (response.status > 400) {
-        return this.setState(() => {
-          return { placeholder: "Something went wrong!" };
-        });
-      }
-      return response.json();
-    })
+    getElement(localStorage.getItem("courseUrl") + "achievements")
     .then((data) => {
       this.setState(() => {
         return {

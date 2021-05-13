@@ -88,10 +88,7 @@ export class Sidebar extends Component {
                     <NavItem className="m-3 text-center">
                         <Button path="/student/course/progress" className="w-80" text="My progress"/>
                     </NavItem>
-                    <NavItem className="m-3 text-center">
-                        <Button path="/teacher/course/leaderboard" className="w-80" text="Leaderboard"/>
-                    </NavItem>
-                </Nav>`
+                </Nav>
                </div>
             ) 
         }

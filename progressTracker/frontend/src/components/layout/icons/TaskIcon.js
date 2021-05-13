@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reactstrap";
+import { getElement } from "../../functions/helpers";
 import Spinner from "../Spinner"
 
 export class TaskIcon extends Component {
@@ -91,18 +92,7 @@ export class TaskIcon extends Component {
   };
 
   getChildren() {
-    fetch(this.props.url + "children", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (response.status > 400) {
-          console.log("Something went wrong!");
-        }
-        return response.json();
-      })
+    getElement(this.props.url + "children")
       .then((data) => {
         this.setState(() => {
           return {
