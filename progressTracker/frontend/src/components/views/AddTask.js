@@ -11,7 +11,7 @@ export class AddTask extends Component {
 
         this.state = {
             name : '',
-            description: '',
+            description: "",
             gradeMin: 0,
             gradeMax: 0,
             weight: 0,

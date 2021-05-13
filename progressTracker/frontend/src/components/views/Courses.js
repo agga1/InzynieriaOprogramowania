@@ -3,9 +3,10 @@ import { Container, Row, Col } from "reactstrap";
 import CourseIcon from "../layout/icons/CourseIcon";
 import Spinner from "../layout/Spinner";
 import Header from "../layout/Header";
-import AddCourseIcon from "../layout/icons/AddCourseIcon";
+// import add_icon_2 from "../../../static/images/add_icon_2.png";
 import Footer from "../layout/Footer";
 import { getElement } from "../functions/helpers";
+import { Container as FABContainer, Link as FABLink} from 'react-floating-action-button'
 
 export class Courses extends Component {
   constructor(props) {
@@ -48,19 +49,19 @@ export class Courses extends Component {
         </Col>
       );
     } else {
-      var comp;
-      if (localStorage.getItem('isStudent') == "false") {
-        comp = (
-          <Col md={4} sm={6} xs={12} className="mb-4">
-            <AddCourseIcon path="/teacher/course/add" />
-          </Col>
-        );
-      } else {
-        comp = <div></div>;
-      }
+      // var comp;
+      // if (localStorage.getItem('isStudent') == "false") {
+      //   comp = (
+      //     <Col md={4} sm={6} xs={12} className="mb-4">
+      //       <AddCourseIcon path="/teacher/course/add" />
+      //     </Col>
+      //   );
+      // } else {
+      //   comp = <div></div>;
+      // }
       return (
         <Fragment>
-          {comp}
+          {/* {comp} */}
           {this.state.data.map((course) => {
             const tasksPath =  localStorage.getItem("isStudent") == "true" ? "/student/course/tasks" : "/teacher/course/tasks"
             return (
@@ -75,6 +76,14 @@ export class Courses extends Component {
               </Col>
             );
           })}
+          <FABContainer>
+            <FABLink
+              tooltip="Add course"
+              className="orange-bg text-white"
+              icon="fa fa-plus fa-2x btn-lg"
+              href="/teacher/course/add"
+              />
+          </FABContainer>
         </Fragment>
       );
     }

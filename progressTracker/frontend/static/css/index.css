@@ -69,6 +69,14 @@ html, body{
   color: #ff8c42 !important;
 }
 
+.orange-bg{
+  background-color: #ff8c42 !important;
+}
+
+.white{
+  color: #ffffff !important;
+}
+
 .task-heading{
   color: #483ebb !important;
 }

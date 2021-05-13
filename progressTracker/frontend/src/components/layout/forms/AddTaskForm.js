@@ -33,7 +33,7 @@ export class AddTaskForm extends Component {
                 rows={10}
                 className="input_window"
                 onChange={this.props.handleDescription}
-                value={this.props.description || ""}
+                value={this.props.description}
               />
             </Form.Group>
           </Col>
@@ -46,7 +46,7 @@ export class AddTaskForm extends Component {
                 type="text"
                 className="input_window"
                 onChange={this.props.handleGradeMin}
-                value={this.props.gradeMin || 0}
+                value={this.props.gradeMin}
                 readOnly={this.props.readOnly}
               />
             </Form.Group>
@@ -58,7 +58,7 @@ export class AddTaskForm extends Component {
                 type="text"
                 className="input_window"
                 onChange={this.props.handleGradeMax}
-                value={this.props.gradeMax || 0}
+                value={this.props.gradeMax}
                 readOnly={this.props.readOnly}
               />
             </Form.Group>
@@ -70,7 +70,7 @@ export class AddTaskForm extends Component {
                 type="text"
                 className="input_window"
                 onChange={this.props.handleDeadline}
-                value={this.props.deadline || ""}
+                value={this.props.deadline}
                 readOnly={this.props.readOnly}
               />
             </Form.Group>
