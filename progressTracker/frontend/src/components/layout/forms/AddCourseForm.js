@@ -27,7 +27,7 @@ export class AddCourseForm extends Component {
 
                 <Form.Group controlId="formDescription">
                     <Form.Label className="form_text text-left padding-left-10">Description</Form.Label>
-                    <Form.Control type="text" as="textarea" rows={4} placeholder={this.props.readOnly==true ? "" : "Enter description"} className="input_window" onChange={this.props.handleDescription} value={this.props.description} />
+                    <Form.Control type="text" as="textarea" rows={1} placeholder={this.props.readOnly==true ? "" : "Enter description"} className="input_window" onChange={this.props.handleDescription} value={this.props.description} />
                 </Form.Group>
 
                 <Form.Group controlId="formStudents">

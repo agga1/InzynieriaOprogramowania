@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import { getTask } from '../functions/helpers'
+import { getElement } from '../functions/helpers'
 import Button from '../layout/Button';
 import parse from "html-react-parser";
 
@@ -20,7 +20,7 @@ export class TaskDetails extends Component {
 
     componentDidMount() {
         if (localStorage.getItem('token')) {
-            getTask().then((data) => {
+            getElement(localStorage.getItem('taskUrl')).then((data) => {
                 this.setState(() => ({
                     task: data,
                     loaded: true

@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import {getStudents, getTask} from '../functions/helpers'
+import {getStudents} from '../functions/helpers'
 
 export class StudentsList extends Component {
   constructor(props) {

@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import {getStudents} from '../functions/helpers'
+import {getElement, getStudents} from '../functions/helpers'
 import { MDBDataTable } from 'mdbreact';
 import {ProgressBar} from "react-bootstrap";
 
@@ -51,40 +51,15 @@ export class Leaderboard extends Component {
   }
 
   getTasksAndGrades() { 
-    return fetch(localStorage.getItem("courseUrl") + "main_tasks", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response1) => {
-      if (response1.status > 400) {
-        return this.setState(() => {
-          return { placeholder: "Something went wrong!" };
-        });
-      }
-      return response1.json();
-    })
+    return getElement(localStorage.getItem("courseUrl") + "main_tasks")
     .then((data1) => {
       let tasks = data1.tasks;
       let counter = 0;
       let grades_list = this.state.grades;
       tasks.map( task => {
       let max = this.state.max + task.grade_max;
-      return fetch(task.url + "grades/", {
-        method: "GET",
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response2) => {
-        if (response2.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response2.json();
-      })
+
+      return getElement(task.url + "grades/")
       .then((data2) => {
         counter++;
         data2.grades.map((grade) =>{

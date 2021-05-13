@@ -21,10 +21,39 @@ export const getStudents = () => {
   }
 }
 
+export const checkUser = (returnPage) =>{
+  if (localStorage.getItem('token')) {
+    return (fetch('/api/auth/user', {
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`
+      }
+    })
+      .then(res => {
+        if (res.status > 400) {
+          console.log(res);
+        }
+        return res.json()
+      })
+      .then(resp => {
+        if (resp.user.is_student != false) {
+          alert("Only teacher can see this view");
+          window.location.href = returnPage;
+        }else{
+          return (resp);
+        }
+      })
+      .catch(err => console.log(err)));
 
-export const getTask = () => {
-  // if(localStorage.getItem('isStudent')=='false'){
-  return (fetch(localStorage.getItem('taskUrl'), {
+  } else {
+    alert('Log into to see the view');
+    window.location.href = "/";
+    return new Promise(null);
+  }
+}
+
+export const getElement = (url) => {
+  return (fetch(url, {
     method: 'GET',
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
@@ -39,34 +68,7 @@ export const getTask = () => {
     .then(data => {
       return (data);
     }))
-  // }
-  // else{
-  //     throw new Error("Only teacher can rate students!");
-  // }
-}
-
-export const getCourse = () => {
-  // if(localStorage.getItem('isStudent')=='false'){
-  return (fetch(localStorage.getItem('courseUrl'), {
-    method: 'GET',
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`
-    }
-  })
-    .then(response => {
-      if (response.status > 400) {
-        throw new Error("Something went wrong!");
-      }
-      return response.json();
-    })
-    .then(data => {
-      return (data);
-    }))
-  // }
-  // else{
-  //     throw new Error("Only teacher can rate students!");
-  // }
-}
+  }
 
 export const extractID = (url) => {
   let idString = "";

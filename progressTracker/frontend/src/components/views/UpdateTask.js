@@ -4,7 +4,7 @@ import AddTaskForm from "../layout/forms/AddTaskForm";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Spinner from "../layout/Spinner";
-import { getTask } from "../functions/helpers";
+import { getElement } from "../functions/helpers";
 
 export class AddTask extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ export class AddTask extends Component {
         })
         .catch((err) => console.log(err));
 
-      getTask()
+      getElement(localStorage.getItem('taskUrl'))
         .then((data) => {
           this.setState(() => ({
             task: data,

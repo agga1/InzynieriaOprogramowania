@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import AddCourseForm from '../layout/forms/AddCourseForm'
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
+import { checkUser } from '../functions/helpers';
 
 export class AddCourse extends Component {
     constructor(props){
@@ -25,33 +26,14 @@ export class AddCourse extends Component {
     }
 
     componentDidMount(){
-        if(localStorage.getItem('token')){
-            fetch('/api/auth/user', {
-                method : 'GET',
-                headers : {
-                    Authorization : `Token ${localStorage.getItem('token')}`
-                }
-            })
-            .then(res => res.json())
-            .then(resp => {
-             if(resp.user.is_student!=false){
-                 alert("Only teacher can add courses");
-                 window.location.href="/student/courses";       
-             }	
-             else{
+        checkUser("/student/courses").then((data) => {
+            if(data != null){
                 this.setState({ 
-                    teacher : resp.user.first_name + " " + resp.user.last_name,
-                    teacher_id :resp.user.id
+                    teacher : data.user.first_name + " " + data.user.last_name,
+                    teacher_id: data.user.id
                 });
             }
-            })
-            .catch(err => console.log(err));
-        }
-        else{
-            alert('Log into to see the view');
-            window.location.href="/";
-        }
-        
+        }) 
     }
 
     handleName = event => {

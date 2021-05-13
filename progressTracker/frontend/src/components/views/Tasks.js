@@ -5,6 +5,7 @@ import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Footer from "../layout/Footer";
+import { getElement } from "../functions/helpers";
 
 export class Tasks extends Component {
   constructor(props) {
@@ -29,20 +30,7 @@ export class Tasks extends Component {
   }
 
   getTasks() {
-    fetch(localStorage.getItem("courseUrl") + "main_tasks", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
+    getElement(localStorage.getItem("courseUrl") + "main_tasks")
       .then((data) => {
         this.setState(() => {
           return {
@@ -54,20 +42,7 @@ export class Tasks extends Component {
   }
 
   getGrades() {
-    fetch("/api/grades/", {
-      method: "GET",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
+    getElement("/api/grades/")
       .then((data) => {
         let grades = [];
 
