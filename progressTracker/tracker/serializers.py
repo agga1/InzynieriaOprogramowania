@@ -22,6 +22,7 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        print("create")
         task = Task.objects.create(**validated_data)
         task.save()
         self.update_parents(task)
@@ -42,14 +43,15 @@ class TaskSerializer(serializers.ModelSerializer):
         maxs = [child.grade_max for child in child_tasks]
         agg = parent_task.aggregation_method
         if agg == Task.AggregationMethod.AVERAGE:
-            parent_task.grade_min = sum(mins)/len(mins)
-            parent_task.grade_max = sum(maxs)/len(maxs)
+            Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins)/len(mins), grade_max=sum(maxs)/len(maxs))
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
-            parent_task.grade_min = sum(mins) / len(mins)
-            parent_task.grade_max = sum(maxs) / len(maxs)
+            weights = [child.weight for child in child_tasks]
+            avg_min = np.average(a=mins, weights=weights)
+            avg_max = np.average(a=maxs, weights=weights)
+            Task.objects.filter(pk=parent_task.id).update(grade_min=avg_min, grade_max=avg_max)
         elif agg == Task.AggregationMethod.SUM:
-            parent_task.grade_min = sum(mins)
-            parent_task.grade_max = sum(maxs)
+            print(f"new grade_max {sum(maxs)} for {parent_task.name}")
+            Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins), grade_max=sum(maxs))
 
 
 
@@ -166,10 +168,11 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         values = np.array([grade.value for grade in grades])
         agg = parent_task.aggregation_method
         if agg == Task.AggregationMethod.AVERAGE:
-            Grade.objects.filter(pk=parent_grade.id).update(value=values.mean())
+            Grade.objects.filter(pk=parent_grade.id).update(value=values.sum()/len(child_tasks))
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
-            weights = np.array([grade.task.weight for grade in grades])
-            avg = np.average(a=values, weights=weights)
+            sum_weights = sum([task.weight for task in child_tasks])
+            sum_grades_with_weights = sum([grade.value*grade.task.weight for grade in grades])
+            avg = sum_grades_with_weights/sum_weights
             Grade.objects.filter(pk=parent_grade.id).update(value=avg)
         elif agg == Task.AggregationMethod.SUM:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
