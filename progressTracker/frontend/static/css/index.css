@@ -77,6 +77,11 @@ html, body{
   color: #ffffff !important;
 }
 
+.plus-size{
+  width:65px !important; 
+  height:65px !important;
+}
+
 .task-heading{
   color: #483ebb !important;
 }

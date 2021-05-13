@@ -3,7 +3,6 @@ import { Container, Row, Col } from "reactstrap";
 import CourseIcon from "../layout/icons/CourseIcon";
 import Spinner from "../layout/Spinner";
 import Header from "../layout/Header";
-// import add_icon_2 from "../../../static/images/add_icon_2.png";
 import Footer from "../layout/Footer";
 import { getElement } from "../functions/helpers";
 import { Container as FABContainer, Link as FABLink} from 'react-floating-action-button'
@@ -79,8 +78,8 @@ export class Courses extends Component {
           <FABContainer>
             <FABLink
               tooltip="Add course"
-              className="orange-bg text-white"
-              icon="fa fa-plus fa-2x btn-lg"
+              className="orange-bg plus-size"
+              icon="fas fa-plus fa-2x"
               href="/teacher/course/add"
               />
           </FABContainer>
