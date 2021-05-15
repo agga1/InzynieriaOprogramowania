@@ -23,7 +23,7 @@ export class AddAchievementForm extends Component {
     return (
       <Form className="form">
         <Row>
-          <Col xs={10}>
+          <Col xs={12}>
             <Form.Group controlId="formBasicName">
               <Form.Label className="form_text">Name</Form.Label>
               <Form.Control
@@ -32,21 +32,6 @@ export class AddAchievementForm extends Component {
                 onChange={this.props.handleName}
                 value={this.props.name || ""}
                 readOnly={this.props.readOnly}
-              />
-            </Form.Group>
-          </Col>
-          <Col xs={2}>
-            <Form.Group controlId="formBasicDescription">
-              <Form.Label className="form_text">Icon</Form.Label>
-              <Form.Control
-                xs={12}
-                type="text"
-                as="textarea"
-                rows={5}
-                className="input_window"
-                onChange={this.props.handleDescription}
-                value={this.props.description || ""}
-                readOnly={true}
               />
             </Form.Group>
           </Col>
