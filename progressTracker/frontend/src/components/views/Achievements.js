@@ -6,7 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import AchievementIcon from "../layout/icons/AchievementIcon";
-import { getElement } from '../functions/helpers';
+import {getArgs, getElement, getFullRule} from '../functions/helpers';
 
 export class Achievements extends Component {
   constructor(props) {
@@ -16,6 +16,8 @@ export class Achievements extends Component {
       achievements: [],
       loaded: false,
     }
+
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +27,33 @@ export class Achievements extends Component {
       alert("Log in to see the view");
       window.location.href = "/";
     }
+  }
+
+  handleCancel = name => {
+    let id = 0;
+    for (let i=0; i<this.state.achievements.length; i++) {
+      if (name === this.state.achievements[i].name) {
+        id = this.state.achievements[i].id;
+        break;
+      }
+    }
+
+    fetch(`/api/achievements/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(_ => {
+        this.setState(() => {
+          return {
+            loaded: false
+          };
+        });
+        this.getAchievements()
+      })
+      .catch(err => console.log(err));
   }
 
   getAchievements() {
@@ -74,6 +103,7 @@ export class Achievements extends Component {
                     kind={achievement.kind}
                     args={achievement.args}
                     name={achievement.name}
+                    handleCancel={this.handleCancel}
                   />
                 </Col>
               );

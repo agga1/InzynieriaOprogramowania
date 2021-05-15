@@ -225,6 +225,18 @@ html, body{
   margin-top: 32px;
 }
 
+.cancel-achievement{
+  margin-top: 32px;
+}
+
+.cancel-achievement-btn{
+  text-decoration: none !important;
+  color: #ff8c42 !important;
+  font-size: 28px;
+  font-style: italic;
+  cursor: pointer;
+}
+
 .w-80{
   width:90% !important;
 }
