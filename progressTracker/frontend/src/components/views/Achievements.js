@@ -73,6 +73,7 @@ export class Achievements extends Component {
                   <AchievementIcon
                     kind={achievement.kind}
                     args={achievement.args}
+                    name={achievement.name}
                   />
                 </Col>
               );

@@ -78,11 +78,13 @@ export class AddAchievement extends Component {
     const args = getArgs(this.state.rule.value, this.state.x, this.state.y);
     if (args === "") {
       return {
+        name: this.state.name,
         course: course,
         kind: this.state.rule.value
       }
     } else {
         return {
+          name: this.state.name,
           course: course,
           kind: this.state.rule.value,
           args: args

@@ -28,7 +28,7 @@ export class AchievementIcon extends Component {
           <Row>
             <Col xs={4}>
             <CardBody>
-              <CardTitle className="achievement-name">Achievement</CardTitle>
+              <CardTitle className="achievement-name">{this.props.name}</CardTitle>
             </CardBody>
             </Col>
             <Col xs={8}>
