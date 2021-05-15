@@ -36,6 +36,18 @@ export class TaskDetails extends Component {
         }
     }
 
+    getBetterAggregationName = (shortName) => {
+        switch (shortName) {
+            case "SUM":
+                return "Sum";
+            case "AVG":
+                return "Average";
+            case "WAVG":
+                return "Weighted average";
+            default:
+                throw new Error(`Aggregation method name "${shortName}" does not have longer equivalent`);
+        }
+    }
 
     prepareView() {
         if (!this.state.loaded) {
@@ -60,19 +72,27 @@ export class TaskDetails extends Component {
                             <Row>
                                 <Col md={12} className="display-flex">
                                     <h4 className="task-heading font-weight-bold">Deadline</h4>
-                                    <h5 style={{ "paddingLeft": "40px" }}>{this.state.task.deadline}</h5>
+                                    <h5 style={{ "paddingLeft": "62px" }}>{this.state.task.deadline}</h5>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={12} className="display-flex">
+                                    <h4 className="task-heading font-weight-bold pr-4">Aggregation </h4>
+                                    <h5 style={{ "paddingLeft": "2px" }}>
+                                        {this.getBetterAggregationName(this.state.task.aggregation_method)}
+                                    </h5>
                                 </Col>
                             </Row>
                             <Row >
                                 <Col md={12} className="display-flex">
                                     <h4 className="task-heading font-weight-bold" >Weight </h4>
-                                    <h5 style={{ "paddingLeft": "58px" }}>{this.state.task.weight}</h5>
+                                    <h5 style={{ "paddingLeft": "80px" }}>{this.state.task.weight}</h5>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col md={12} className="display-flex">
                                     <h4 className="task-heading font-weight-bold pr-4">Is extra </h4>
-                                    <h5 style={{ "paddingLeft": "30px" }}>{this.state.task.is_extra ? "yes" : "no"}</h5>
+                                    <h5 style={{ "paddingLeft": "52px" }}>{this.state.task.is_extra ? "yes" : "no"}</h5>
                                 </Col>
                             </Row>
                         </Col>
