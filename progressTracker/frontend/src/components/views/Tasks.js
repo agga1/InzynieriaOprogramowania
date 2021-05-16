@@ -81,7 +81,6 @@ export class Tasks extends Component {
 
 
   prepareView() {
-    console.log(this.state.tasks.length)
     if (this.state.loaded == false) {
       return (
         <Col xs={12} className="mb-5 mt-5">

@@ -17,46 +17,48 @@ export class Progress extends Component {
       name: localStorage.getItem("courseName"),
       achievements: [],
       tasks: [],
+      main_tasks: [],
+      main_tasks_len: -1,
+      grades: new Map(),
       points: 0,
       total: 0,
       loaded: false,
+      grades_loaded: false,
     }
   }
 
-  getTotal() {
-    getElement(localStorage.getItem("courseUrl") + "main_tasks")
-      .then((data) => {
-        let total = 0;
-        data = data.tasks;
-        for (let i = 0; i < data.length; i++) {
-          total += parseInt(data[i].grade_max);
+  getPointsForMainTasks() { 
+    return getElement(localStorage.getItem("courseUrl") + "main_tasks")
+    .then((data1) => {
+      let main_tasks = data1.tasks;
+      
+      this.setState(() => ({
+        main_tasks: main_tasks,
+        main_tasks_len: main_tasks.length,
+        grades_loaded: main_tasks.length === 0 ? true : this.state.grades_loaded,
         }
-        this.setState(() => {
-          return {
-            total: total,
-          };
-        });
-      });
-  }
-
-  getPoints() {
-    getElement("/api/grades/")
-      .then((data) => {
-        let points = 0;
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].course_name === this.state.name) {
-            points += parseInt(data[i].value);
-          }
-        }
-
-        this.setState(() => {
-          return {
-            points: points
-          };
-        });
-
-      });
-  }
+      ))
+      let counter = 0;
+      let grades_list = this.state.grades;
+      let points = 0;
+      main_tasks.map( task => {
+      return getElement(task.url + "grades/")
+      .then((data2) => {
+        counter++;
+        data2.grades.map((grade) =>{
+              points = grade.value;
+          })
+          this.setState(() => ({
+            grades: grades_list,
+            grades_loaded: counter == this.state.main_tasks_len,
+            total: this.state.total + task.grade_max,
+            points: this.state.points + points,
+            }
+          ))
+        })      
+      })
+   })
+}
 
   setLevels() {
     let grade = (this.state.points * 100.0) / this.state.total;
@@ -100,8 +102,7 @@ export class Progress extends Component {
   componentDidMount() {
     if (localStorage.getItem('token')) {
       this.getTasks();
-      this.getPoints();
-      this.getTotal();
+      this.getPointsForMainTasks()
       this.getAchievements();
     } else {
       alert('Log into to see the view');
@@ -109,18 +110,18 @@ export class Progress extends Component {
     }
   }
 
-  prepareView() {
-    if (this.state.loaded === false) {
+  prepareProgressBar(levels_values){
+    if(this.state.main_tasks_len === 0){
       return (
-        <Col xs={10} className="mb-5 mt-5">
-          <Spinner className="spinner"/>
-        </Col>
+        <Row className="pr-5 pl-5 ml-2 mb-4">
+            <Col xs={12} className="pr-5">
+              <h1 className="heading">We can not calculate your progress because no tasks are asigned to this course</h1>
+            </Col>
+        </Row>
       );
-    } else {
-      let levels_values = this.setLevels();
+    }else{
       return (
-        <Col xs={10} className="pr-4">
-          <Row className="pr-5 pl-5 ml-2 mb-4">
+        <Row className="pr-5 pl-5 ml-2 mb-4">
             <Col xs={12} className="pr-5">
               <ProgressBar className="my-progressbar">
                 <ProgressBar now={`${levels_values[0]}`} animated striped variant="danger" label={`Not enough!`}
@@ -131,7 +132,24 @@ export class Progress extends Component {
                              key={4}/>
               </ProgressBar>
             </Col>
-          </Row>
+        </Row>
+      )
+    }
+  }
+
+  prepareView() {
+    if (this.state.loaded === false || this.state.grades_loaded === false) {
+      return (
+        <Col xs={10} className="mb-5 mt-5">
+          <Spinner className="spinner"/>
+        </Col>
+      );
+    }
+    else {
+      let levels_values = this.setLevels();
+      return (
+        <Col xs={10} className="pr-4">
+          {this.prepareProgressBar(levels_values)}
           <Row className="p-2">
             {this.state.achievements.map((achievement) => {
               return (
