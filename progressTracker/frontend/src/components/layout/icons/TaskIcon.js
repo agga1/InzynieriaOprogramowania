@@ -43,6 +43,21 @@ export class TaskIcon extends Component {
     return "-";
   }
 
+  getLinkPrefix() {
+    const courseUrl = localStorage.getItem('courseUrl');
+
+    let prefix = "";
+    let slashes = 0;
+    for (let i = 0; i < courseUrl.length; i++) {
+      if (courseUrl[i] === '/')
+        slashes++;
+      prefix += courseUrl[i];
+      if (slashes === 3)
+        break;
+    }
+    return prefix;
+  }
+
   showChildren = (grades) => {
     if (this.state.show && this.state.loaded) {
       if (this.state.show && this.state.children.length != 0) {
@@ -56,7 +71,7 @@ export class TaskIcon extends Component {
                     <TaskIcon
                       task_name={task.name}
                       deadline={task.deadline}
-                      url={"/api/tasks/" + task.id + "/"}
+                      url={this.getLinkPrefix() + "api/tasks/" + task.id + "/"}
                       max_points={task.grade_max}
                       grade={this.getGrade(task.name, grades)}
                       grades={grades}
