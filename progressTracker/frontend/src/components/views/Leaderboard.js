@@ -35,7 +35,7 @@ export class Leaderboard extends Component {
           tasks: tasks,
           tasks_len: Object.keys(tasks).length,
           loaded: true,
-          grades_loaded: false,
+          grades_loaded: Object.keys(tasks).length > 0 ? false : true,
         }));
       })
       .catch((err) => console.log(err.message));
