@@ -40,6 +40,21 @@ export class Courses extends Component {
       .catch(err => console.log(err));
     }
 
+  prepareAddButton(){
+    if (localStorage.getItem("isStudent") == "false"){
+      return (
+        <FABContainer>
+          <FABLink
+            tooltip="Add course"
+            className="orange-bg plus-size"
+            icon="fas fa-plus fa-2x"
+            href="/teacher/course/add"
+            />
+        </FABContainer>
+      )
+    }
+  }
+
   prepareView() {
     if (this.state.loaded == false) {
       return (
@@ -75,14 +90,7 @@ export class Courses extends Component {
               </Col>
             );
           })}
-          <FABContainer>
-            <FABLink
-              tooltip="Add course"
-              className="orange-bg plus-size"
-              icon="fas fa-plus fa-2x"
-              href="/teacher/course/add"
-              />
-          </FABContainer>
+          {this.prepareAddButton()}
         </Fragment>
       );
     }
