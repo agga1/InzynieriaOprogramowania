@@ -17,6 +17,7 @@ export class Tasks extends Component {
       tasks: [],
       grades: [],
       loaded: false,
+      isStudent: localStorage.getItem('isStudent'),
     };
   }
 
@@ -88,16 +89,26 @@ export class Tasks extends Component {
         </Col>
       );
     } else if (this.state.tasks.length === 0){
-      return (
-        <Row>
+      if (this.state.isStudent === 'true'){
+        return (
           <Col xs={9} className="mb-5 mt-5">
-            <h1 className="heading">There is no task in course {this.state.name}</h1>
-          </Col>
-          <Col xs={3} className="mb-5 mt-5">
-            <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add new task"/>
-          </Col>
-        </Row>   
-      );
+              <h1 className="heading">There is no task in course {this.state.name}</h1>
+          </Col> 
+        );
+      }
+      else{
+        return (
+          <Row>
+            <Col xs={9} className="mb-5 mt-5">
+              <h1 className="heading">There is no task in course {this.state.name}</h1>
+            </Col>
+            <Col xs={3} className="mb-5 mt-5">
+              <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add new task"/>
+            </Col>
+          </Row>   
+        );
+      }
+      
     }
     else {
       return (
