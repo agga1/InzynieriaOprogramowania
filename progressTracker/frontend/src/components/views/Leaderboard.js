@@ -57,8 +57,6 @@ export class Leaderboard extends Component {
       let counter = 0;
       let grades_list = this.state.grades;
       tasks.map( task => {
-      let max = this.state.max + task.grade_max;
-
       return getElement(task.url + "grades/")
       .then((data2) => {
         counter++;
@@ -70,7 +68,7 @@ export class Leaderboard extends Component {
           this.setState(() => ({
             grades: grades_list,
             grades_loaded: counter == this.state.tasks_len,
-            max: max,
+            max: this.state.max + task.grade_max,
             }
           ))
         }) 
