@@ -6,6 +6,7 @@ import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Footer from "../layout/Footer";
 import { getElement } from "../functions/helpers";
+import Button from '../layout/Button';
 
 export class Tasks extends Component {
   constructor(props) {
@@ -28,6 +29,12 @@ export class Tasks extends Component {
       window.location.href = "/";
     }
   }
+
+  deleteParentTask() {
+    if (localStorage.getItem('taskUrl')){
+        localStorage.removeItem('taskUrl');
+    }
+}
 
   getTasks() {
     getElement(localStorage.getItem("courseUrl") + "main_tasks")
@@ -73,13 +80,26 @@ export class Tasks extends Component {
 
 
   prepareView() {
+    console.log(this.state.tasks.length)
     if (this.state.loaded == false) {
       return (
         <Col xs={12} className="mb-5 mt-5">
           <Spinner className="spinner"/>
         </Col>
       );
-    } else {
+    } else if (this.state.tasks.length === 0){
+      return (
+        <Row>
+          <Col xs={9} className="mb-5 mt-5">
+            <h1 className="heading">There is no task in course {this.state.name}</h1>
+          </Col>
+          <Col xs={3} className="mb-5 mt-5">
+            <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add new task"/>
+          </Col>
+        </Row>   
+      );
+    }
+    else {
       return (
         <Row className="p-2">
           {this.state.tasks.map((task) => {
