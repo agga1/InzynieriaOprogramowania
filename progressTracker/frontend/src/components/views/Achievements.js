@@ -6,7 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import AchievementIcon from "../layout/icons/AchievementIcon";
-import {getArgs, getElement, getFullRule} from '../functions/helpers';
+import {getArgs, getElement} from '../functions/helpers';
 
 export class Achievements extends Component {
   constructor(props) {
@@ -14,19 +14,31 @@ export class Achievements extends Component {
 
     this.state = {
       achievements: [],
+      tasks: [],
       loaded: false,
     }
-
     this.handleCancel = this.handleCancel.bind(this);
   }
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
+      this.getTasks();
       this.getAchievements();
     } else {
       alert("Log in to see the view");
       window.location.href = "/";
     }
+  }
+
+  getTasks() {
+    getElement(localStorage.getItem("courseUrl") + "tasks")
+      .then((data) => {
+        this.setState(() => {
+          return {
+            tasks: data.tasks
+          };
+        });
+      });
   }
 
   handleCancel = name => {
@@ -104,6 +116,7 @@ export class Achievements extends Component {
                     args={achievement.args}
                     name={achievement.name}
                     handleCancel={this.handleCancel}
+                    tasks={this.state.tasks}
                   />
                 </Col>
               );

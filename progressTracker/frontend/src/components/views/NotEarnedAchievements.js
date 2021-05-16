@@ -13,17 +13,30 @@ export class NotEarnedAchievements extends Component {
 
     this.state = {
       achievements: [],
+      tasks: [],
       loaded: false,
     }
   }
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
+      this.getTasks();
       this.getAchievements();
     } else {
       alert("Log in to see the view");
       window.location.href = "/";
     }
+  }
+
+  getTasks() {
+    getElement(localStorage.getItem("courseUrl") + "tasks")
+      .then((data) => {
+        this.setState(() => {
+          return {
+            tasks: data.tasks
+          };
+        });
+      });
   }
 
   getAchievements() {
@@ -59,6 +72,7 @@ export class NotEarnedAchievements extends Component {
                     kind={achievement.kind}
                     args={achievement.args}
                     name={achievement.name}
+                    tasks={this.state.tasks}
                   />
                 </Col>
               );

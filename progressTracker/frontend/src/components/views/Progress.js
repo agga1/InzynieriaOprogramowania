@@ -16,6 +16,7 @@ export class Progress extends Component {
     this.state = {
       name: localStorage.getItem("courseName"),
       achievements: [],
+      tasks: [],
       points: 0,
       total: 0,
       loaded: false,
@@ -85,8 +86,20 @@ export class Progress extends Component {
     });
   }
 
+  getTasks() {
+    getElement(localStorage.getItem("courseUrl") + "tasks")
+      .then((data) => {
+        this.setState(() => {
+          return {
+            tasks: data.tasks
+          };
+        });
+      });
+  }
+
   componentDidMount() {
     if (localStorage.getItem('token')) {
+      this.getTasks();
       this.getPoints();
       this.getTotal();
       this.getAchievements();
@@ -130,6 +143,7 @@ export class Progress extends Component {
                     kind={achievement.kind}
                     args={achievement.args}
                     name={achievement.name}
+                    tasks={this.state.tasks}
                   />
                 </Col>
               );

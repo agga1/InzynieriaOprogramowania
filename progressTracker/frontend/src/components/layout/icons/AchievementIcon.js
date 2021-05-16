@@ -33,13 +33,12 @@ export class AchievementIcon extends Component {
             </Col>
             <Col xs={6}>
               <CardTitle className="achievement-rule">
-                {getFullRule(this.props.kind, this.props.args)}
+                {getFullRule(this.props.kind, this.props.args, this.props.tasks)}
               </CardTitle>
             </Col>
             <Col xs={2}>
               <CardTitle className="cancel-achievement">
                 <a
-                  // href="/teacher/course/achievements"
                   className="cancel-achievement-btn"
                   onClick={() => {
                     this.props.handleCancel(this.props.name)

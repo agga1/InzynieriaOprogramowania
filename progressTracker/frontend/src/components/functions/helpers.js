@@ -82,7 +82,7 @@ export const extractID = (url) => {
   return parseInt(idString);
 }
 
-export const getArgs = (rule, x, y) => {
+export const getArgs = (rule, x, selectedX, y) => {
   let argsNumber = 0;
 
   if (rule === 'MAX' || rule === 'THRESH') {
@@ -91,40 +91,52 @@ export const getArgs = (rule, x, y) => {
 
   let args = "";
   if (argsNumber === 1) {
-    args = x;
+    if (rule === 'THRESH') {
+      args = x
+    } else {
+      args = selectedX.value;
+    }
   } else if (argsNumber === 2) {
     args = `${x} ${y}`
   }
-
   return args;
 }
 
-export const getFullRule = (kind, rawArgs) => {
-    const rule = convertAchievementRule(kind);
+export const getFullRule = (kind, rawArgs, tasks) => {
+  const rule = convertAchievementRule(kind);
 
-    const args = rawArgs.split(' ');
-    let currArg = 0;
+  const args = rawArgs.split(' ');
 
-    if (args.length === 0) {
-      return rule;
-    }
-
-    const variables = "XY";
-
-    let fullRule = "";
-
-    for (let i=0; i<rule.length; i++) {
-      if (rule[i] === variables[currArg]) {
-        fullRule += args[currArg++];
-      } else {
-        fullRule += rule[i];
+  if (kind === 'MAX') {
+    for (let i=0; i<tasks.length; i++) {
+      if (extractID(tasks[i].url) === parseInt(args[0])) {
+        args[0] = `"${tasks[i].name}"`;
+        break;
       }
     }
+  }
+  let currArg = 0;
 
-    return fullRule;
+  if (args.length === 0) {
+    return rule;
   }
 
-export const options = [
+  const variables = "XY";
+
+  let fullRule = "";
+
+  for (let i=0; i<rule.length; i++) {
+    if (rule[i] === variables[currArg]) {
+      fullRule += args[currArg++];
+    } else {
+      fullRule += rule[i];
+    }
+  }
+
+  return fullRule;
+}
+
+export const rules = [
   'pass all tasks',
   'get 100% from task X',
   'get X% from course',

@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react'
 import {Container, Row, Col} from 'reactstrap';
 import AddAchievementForm from '../layout/forms/AddAchievementForm'
 import Header from '../layout/Header';
-import {checkUser, extractID, getArgs, getFullRule} from '../functions/helpers';
+import {checkUser, extractID, getArgs, getElement} from '../functions/helpers';
 
 export class AddAchievement extends Component {
   constructor(props) {
@@ -12,6 +12,8 @@ export class AddAchievement extends Component {
       name: '',
       rule: '',
       x: 0,
+      selectedX: null,
+      tasks: [],
       y: 0,
       z: 0
     }
@@ -19,11 +21,24 @@ export class AddAchievement extends Component {
     this.handleName = this.handleName.bind(this);
     this.handleRule = this.handleRule.bind(this);
     this.handleX = this.handleX.bind(this);
+    this.handleSelectX = this.handleSelectX.bind(this);
     this.handleY = this.handleY.bind(this);
   }
 
   componentDidMount() {
     checkUser("/student/courses");
+    this.getTasks();
+  }
+
+  getTasks() {
+    getElement(localStorage.getItem("courseUrl") + "tasks")
+      .then((data) => {
+        this.setState(() => {
+          return {
+            tasks: data.tasks
+          };
+        });
+      });
   }
 
   handleName = event => {
@@ -41,6 +56,12 @@ export class AddAchievement extends Component {
   handleX = event => {
     this.setState({
       x: event.target.value
+    })
+  }
+
+  handleSelectX = event => {
+    this.setState({
+      selectedX: event
     })
   }
 
@@ -63,9 +84,8 @@ export class AddAchievement extends Component {
       .then(res => res.json())
       .then(resp => {
         if (resp.kind == this.state.rule.value) {
-          alert(`Achievement "${this.state.name}" added successfully.\n`
-            + `rule: "${getFullRule(this.state.rule.value, getArgs(this.state.rule.value, this.state.x, this.state.y))}"`
-          );
+          alert(`Achievement added successfully`);
+          window.location.href="/teacher/course/achievements";
         }
       })
       .catch(err => console.log(err));
@@ -75,7 +95,7 @@ export class AddAchievement extends Component {
     const courseUrl = localStorage.getItem('courseUrl');
     const course = extractID(courseUrl);
 
-    const args = getArgs(this.state.rule.value, this.state.x, this.state.y);
+    const args = getArgs(this.state.rule.value, this.state.x, this.state.selectedX, this.state.y);
     if (args === "") {
       return {
         name: this.state.name,
@@ -93,7 +113,7 @@ export class AddAchievement extends Component {
   }
 
   render() {
-    const {name, rule, x, y} = this.state;
+    const {name, rule, x, selectedX, tasks, y, z} = this.state;
     return (
       <Fragment>
         <Header button1_text="Achievements" button2_text="Log Out" button1_path="/teacher/course/achievements"
@@ -110,11 +130,14 @@ export class AddAchievement extends Component {
                 handleName={this.handleName}
                 handleRule={this.handleRule}
                 handleX={this.handleX}
+                handleSelectX={this.handleSelectX}
                 handleY={this.handleY}
                 handleSubmit={this.handleSubmit}
                 name={name}
                 rule={rule}
                 x={x}
+                selectedX={selectedX}
+                tasks={tasks}
                 y={y}
                 readOnly={false}
               />

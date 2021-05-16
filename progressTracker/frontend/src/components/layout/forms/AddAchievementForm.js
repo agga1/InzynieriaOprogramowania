@@ -3,13 +3,13 @@ import Form from "react-bootstrap/Form";
 import Button from "../Button";
 import {Row, Col} from "reactstrap";
 import Select from 'react-select'
-import {options, convertAchievementRule} from '../../functions/helpers'
+import {rules, convertAchievementRule, extractID} from '../../functions/helpers'
 
 
 export class AddAchievementForm extends Component {
   prepareOptions() {
     let tab = [];
-    for (let option of options) {
+    for (let option of rules) {
       tab.push({
         value: convertAchievementRule(option),
         label: option
@@ -18,6 +18,49 @@ export class AddAchievementForm extends Component {
     return tab
   }
 
+  prepareXOptions() {
+    let tab = [];
+    for (let option of this.props.tasks) {
+      tab.push({
+        value: extractID(option.url),
+        label: option.name
+      })
+    }
+    return tab
+  }
+
+  prepareXField() {
+    if (this.props.rule.value === "THRESH") {
+      return (
+        <Form.Control
+          type="text"
+          className="input_window"
+          onChange={this.props.handleX}
+          value={this.props.x}
+        />
+      )
+    } else if (this.props.rule.value === "MAX") {
+      return (
+        <Select
+          classNamePrefix="input_window "
+          isMulti={false}
+          value={this.props.selectedX}
+          onChange={this.props.handleSelectX}
+          options={this.prepareXOptions()}
+        />
+      )
+    } else {
+      return (
+        <Form.Control
+          type="text"
+          className="input_window"
+          onChange={this.props.handleX}
+          value={this.props.x}
+          readOnly={true}
+        />
+      )
+    }
+  }
 
   render() {
     return (
@@ -51,21 +94,15 @@ export class AddAchievementForm extends Component {
           </Col>
         </Row>
         <Row style={{alignItems: "baseline"}}>
-          <Col xs={2}>
+          <Col xs={3}>
             <Form.Group as={Row}>
               <Form.Label className="form_text_variable">X =</Form.Label>
               <Col>
-                <Form.Control
-                  type="text"
-                  className="input_window"
-                  onChange={this.props.handleX}
-                  value={this.props.x || 0}
-                  readOnly={this.props.readOnly}
-                />
+                {this.prepareXField()}
               </Col>
             </Form.Group>
           </Col>
-          <Col xs={2}>
+          <Col xs={3}>
             <Form.Group as={Row}>
               <Form.Label className="form_text_variable">Y =</Form.Label>
               <Col>
@@ -73,8 +110,8 @@ export class AddAchievementForm extends Component {
                   type="text"
                   className="input_window"
                   onChange={this.props.handleY}
-                  value={this.props.y || 0}
-                  readOnly={this.props.readOnly}
+                  value={this.props.y}
+                  readOnly={true}
                 />
               </Col>
             </Form.Group>
