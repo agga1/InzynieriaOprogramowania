@@ -40,56 +40,54 @@ export class StudentLoginPage extends Component {
 
 	handleLoginChange = event => {
         this.setState({
-            username : event.target.value
+            username : event.target.value,
+            error: ''
         })
 	}
 
     handlePasswordChange = (e) => {
         this.setState({
-            password : e.target.value
+            password : e.target.value,
+            error: ''
         })
     }
 
-    handlePasswordChange = (e) => {
-        this.setState({
-            password : e.target.value
+    handleLogin = (e, data) => {
+        e.preventDefault();
+        fetch('/api/auth/login', {
+            crossDomain : true,
+            withCredentials : true,
+            async : true,
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify(data)
         })
-    }
-
-	handleLogin = (e, data) => {
-		e.preventDefault();
-		fetch('/api/auth/login', {
-			crossDomain : true,
-			withCredentials : true,
-			async : true,
-			method : 'POST',
-			headers : {
-				'Content-Type' : 'application/json',
-			},
-			body : JSON.stringify(data)
-		})
-		.then(response => response.json())
-		.then(json => {
-            if(json.non_field_errors)
+        .then(response => response.json())
+        .then(json => {
+            if(json.non_field_errors || !json.user.is_student)
                 this.setState({
-                    error: json.non_field_errors[0]
+                    error: json.non_field_errors ? "incorrect credentials!" : "no permission to login as student!",
+                    username: '',
+                    password: ''
                 })
-            if(json.user.is_student){
+            else {
                 localStorage.setItem('token', json.token);
                 localStorage.setItem('isStudent', true);
 
                 this.setState({
                     username : json.user.username,
-                    password : json.user.password
+                    password : json.user.password,
                 })
 
                 window.location.href="/student/courses";
             }
-		})
-		.catch(error => {
-			console.log(error)
-		})
-	}
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     render() {
         const { username , password} = this.state;
@@ -107,8 +105,8 @@ export class StudentLoginPage extends Component {
                             handleLoginChange = {this.handleLoginChange}
                             handlePasswordChange = {this.handlePasswordChange}
                             username = {username}
-                            password = {password}/>
-                            {this.state.error != ''? <h3 className="card-title pt-3">Logowanie się nie powiodło: {this.state.error};</h3> : <p></p>}
+                            password = {password}
+                            error = {this.state.error}/>
                         </Col>
                         <Col xs={6}>
                             <Row className="mt-2 ml-3">

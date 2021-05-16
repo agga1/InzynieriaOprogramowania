@@ -13,7 +13,8 @@ export class TeacherLoginPage extends Component {
         this.state = {
             logged_in : localStorage.getItem('token') ? true : false,
             username : '',
-            password : ''
+            password : '',
+            error: ''
        }
 
        this.handleLoginChange = this.handleLoginChange.bind(this);
@@ -38,49 +39,57 @@ export class TeacherLoginPage extends Component {
 
    handleLoginChange = event => {
        this.setState({
-           username : event.target.value
+           username : event.target.value,
+           error: ''
        })
    }
 
    handlePasswordChange = (e) => {
        this.setState({
-           password : e.target.value
+           password : e.target.value,
+           error: ''
        })
    }
-
+   
    handleLogin = (e, data) => {
-       e.preventDefault();
-       console.log(data)
-       fetch('/api/auth/login', {
-           crossDomain : true,
-           withCredentials : true,
-           async : true,
-           method : 'POST',
-           headers : {
-               'Content-Type' : 'application/json',
-           },
-           body : JSON.stringify(data)
-       })
-       .then(response => response.json())
-       .then(json => {
-           if(!json.user.is_student){
-            localStorage.setItem('token', json.token);
-            localStorage.setItem('isStudent',false);
-            localStorage.setItem('userID',json.user.id);
-            this.setState({
-                username : json.user.username,
-                password : json.user.password
-            })
-            window.location.href="/teacher/courses";
-           }
-       })
-       .catch(error => {
-           console.log(error)
-       })
-   }
+        e.preventDefault();
+        fetch('/api/auth/login', {
+            crossDomain : true,
+            withCredentials : true,
+            async : true,
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(json => {
+            if(json.non_field_errors || json.user.is_student)
+                this.setState({
+                    error: json.non_field_errors ? "incorrect credentials!" : "no permission to login as teacher!",
+                    username: '',
+                    password: ''
+                })
+            else {
+                localStorage.setItem('token', json.token);
+                localStorage.setItem('isStudent', false);
+
+                this.setState({
+                    username : json.user.username,
+                    password : json.user.password
+                })
+
+                window.location.href="/teacher/courses";
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     render() {
-        const { logged_in, username , password} = this.state;
+        const { username , password} = this.state;
         
         return (
             <Fragment>
@@ -96,7 +105,8 @@ export class TeacherLoginPage extends Component {
                         handleLoginChange = {this.handleLoginChange}
                         handlePasswordChange = {this.handlePasswordChange}
                         username = {username}
-                        password = {password}/>
+                        password = {password}
+                        error = {this.state.error}/>
                         </Col>
                         <Col xs={5}>
                             <Row className="mt-2">
