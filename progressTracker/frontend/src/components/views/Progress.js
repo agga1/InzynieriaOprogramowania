@@ -19,7 +19,6 @@ export class Progress extends Component {
       tasks: [],
       main_tasks: [],
       main_tasks_len: -1,
-      grades: new Map(),
       points: 0,
       total: 0,
       loaded: false,
@@ -31,7 +30,6 @@ export class Progress extends Component {
     return getElement(localStorage.getItem("courseUrl") + "main_tasks")
     .then((data1) => {
       let main_tasks = data1.tasks;
-      
       this.setState(() => ({
         main_tasks: main_tasks,
         main_tasks_len: main_tasks.length,
@@ -40,13 +38,13 @@ export class Progress extends Component {
       ))
       let counter = 0;
       let grades_list = this.state.grades;
-      let points = 0;
       main_tasks.map( task => {
       return getElement(task.url + "grades/")
       .then((data2) => {
+        let points = 0;
         counter++;
         data2.grades.map((grade) =>{
-              points = grade.value;
+              points += grade.value;
           })
           this.setState(() => ({
             grades: grades_list,
@@ -120,9 +118,10 @@ export class Progress extends Component {
         </Row>
       );
     }else{
+      let grade = (this.state.points * 100.0) / this.state.total;
       return (
         <Row className="pr-5 pl-5 ml-2 mb-4">
-            <Col xs={12} className="pr-5">
+            <Col xs={10} className="pr-5">
               <ProgressBar className="my-progressbar">
                 <ProgressBar now={`${levels_values[0]}`} animated striped variant="danger" label={`Not enough!`}
                              key={1}/>
@@ -131,6 +130,9 @@ export class Progress extends Component {
                 <ProgressBar now={`${levels_values[3]}`} animated striped variant="success" label={`Very Good`}
                              key={4}/>
               </ProgressBar>
+            </Col>
+            <Col xs={2} className="pr-5">
+              <h1 className="heading max-points">{Math.round(grade)}%</h1>
             </Col>
         </Row>
       )
