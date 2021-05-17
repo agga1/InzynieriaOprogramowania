@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reactstrap";
 import { getElement } from "../../functions/helpers";
 import Spinner from "../Spinner"
+import { Spinner as MiniSpinner } from "reactstrap";
 
 export class TaskIcon extends Component {
   constructor(props) {
@@ -12,8 +13,8 @@ export class TaskIcon extends Component {
       show: false,
       loaded: false,
       children: [],
-      grades: [],
-      grade: "-",
+      grades: this.props.grades,
+      // gradesLen : this.props.gradesLen,
     };
     this.onClick = this.onClick.bind(this);
     this.getChildren();
@@ -34,13 +35,18 @@ export class TaskIcon extends Component {
   };
 
   getGrade(taskName, grades) {
-    for (let i = 0; i < grades.length; i++) {
+    console.log(this.props.gradesLen);
+    let i;
+    for (i = 0; i < grades.length; i++) {
       if (grades[i].task_name == taskName) {
         return grades[i].value.toString();
       }
     }
 
-    return "-";
+    if(i === this.props.gradesLen)
+      return '-';
+
+    return <MiniSpinner animation="border"/>;;
   }
 
   getLinkPrefix() {
@@ -75,6 +81,7 @@ export class TaskIcon extends Component {
                       max_points={task.grade_max}
                       grade={this.getGrade(task.name, grades)}
                       grades={grades}
+                      gradesLen={ this.props.gradesLen === -1 ? -1 : grades.length}
                     />
                   </Col>
                 );
