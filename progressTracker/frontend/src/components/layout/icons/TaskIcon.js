@@ -192,6 +192,7 @@ export class TaskIcon extends Component {
             </ListInlineItem>
             <ListInlineItem className="pr-3">
               <a
+                href="#"
                 className="task-link delete-color"
                 onClick={() => this.toggleModal()}
               >
@@ -205,7 +206,7 @@ export class TaskIcon extends Component {
 
   toggleModal = () => {
     this.setState((state) => ({
-        showModal: !state.show
+        showModal: !state.showModal
     }));
 }
 

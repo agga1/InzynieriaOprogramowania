@@ -156,7 +156,7 @@ export class Tasks extends Component {
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}></Col>
-            <Col xs={6} className="title text-left">
+            <Col xs={9} className="title text-left">
               {this.state.name}
             </Col>
           </Row>

@@ -77,9 +77,14 @@ html, body{
   color: #ffffff !important;
 }
 
-.plus-size{
+.plus-fa-size{
   width:65px !important; 
   height:65px !important;
+}
+
+.medium-fa-size{
+  width:50px !important; 
+  height:50px !important;
 }
 
 .task-heading{
@@ -91,7 +96,7 @@ html, body{
 }
 
 .spinner-no-style{
-
+  padding: 3px 3px;
 }
 
 .form {
@@ -155,6 +160,10 @@ html, body{
   color: #fffffa ;
 }
 
+.task-link:hover{
+  text-decoration-line: none;
+  font-weight: 574;
+}
 
 .clicked .max-points{
   color: #fffffa !important;
@@ -206,7 +215,6 @@ html, body{
   width: 7.3rem !important;
 }
 
-
 .task-link{
   color: #483ebb;
   /* color: #ff8c42; */
@@ -215,6 +223,19 @@ html, body{
 
 .delete-color{
   color:rgb(155, 4, 4) !important;
+}
+.course-details-btns{
+  width:10em;
+}
+
+.flex-cen-col-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.delete-bg-color{
+  background-color:rgb(155, 4, 4) !important;
 }
 
 .achievement-name{

@@ -46,7 +46,7 @@ export class Courses extends Component {
         <FABContainer>
           <FABLink
             tooltip="Add course"
-            className="orange-bg plus-size"
+            className="orange-bg plus-fa-size"
             icon="fas fa-plus fa-2x"
             href="/teacher/course/add"
             />

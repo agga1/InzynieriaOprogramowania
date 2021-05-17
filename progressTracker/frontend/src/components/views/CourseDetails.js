@@ -6,6 +6,8 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import { getElement } from '../functions/helpers';
+import CustomModal from '../layout/CustomModal';
+import { Container as FABContainer, Link as FABLink, Button as FABBtn} from 'react-floating-action-button'
 
 export class CourseDetails extends Component {
     constructor(props) {
@@ -18,6 +20,7 @@ export class CourseDetails extends Component {
             teacher: { title: '', user: {}},
             students_number: 0,
             tasks_number: 0,
+            showModal: false,
             loaded: false,
         }
     }
@@ -74,6 +77,61 @@ export class CourseDetails extends Component {
         }
     }
 
+    toggleModal = () => {
+        this.setState((state) => ({
+            showModal: !state.showModal
+        }));
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        fetch(localStorage.getItem('courseUrl'), {
+            method : 'DELETE',
+            headers : {
+                Authorization : `Token ${localStorage.getItem('token')}`,
+                'Content-Type' : 'application/json',
+            },
+        })
+        .then(res => {
+          if(res.status<300){
+            window.location.href="/teacher/courses"
+          }else{
+            alert("Error occured. Error number: "+res.status);
+          }
+          this.toggleModal();
+        })
+        .catch(err => console.log(err));
+    }
+    
+    handleCancel = () => {
+        this.toggleModal();
+    }
+
+    prepareButtons(){
+        if (localStorage.getItem("isStudent") == "false"){
+          return (
+            <FABContainer>
+              <FABLink
+                tooltip="Edit description"
+                className="orange-bg medium-fa-size"
+                icon="fas fa-align-center fa-lg"
+                href="/teacher/course/update"
+                />
+                <FABBtn
+                tooltip="Delete course"
+                className="orange-bg medium-fa-size"
+                icon="fas fa-trash fa-lg "
+                onClick={() => this.toggleModal()}
+                />
+                <FABBtn
+                tooltip="See actions"
+                className="orange-bg plus-fa-size"
+                icon="fas fa-pencil-alt fa-2x"
+                />
+            </FABContainer>
+          )
+        }
+      }                        
 
     prepareView() {
         if (this.state.loaded === false) {
@@ -121,13 +179,18 @@ export class CourseDetails extends Component {
                                 </Col>
                             </Row>
                         </Col>
-                        {localStorage.getItem('isStudent') === 'true' ? <Col></Col> :
-                            <Col xs={5} className="pr-5 text-right">
-                                <Button path="/teacher/course/update" text="Edit description" />
-                            </Col>
-                        }
+                        {this.prepareButtons()}
+                        {/* {localStorage.getItem('isStudent') === 'true' ? <Col></Col> :
+                            <>
+                                <Col xs={5} className="pr-5 text-right flex-cen-col-container" >
+                                    <Button path="/teacher/course/update" text="Edit description" className="course-details-btns"/>
+                                    <Button path="#" className=" mt-3 course-details-btns" text="Delete course" onClick={() => this.toggleModal()}/>
+                                </Col>
+                            </>
+                        } */}
                     </Row>
                 </Col>
+                
             );
         }
     }
@@ -138,6 +201,13 @@ export class CourseDetails extends Component {
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true} />
                 <Container fluid>
+                    <CustomModal
+                        show={this.state.showModal}
+                        title="Warning"
+                        body="Are you sure you want to delete this course?"
+                        handleSubmit={this.handleSubmit}
+                        handleCancel={this.handleCancel}
+                    />
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={2} />
                         <Col xs={6} className="task-heading title text-left">{this.state.name}</Col>
