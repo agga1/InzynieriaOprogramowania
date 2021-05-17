@@ -10,6 +10,9 @@ class Course(models.Model):
     pass_threshold = models.SmallIntegerField(default=0)
     description = models.TextField(default="")
 
+    def __str__(self):
+        return str(vars(self))
+
 
 class Task(models.Model):
     class AggregationMethod(models.TextChoices):
@@ -29,12 +32,15 @@ class Task(models.Model):
     aggregation_method = models.CharField(max_length=4, choices=AggregationMethod.choices,
                                           default=AggregationMethod.AVERAGE)
 
+    def __str__(self):
+        return str(vars(self))
+
 
 class Grade(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.SET(-1))
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
     value = models.SmallIntegerField()
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.SET(-1))
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     issued_by = models.ForeignKey(Teacher, on_delete=models.SET(-1))
     issued_at = models.DateTimeField(auto_now_add=True)
 
@@ -51,6 +57,9 @@ class Achievement(models.Model):
 
     class Meta:
         unique_together = ('course', 'kind', 'args',)
+
+    def __str__(self):
+        return str(vars(self))
 
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
