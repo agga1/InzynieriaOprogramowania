@@ -12,14 +12,11 @@ export class TaskIcon extends Component {
     this.state = {
       style: "",
       show: false,
-      showModal: false,
       loaded: false,
       children: [],
       grades: this.props.grades,
     };
     this.onClick = this.onClick.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
     this.getChildren();
   }
 
@@ -190,60 +187,16 @@ export class TaskIcon extends Component {
                 Details
               </a>
             </ListInlineItem>
-            <ListInlineItem className="pr-3">
-              <a
-                href="#"
-                className="task-link delete-color"
-                onClick={() => this.toggleModal()}
-              >
-                Delete
-              </a>
-            </ListInlineItem>
           </List>
         );
       }
   }
 
-  toggleModal = () => {
-    this.setState((state) => ({
-        showModal: !state.showModal
-    }));
-}
-
-handleSubmit = (e) => {
-    e.preventDefault();
-    fetch(this.props.url, {
-        method : 'DELETE',
-        headers : {
-            Authorization : `Token ${localStorage.getItem('token')}`,
-            'Content-Type' : 'application/json',
-        },
-    })
-    .then(res => {
-      if(res.status<300){
-        window.location.reload();
-      }else{
-        alert("Error occured. Error number: "+res.status);
-      }
-      this.toggleModal();
-    })
-    .catch(err => console.log(err));
-}
-
-handleCancel = () => {
-    this.toggleModal();
-}
+  
 
   render() {
     return (
       <Fragment>
-        <CustomModal
-          show={this.state.showModal}
-          title="Warning"
-          body="Are you sure you want to delete this task?"
-          handleSubmit={this.handleSubmit}
-          handleCancel={this.handleCancel}
-        />
         <Card
           onClick={this.onClick}
           className={`icon mb-4 ${this.state.style}`}

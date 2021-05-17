@@ -4,7 +4,6 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import Button from '../layout/Button';
 import { getElement } from '../functions/helpers';
 import CustomModal from '../layout/CustomModal';
 import { Container as FABContainer, Link as FABLink, Button as FABBtn} from 'react-floating-action-button'
@@ -113,19 +112,19 @@ export class CourseDetails extends Component {
             <FABContainer>
               <FABLink
                 tooltip="Edit description"
-                className="orange-bg medium-fa-size"
+                className="orange-bg"
                 icon="fas fa-align-center fa-lg"
                 href="/teacher/course/update"
                 />
                 <FABBtn
                 tooltip="Delete course"
-                className="orange-bg medium-fa-size"
+                className="orange-bg"
                 icon="fas fa-trash fa-lg "
                 onClick={() => this.toggleModal()}
                 />
                 <FABBtn
                 tooltip="See actions"
-                className="orange-bg plus-fa-size"
+                className="orange-bg"
                 icon="fas fa-pencil-alt fa-2x"
                 />
             </FABContainer>
@@ -179,7 +178,6 @@ export class CourseDetails extends Component {
                                 </Col>
                             </Row>
                         </Col>
-                        {this.prepareButtons()}
                         {/* {localStorage.getItem('isStudent') === 'true' ? <Col></Col> :
                             <>
                                 <Col xs={5} className="pr-5 text-right flex-cen-col-container" >
@@ -189,6 +187,7 @@ export class CourseDetails extends Component {
                             </>
                         } */}
                     </Row>
+                    {this.prepareButtons()}
                 </Col>
                 
             );
@@ -210,8 +209,8 @@ export class CourseDetails extends Component {
                     />
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={2} />
-                        <Col xs={6} className="task-heading title text-left">{this.state.name}</Col>
-                        <Col xs={4} />
+                        <Col xs={9} className="task-heading title text-left">{this.state.name}</Col>
+                        <Col xs={1} />
                     </Row>
                     <Row>
                         <Col xs={2} className="ml-0 pl-0">
@@ -220,7 +219,6 @@ export class CourseDetails extends Component {
                         {this.prepareView()}
                     </Row>
                 </Container>
-
                 <Footer />
             </Fragment>
         )

@@ -167,7 +167,7 @@ export class Leaderboard extends Component {
                 <Container fluid>
                     <Row className="mt-4 mb-3 ml-3">
                         <Col xs={2}></Col>  
-                        <Col xs={6} className="heading title text-left">{this.state.name}</Col>    
+                        <Col xs={9} className="heading title text-left">{this.state.name}</Col>    
                         <Col xs={12} className="heading subtitle text-center">Leaderboard</Col>              
                     </Row>
                     <Row>

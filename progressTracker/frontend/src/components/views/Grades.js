@@ -180,7 +180,6 @@ export class Grades extends Component {
   };
 
   showDeleteModal = (student) => {
-    console.log(student)
     this.setState((state) => ({
       showDelete: !state.showDelete,
       gradeToDelete: this.gradeExists(student.user.id)
@@ -189,7 +188,6 @@ export class Grades extends Component {
 
   handleDeleteSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.gradeToDelete)
     fetch('/api/grades/'+this.state.gradeToDelete.id, {
       method: "DELETE",
       headers: {
@@ -209,7 +207,6 @@ export class Grades extends Component {
   };
 
   handleDeleteCancel = () => {
-    console.log(this.state.gradeToDelete);
     this.setState((state) => ({
       showDelete: !state.showDelete,
       gradeToDelete: -1,
@@ -325,7 +322,7 @@ export class Grades extends Component {
         />
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={3} />
-            <Col xs={6} className="heading login_heading text-left">
+            <Col xs={9} className="heading login_heading text-left">
               {this.state.task.name}
             </Col>
           </Row>

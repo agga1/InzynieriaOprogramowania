@@ -5,6 +5,7 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import {getStudents} from '../functions/helpers'
+import CustomModal from '../layout/CustomModal';
 
 export class StudentsList extends Component {
   constructor(props) {
@@ -13,6 +14,8 @@ export class StudentsList extends Component {
     this.state = {
       name: localStorage.getItem("courseName"),
       students: [],
+      showModal: false,
+      studentToDelete: -1,
       loaded: false,
     };
     this.refresh = this.refresh.bind(this);
@@ -30,6 +33,41 @@ export class StudentsList extends Component {
         .catch((err) => alert(err.message));
     }
   }
+
+  showModal = (student) => {
+    this.setState((state) => ({
+      showModal: !state.showModal,
+      studentToDelete: student
+    }));
+  };
+
+  handleDeleteSubmit = (e) => {
+    e.preventDefault();
+    fetch(localStorage.getItem('courseUrl')+'del_students/', {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({"students":[this.state.studentToDelete]})
+    })
+      .then((res) => {
+        if (res.status < 300) {
+          this.refresh();
+        } else {
+          alert("Error occured. Error number: " + res.status);
+        }
+        this.handleDeleteCancel();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  handleDeleteCancel = () => {
+    this.setState((state) => ({
+      showModal: !state.showModal,
+      studentToDelete: -1,
+    }));
+  };
 
   refresh() {
     window.location.reload();
@@ -54,6 +92,7 @@ export class StudentsList extends Component {
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Index_nr</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -65,6 +104,15 @@ export class StudentsList extends Component {
                     <td>{student.user.last_name}</td>
                     <td>{student.user.email}</td>
                     <td>{student.index_nr}</td>
+                    <td>
+                      <a
+                        className="btn fas fa-trash fa-lg"
+                        role="button"
+                        aria-pressed="false"
+                        onClick={() => this.showModal(student.user.id)}
+                        style={{"margin":0}}
+                      />
+                    </td>
                   </tr>
                 );
               })}
@@ -85,10 +133,17 @@ export class StudentsList extends Component {
           button2_path="/"
           is_logout={true}
         />
+        <CustomModal 
+          show={this.state.showModal}
+          title="Warning"
+          body="Are you sure you want to delete this student?"
+          handleSubmit={this.handleDeleteSubmit}
+          handleCancel={this.handleDeleteCancel}
+        />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}></Col>
-            <Col xs={6} className="heading title text-left">
+            <Col xs={9} className="heading title text-left">
               {this.state.name}
             </Col>
           </Row>

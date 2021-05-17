@@ -7,6 +7,8 @@ import Spinner from '../layout/Spinner';
 import { getElement } from '../functions/helpers'
 import Button from '../layout/Button';
 import parse from "html-react-parser";
+import CustomModal from '../layout/CustomModal';
+import { Container as FABContainer, Link as FABLink, Button as FABBtn} from 'react-floating-action-button'
 
 export class TaskDetails extends Component {
     constructor(props) {
@@ -14,6 +16,7 @@ export class TaskDetails extends Component {
 
         this.state = {
             task: { name: '', grade_max: '' },
+            showModal: false,
             loaded: false,
         }
     }
@@ -48,6 +51,62 @@ export class TaskDetails extends Component {
                 throw new Error(`Aggregation method name "${shortName}" does not have longer equivalent`);
         }
     }
+
+    toggleModal = () => {
+        this.setState((state) => ({
+            showModal: !state.showModal
+        }));
+    }
+    
+    handleSubmit = (e) => {
+        e.preventDefault();
+        fetch('/api/tasks/'+this.state.task.id, {
+            method : 'DELETE',
+            headers : {
+                Authorization : `Token ${localStorage.getItem('token')}`,
+                'Content-Type' : 'application/json',
+            },
+        })
+        .then(res => {
+          if(res.status<300){
+            window.location.reload();
+          }else{
+            alert("Error occured. Error number: "+res.status);
+          }
+          this.toggleModal();
+        })
+        .catch(err => console.log(err));
+    }
+    
+    handleCancel = () => {
+        this.toggleModal();
+    }
+
+    prepareButtons(){
+        if (localStorage.getItem("isStudent") == "false"){
+          return (
+            <FABContainer>
+              <FABLink
+                tooltip="Edit description"
+                className="orange-bg"
+                icon="fas fa-align-center fa-lg"
+                href="/teacher/task/update"
+                />
+                <FABBtn
+                tooltip="Delete task"
+                className="orange-bg"
+                icon="fas fa-trash fa-lg "
+                onClick={() => this.toggleModal()}
+                />
+                <FABBtn
+                tooltip="See actions"
+                className="orange-bg"
+                icon="fas fa-pencil-alt fa-2x"
+                />
+            </FABContainer>
+          )
+        }
+      }      
 
     prepareView() {
         if (!this.state.loaded) {
@@ -96,12 +155,13 @@ export class TaskDetails extends Component {
                                 </Col>
                             </Row>
                         </Col>
-                        {localStorage.getItem('isStudent') == 'true' ? <Col></Col> :
+                        {/* {localStorage.getItem('isStudent') == 'true' ? <Col></Col> :
                             <Col xs={5} className="mt-4 pr-5 text-right">
                                 <Button path="/teacher/task/update" text="Edit description" />
                             </Col>
-                        }
+                        } */}
                     </Row>
+                    {this.prepareButtons()}
                 </Col>
             );
         }
@@ -113,10 +173,17 @@ export class TaskDetails extends Component {
             <Fragment>
                 <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true} />
                 <Container fluid>
+                    <CustomModal
+                        show={this.state.showModal}
+                        title="Warning"
+                        body="Are you sure you want to delete this task?"
+                        handleSubmit={this.handleSubmit}
+                        handleCancel={this.handleCancel}
+                    />
                     <Row className="mt-4 mb-5 ml-3">
                         <Col xs={2} />
-                        <Col xs={6} className="task-heading title text-left">{this.state.task.name}</Col>
-                        <Col xs={3} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.state.task.grade_max}</Col>
+                        <Col xs={9} className="task-heading title text-left">{this.state.task.name}</Col>
+                        <Col xs={1} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.state.task.grade_max}</Col>
                     </Row>
                     <Row>
                         <Col xs={2} className="ml-0 pl-0">
@@ -125,7 +192,6 @@ export class TaskDetails extends Component {
                         {this.prepareView()}
                     </Row>
                 </Container>
-
                 <Footer />
             </Fragment>
         )
