@@ -6,6 +6,7 @@ import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Modal from "../layout/RateStudentModal";
 import { getStudents, getElement } from "../functions/helpers";
+import CustomModal from "../layout/CustomModal";
 
 export class Grades extends Component {
   constructor(props) {
@@ -16,6 +17,8 @@ export class Grades extends Component {
       students: [],
       grades: [],
       show: false,
+      showDelete: false,
+      gradeToDelete: -1,
       loaded: false,
       student_id: "",
       rate: "",
@@ -24,11 +27,13 @@ export class Grades extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
+    this.handleDeleteCancel = this.handleDeleteCancel.bind(this);
   }
 
   getData() {
     let grades = this.getStudentsGrades();
-    let task = getElement(localStorage.getItem('taskUrl'));
+    let task = getElement(localStorage.getItem("taskUrl"));
     let students = getStudents();
 
     Promise.all([grades, task, students])
@@ -54,17 +59,18 @@ export class Grades extends Component {
 
   getStudentsGrades() {
     if (localStorage.getItem("isStudent") == "false") {
-      return (getElement(localStorage.getItem("taskUrl") + "grades")
-        .then((data) => {
+      return getElement(localStorage.getItem("taskUrl") + "grades").then(
+        (data) => {
           data = data.grades;
           return data;
-        }));
+        }
+      );
     } else {
       throw new Error("Only teacher can rate students!!!");
     }
   }
 
-  showModal = (student) => {
+  showRateModal = (student) => {
     this.setState((state) => ({
       student_id: student.user.id,
       rate: "",
@@ -82,21 +88,22 @@ export class Grades extends Component {
     }));
   };
 
-  gradeExists() {
+  gradeExists(student_id) {
     let grade = this.state.grades
-      .filter((grade) => grade.student == this.state.student_id)
+      .filter((grade) => grade.student == student_id)
       .map((p) => p);
-    return grade.length > 0 ? grade : "";
+    return grade.length > 0 ? grade[0] : undefined;
   }
 
   handleSubmit = (e) => {
+    e.preventDefault();
     var new_grade = parseFloat(this.state.rate.replace(",", "."));
 
     if (
       new_grade <= this.state.task.grade_max &&
       new_grade >= this.state.task.grade_min
     ) {
-      let grade = this.gradeExists()[0];
+      let grade = this.gradeExists(this.state.student_id);
 
       if (grade != undefined) {
         fetch("/api/grades/" + grade.id + "/", {
@@ -172,6 +179,43 @@ export class Grades extends Component {
     });
   };
 
+  showDeleteModal = (student) => {
+    console.log(student)
+    this.setState((state) => ({
+      showDelete: !state.showDelete,
+      gradeToDelete: this.gradeExists(student.user.id)
+    }));
+  };
+
+  handleDeleteSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state.gradeToDelete)
+    fetch('/api/grades/'+this.state.gradeToDelete.id, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status < 300) {
+          window.location.reload();
+        } else {
+          alert("Error occured. Error number: " + res.status);
+        }
+        this.handleDeleteCancel();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  handleDeleteCancel = () => {
+    console.log(this.state.gradeToDelete);
+    this.setState((state) => ({
+      showDelete: !state.showDelete,
+      gradeToDelete: -1,
+    }));
+  };
+
   getGrade(student) {
     for (var grade in this.state.grades) {
       if (this.state.grades[grade].student == student.user.id) {
@@ -198,9 +242,15 @@ export class Grades extends Component {
                 <th colSpan="3">Name</th>
                 <th className="td-sm">Points</th>
                 {localStorage.getItem("isParentTask") == "true" ? (
-                  <th colSpan="0"></th>
+                  <>
+                    <th colSpan="0"></th>
+                    <th colSpan="0"></th>
+                  </>
                 ) : (
-                  <th className="td-sm">Rate</th>
+                  <>
+                    <th className="td-sm">Rate</th>
+                    <th className="td-sm">Delete</th>
+                  </>
                 )}
               </tr>
             </thead>
@@ -216,18 +266,31 @@ export class Grades extends Component {
                     </td>
                     <td className="td-sm">{this.getGrade(student)}</td>
                     {localStorage.getItem("isParentTask") == "true" ? (
-                      <td colSpan="0"></td>
+                      <>
+                        <td colSpan="0"></td>
+                        <td colSpan="0"></td>
+                      </>
                     ) : (
-                      <td className="td-sm">
-                        <a
-                          className="btn"
-                          role="button"
-                          aria-pressed="false"
-                          onClick={() => this.showModal(student)}
-                        >
-                          Rate
-                        </a>
-                      </td>
+                      <>
+                        <td className="td-sm">
+                          <a
+                            className="btn"
+                            role="button"
+                            aria-pressed="false"
+                            onClick={() => this.showRateModal(student)}
+                          >
+                            Rate
+                          </a>
+                        </td>
+                        <td className="td-sm">
+                          <a
+                            className="btn fas fa-trash fa-lg"
+                            role="button"
+                            aria-pressed="false"
+                            onClick={() => this.showDeleteModal(student)}
+                          />
+                        </td>
+                      </>
                     )}
                   </tr>
                 );
@@ -259,6 +322,13 @@ export class Grades extends Component {
             rate={this.state.rate}
             max_grade={this.state.task.grade_max}
           />
+          <CustomModal 
+          show={this.state.showDelete}
+          title="Warning"
+          body="Are you sure you want to delete this grade?"
+          handleSubmit={this.handleDeleteSubmit}
+          handleCancel={this.handleDeleteCancel}
+        />
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={3} />
             <Col xs={6} className="heading login_heading text-left">

@@ -3,6 +3,7 @@ import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reacts
 import { getElement } from "../../functions/helpers";
 import Spinner from "../Spinner"
 import { Spinner as MiniSpinner } from "reactstrap";
+import CustomModal from "../CustomModal";
 
 export class TaskIcon extends Component {
   constructor(props) {
@@ -11,12 +12,14 @@ export class TaskIcon extends Component {
     this.state = {
       style: "",
       show: false,
+      showModal: false,
       loaded: false,
       children: [],
       grades: this.props.grades,
-      // gradesLen : this.props.gradesLen,
     };
     this.onClick = this.onClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     this.getChildren();
   }
 
@@ -46,7 +49,7 @@ export class TaskIcon extends Component {
     if(i === this.props.gradesLen)
       return '-';
 
-    return <MiniSpinner animation="border"/>;;
+    return <MiniSpinner animation="border"/>;
   }
 
   getLinkPrefix() {
@@ -140,14 +143,13 @@ export class TaskIcon extends Component {
   }
 
   prepareButtons(taskUrl) {
-    // if (this.state.loaded) {
       if (localStorage.getItem("isStudent") == "true") {
         return (
           <List>
-            <ListInlineItem className="task-link pr-3">
+            <ListInlineItem className="pr-3">
               <a
                 href="/student/task/details"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => this.setTask(taskUrl)}
               >
                 Details
@@ -158,19 +160,19 @@ export class TaskIcon extends Component {
       } else {
         return (
           <List>
-            <ListInlineItem className="task-link pr-3">
+            <ListInlineItem className="pr-3">
               <a
                 href="/teacher/task/add"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => this.setTask(taskUrl)}
               >
                 +Task
               </a>
             </ListInlineItem>
-            <ListInlineItem className="task-link pr-3 ">
+            <ListInlineItem className="pr-3 ">
               <a
                 href="/teacher/task/grades"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => {
                   this.setTask(taskUrl);
                   this.setIsParentTask(this.state.children.length > 0);
@@ -179,13 +181,21 @@ export class TaskIcon extends Component {
                 Grades
               </a>
             </ListInlineItem>
-            <ListInlineItem className="task-link">
+            <ListInlineItem className="pr-3">
               <a
                 href="/teacher/task/details"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => this.setTask(taskUrl)}
               >
                 Details
+              </a>
+            </ListInlineItem>
+            <ListInlineItem className="pr-3">
+              <a
+                className="task-link delete-color"
+                onClick={() => this.toggleModal()}
+              >
+                Delete
               </a>
             </ListInlineItem>
           </List>
@@ -193,9 +203,46 @@ export class TaskIcon extends Component {
       }
   }
 
+  toggleModal = () => {
+    this.setState((state) => ({
+        showModal: !state.show
+    }));
+}
+
+handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(this.props.url, {
+        method : 'DELETE',
+        headers : {
+            Authorization : `Token ${localStorage.getItem('token')}`,
+            'Content-Type' : 'application/json',
+        },
+    })
+    .then(res => {
+      if(res.status<300){
+        window.location.reload();
+      }else{
+        alert("Error occured. Error number: "+res.status);
+      }
+      this.toggleModal();
+    })
+    .catch(err => console.log(err));
+}
+
+handleCancel = () => {
+    this.toggleModal();
+}
+
   render() {
     return (
       <Fragment>
+        <CustomModal
+          show={this.state.showModal}
+          title="Warning"
+          body="Are you sure you want to delete this task?"
+          handleSubmit={this.handleSubmit}
+          handleCancel={this.handleCancel}
+        />
         <Card
           onClick={this.onClick}
           className={`icon mb-4 ${this.state.style}`}

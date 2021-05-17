@@ -23,7 +23,7 @@ export class ModalComponent extends Component {
                 </ModalBody>
                 <ModalFooter>  
                     <Button type="submit" onClick={this.props.handleSubmit} text="Save"/>
-                    <Button type="submit" color="btn-rev" onClick={this.props.handleCancel} text="Cancel"/>
+                    <Button type="submit" className="btn-rev" onClick={this.props.handleCancel} text="Cancel"/>
                 </ModalFooter>
             </Modal>
         )

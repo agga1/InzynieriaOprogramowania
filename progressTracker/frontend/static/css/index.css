@@ -152,7 +152,7 @@ html, body{
 }
 
 .clicked .card-text, .clicked .task-link{
-  color: #fffffa !important;
+  color: #fffffa ;
 }
 
 
@@ -208,8 +208,13 @@ html, body{
 
 
 .task-link{
-  color: #ff8c42 !important;
+  color: #483ebb;
+  /* color: #ff8c42; */
   font-size: 24px;
+}
+
+.delete-color{
+  color:rgb(155, 4, 4) !important;
 }
 
 .achievement-name{

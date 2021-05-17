@@ -63,19 +63,8 @@ export class Courses extends Component {
         </Col>
       );
     } else {
-      // var comp;
-      // if (localStorage.getItem('isStudent') == "false") {
-      //   comp = (
-      //     <Col md={4} sm={6} xs={12} className="mb-4">
-      //       <AddCourseIcon path="/teacher/course/add" />
-      //     </Col>
-      //   );
-      // } else {
-      //   comp = <div></div>;
-      // }
       return (
         <Fragment>
-          {/* {comp} */}
           {this.state.data.map((course) => {
             const tasksPath =  localStorage.getItem("isStudent") == "true" ? "/student/course/tasks" : "/teacher/course/tasks"
             return (
