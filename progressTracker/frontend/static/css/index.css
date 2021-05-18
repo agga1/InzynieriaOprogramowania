@@ -163,6 +163,7 @@ html, body{
 .task-link:hover{
   text-decoration-line: none;
   font-weight: 574;
+  color: #483ebb !important;
 }
 
 .clicked .max-points{
@@ -186,7 +187,7 @@ html, body{
 
 .title{
   font-weight:800;
-  font-size: 72px;
+  font-size: 4em;
   color: #483ebb !important;
 }
 

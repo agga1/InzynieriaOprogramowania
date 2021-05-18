@@ -5,7 +5,7 @@ import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
 import Modal from "../layout/RateStudentModal";
-import { getStudents, getElement } from "../functions/helpers";
+import { getStudents, getElement, deleteElement } from "../functions/helpers";
 import CustomModal from "../layout/CustomModal";
 
 export class Grades extends Component {
@@ -188,22 +188,8 @@ export class Grades extends Component {
 
   handleDeleteSubmit = (e) => {
     e.preventDefault();
-    fetch('/api/grades/'+this.state.gradeToDelete.id, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.status < 300) {
-          window.location.reload();
-        } else {
-          alert("Error occured. Error number: " + res.status);
-        }
-        this.handleDeleteCancel();
-      })
-      .catch((err) => console.log(err));
+    deleteElement('/api/grades/'+this.state.gradeToDelete.id)
+      .then(() => {this.handleDeleteCancel();window.location.reload();});
   };
 
   handleDeleteCancel = () => {

@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import { getElement } from '../functions/helpers';
+import { deleteElement, getElement } from '../functions/helpers';
 import CustomModal from '../layout/CustomModal';
 import { Container as FABContainer, Link as FABLink, Button as FABBtn} from 'react-floating-action-button'
 
@@ -84,22 +84,8 @@ export class CourseDetails extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        fetch(localStorage.getItem('courseUrl'), {
-            method : 'DELETE',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`,
-                'Content-Type' : 'application/json',
-            },
-        })
-        .then(res => {
-          if(res.status<300){
-            window.location.href="/teacher/courses"
-          }else{
-            alert("Error occured. Error number: "+res.status);
-          }
-          this.toggleModal();
-        })
-        .catch(err => console.log(err));
+        deleteElement(localStorage.getItem('courseUrl'))
+            .then(() => {this.toggleModal();window.location.href="/teacher/courses"});
     }
     
     handleCancel = () => {
@@ -145,13 +131,13 @@ export class CourseDetails extends Component {
                     <Row className="pr-5 pl-5 mb-4">
                         <Col xs={7}>
                             <Row className="ml-1 mb-3">
-                                <h4 className="task-heading font-weight-bold">Description:</h4>
+                                <h3 className="task-heading font-weight-bold">Description:</h3>
                             </Row>
                             <Row  className="ml-1 mb-3">
                                 <h5>{this.state.description}</h5>
                             </Row>
                             <Row className="ml-1 mb-3">
-                                <h4 className="task-heading font-weight-bold">Teacher:</h4>
+                                <h3 className="task-heading font-weight-bold">Teacher:</h3>
                             </Row>
                             <Row  className="ml-1">
                                 <h5>{this.presentTeacher()}</h5>
@@ -161,19 +147,19 @@ export class CourseDetails extends Component {
                             </Row>
                             <Row className="mb-3">
                                 <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold">Pass Threshold:</h4>
+                                    <h3 className="task-heading font-weight-bold">Pass Threshold:</h3>
                                     <h5 style={{ "paddingLeft": "40px" }}>{this.state.pass_threshold}</h5>
                                 </Col>
                             </Row>
                             <Row className="mb-3">
                                 <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold">Students Number:</h4>
+                                    <h3 className="task-heading font-weight-bold">Students Number:</h3>
                                     <h5 style={{ "paddingLeft": "40px" }}>{this.state.students_number}</h5>
                                 </Col>
                             </Row>
                             <Row className="mb-3">
                                 <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold">Tasks Number:</h4>
+                                    <h3 className="task-heading font-weight-bold">Tasks Number:</h3>
                                     <h5 style={{ "paddingLeft": "40px" }}>{this.state.tasks_number}</h5>
                                 </Col>
                             </Row>

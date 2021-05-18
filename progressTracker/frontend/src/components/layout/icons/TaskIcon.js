@@ -142,7 +142,7 @@ export class TaskIcon extends Component {
   prepareButtons(taskUrl) {
       if (localStorage.getItem("isStudent") == "true") {
         return (
-          <List>
+          <List className="mb-1">
             <ListInlineItem className="pr-3">
               <a
                 href="/student/task/details"
@@ -156,7 +156,7 @@ export class TaskIcon extends Component {
         );
       } else {
         return (
-          <List>
+          <List className="mb-1">
             <ListInlineItem className="pr-3">
               <a
                 href="/teacher/task/add"
@@ -202,12 +202,12 @@ export class TaskIcon extends Component {
           className={`icon mb-4 ${this.state.style}`}
         >
           <Row>
-            <Col xs={9}>
-              <CardBody className="pb-0">
+            <Col xs={localStorage.getItem('isStudent')=='true' ? 9 : 11}>
+              <CardBody className="pb-0 pt-3">
                 <CardTitle tag="h1">{this.props.task_name}</CardTitle>
               </CardBody>
             </Col>
-            <Col xs={3} className="text-right pl-0 pt-3">
+            <Col xs={localStorage.getItem('isStudent')=='true' ? 3 : 1} className="text-right pl-0 pt-3">
               <div className=" points">
                 {localStorage.getItem("isStudent") == "false" ? ( "" ) : ( <h1 className="your-points">{this.props.grade}/</h1>)}
                 <h1 className="max-points">{this.props.max_points}</h1>
@@ -216,8 +216,8 @@ export class TaskIcon extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              <CardBody className="pt-0">
-                <List>
+              <CardBody className="pt-0 pb-0">
+                <List className="mb-0">
                   <ListInlineItem className="card-text">
                     <b>Deadline:</b>
                   </ListInlineItem>

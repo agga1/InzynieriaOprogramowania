@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
-import { getElement } from '../functions/helpers'
+import { deleteElement, getElement } from '../functions/helpers'
 import Button from '../layout/Button';
 import parse from "html-react-parser";
 import CustomModal from '../layout/CustomModal';
@@ -60,22 +60,8 @@ export class TaskDetails extends Component {
     
     handleSubmit = (e) => {
         e.preventDefault();
-        fetch('/api/tasks/'+this.state.task.id, {
-            method : 'DELETE',
-            headers : {
-                Authorization : `Token ${localStorage.getItem('token')}`,
-                'Content-Type' : 'application/json',
-            },
-        })
-        .then(res => {
-          if(res.status<300){
-            window.location.reload();
-          }else{
-            alert("Error occured. Error number: "+res.status);
-          }
-          this.toggleModal();
-        })
-        .catch(err => console.log(err));
+        deleteElement('/api/tasks/'+this.state.task.id)
+            .then(() => {this.toggleModal();window.location.href='/teacher/course/tasks';})
     }
     
     handleCancel = () => {
@@ -119,38 +105,38 @@ export class TaskDetails extends Component {
             return (
                 <Col xs={10} className="pr-4">
                     <Row className="pr-5 mb-4" style={{ "paddingLeft": "60px" }}>
-                        <h4 className="task-heading font-weight-bold">Description:</h4>
+                        <h3 className="task-heading font-weight-bold">Description</h3>
                     </Row>
                     <Row className="pr-5 pl-5 ml-2 mb-4">
-                        <div>
+                        <h5>
                             {parse(this.state.task.description)}
-                        </div>
+                        </h5>
                     </Row>
                     <Row className="pr-5 pl-5 mb-4">
                         <Col xs={7}>
                             <Row>
-                                <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold">Deadline</h4>
+                                <Col md={12} className="display-flex pb-3">
+                                    <h3 className="task-heading font-weight-bold">Deadline</h3>
                                     <h5 style={{ "paddingLeft": "62px" }}>{this.state.task.deadline}</h5>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold pr-4">Aggregation </h4>
+                                <Col md={12} className="display-flex pb-3">
+                                    <h3 className="task-heading font-weight-bold pr-4">Aggregation </h3>
                                     <h5 style={{ "paddingLeft": "2px" }}>
                                         {this.getBetterAggregationName(this.state.task.aggregation_method)}
                                     </h5>
                                 </Col>
                             </Row>
                             <Row >
-                                <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold" >Weight </h4>
+                                <Col md={12} className="display-flex pb-3">
+                                    <h3 className="task-heading font-weight-bold" >Weight </h3>
                                     <h5 style={{ "paddingLeft": "80px" }}>{this.state.task.weight}</h5>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col md={12} className="display-flex">
-                                    <h4 className="task-heading font-weight-bold pr-4">Is extra </h4>
+                                <Col md={12} className="display-flex pb-3">
+                                    <h3 className="task-heading font-weight-bold pr-4">Is extra </h3>
                                     <h5 style={{ "paddingLeft": "52px" }}>{this.state.task.is_extra ? "yes" : "no"}</h5>
                                 </Col>
                             </Row>
