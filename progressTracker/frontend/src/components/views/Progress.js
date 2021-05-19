@@ -15,6 +15,7 @@ export class Progress extends Component {
 
     this.state = {
       name: localStorage.getItem("courseName"),
+      studentId: localStorage.getItem("studentId"),
       achievements: [],
       tasks: [],
       main_tasks: [],
@@ -44,7 +45,9 @@ export class Progress extends Component {
         let points = 0;
         counter++;
         data2.grades.map((grade) =>{
-              points += grade.value;
+          console.log(this.state.studentId);
+              if(grade.student == this.state.studentId)
+                points += grade.value;
           })
           this.setState(() => ({
             grades: grades_list,
