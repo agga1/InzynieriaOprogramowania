@@ -32,32 +32,45 @@ export class AddAchievementForm extends Component {
   prepareXField() {
     if (this.props.rule.value === "THRESH") {
       return (
-        <Form.Control
-          type="text"
-          className="input_window"
-          onChange={this.props.handleX}
-          value={this.props.x}
-        />
+        <Row style={{alignItems: "baseline"}}>
+          <Col xs={3}>
+            <Form.Group as={Row}>
+              <Form.Label className="form_text_variable">X =</Form.Label>
+              <Col>
+                <Form.Control
+                  type="text"
+                  className="input_window"
+                  onChange={this.props.handleX}
+                  value={this.props.x}
+                />
+              </Col>
+            </Form.Group>
+          </Col>
+        </Row>
       )
     } else if (this.props.rule.value === "MAX") {
       return (
-        <Select
-          classNamePrefix="input_window "
-          isMulti={false}
-          value={this.props.selectedX}
-          onChange={this.props.handleSelectX}
-          options={this.prepareXOptions()}
-        />
+        <Row style={{alignItems: "baseline"}}>
+          <Col xs={3}>
+            <Form.Group as={Row}>
+              <Form.Label className="form_text_variable">X =</Form.Label>
+              <Col>
+                <Select
+                  classNamePrefix="input_window "
+                  isMulti={false}
+                  value={this.props.selectedX}
+                  onChange={this.props.handleSelectX}
+                  options={this.prepareXOptions()}
+                />
+              </Col>
+            </Form.Group>
+          </Col>
+        </Row>
       )
     } else {
       return (
-        <Form.Control
-          type="text"
-          className="input_window"
-          onChange={this.props.handleX}
-          value={this.props.x}
-          readOnly={true}
-        />
+        <Row style={{alignItems: "baseline"}}>
+        </Row>
       )
     }
   }
@@ -93,30 +106,7 @@ export class AddAchievementForm extends Component {
             </Form.Group>
           </Col>
         </Row>
-        <Row style={{alignItems: "baseline"}}>
-          <Col xs={3}>
-            <Form.Group as={Row}>
-              <Form.Label className="form_text_variable">X =</Form.Label>
-              <Col>
-                {this.prepareXField()}
-              </Col>
-            </Form.Group>
-          </Col>
-          <Col xs={3}>
-            <Form.Group as={Row}>
-              <Form.Label className="form_text_variable">Y =</Form.Label>
-              <Col>
-                <Form.Control
-                  type="text"
-                  className="input_window"
-                  onChange={this.props.handleY}
-                  value={this.props.y}
-                  readOnly={true}
-                />
-              </Col>
-            </Form.Group>
-          </Col>
-        </Row>
+        {this.prepareXField()}
         <Row>
           <Col className="row justify-content-md-end">
             <Button
