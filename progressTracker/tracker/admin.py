@@ -15,6 +15,7 @@ class StudentInline(admin.StackedInline):
 
 class TeacherInline(admin.StackedInline):
     model = Teacher
+    min_num = 1
 
 class DefaultUserAdmin(UserAdmin):
     form = DefaultUserChangeForm
@@ -47,6 +48,7 @@ class StudentUserAdmin(DefaultUserAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
+        DefaultUser.objects.filter(pk=obj.id).update(is_student=True)
         group = Group.objects.get(name="StudentGroup")
         group.user_set.add(obj.id)
 
