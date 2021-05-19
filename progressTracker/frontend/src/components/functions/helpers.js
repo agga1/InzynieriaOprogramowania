@@ -52,6 +52,24 @@ export const checkUser = (returnPage) =>{
   }
 }
 
+export const deleteElement = (url) =>{
+  return (fetch(url, {
+    method : 'DELETE',
+    headers : {
+        Authorization : `Token ${localStorage.getItem('token')}`,
+        'Content-Type' : 'application/json',
+    },
+})
+.then(res => {
+  if(res.status>=300){
+    alert("Error occured. Error number: "+res.status);
+    return false;
+  }
+  return true;
+})
+.catch(err => console.log(err)));
+}
+
 export const getElement = (url) => {
   return (fetch(url, {
     method: 'GET',

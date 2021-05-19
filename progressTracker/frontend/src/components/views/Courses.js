@@ -46,7 +46,7 @@ export class Courses extends Component {
         <FABContainer>
           <FABLink
             tooltip="Add course"
-            className="orange-bg plus-size"
+            className="orange-bg plus-fa-size"
             icon="fas fa-plus fa-2x"
             href="/teacher/course/add"
             />
@@ -63,19 +63,8 @@ export class Courses extends Component {
         </Col>
       );
     } else {
-      // var comp;
-      // if (localStorage.getItem('isStudent') == "false") {
-      //   comp = (
-      //     <Col md={4} sm={6} xs={12} className="mb-4">
-      //       <AddCourseIcon path="/teacher/course/add" />
-      //     </Col>
-      //   );
-      // } else {
-      //   comp = <div></div>;
-      // }
       return (
         <Fragment>
-          {/* {comp} */}
           {this.state.data.map((course) => {
             const tasksPath =  localStorage.getItem("isStudent") == "true" ? "/student/course/tasks" : "/teacher/course/tasks"
             return (

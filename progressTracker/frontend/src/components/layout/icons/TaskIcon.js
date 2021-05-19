@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reactstrap";
 import { getElement } from "../../functions/helpers";
 import Spinner from "../Spinner"
+import { Spinner as MiniSpinner } from "reactstrap";
+import CustomModal from "../CustomModal";
 
 export class TaskIcon extends Component {
   constructor(props) {
@@ -12,8 +14,7 @@ export class TaskIcon extends Component {
       show: false,
       loaded: false,
       children: [],
-      grades: [],
-      grade: "-",
+      grades: this.props.grades,
     };
     this.onClick = this.onClick.bind(this);
     this.getChildren();
@@ -34,13 +35,18 @@ export class TaskIcon extends Component {
   };
 
   getGrade(taskName, grades) {
-    for (let i = 0; i < grades.length; i++) {
+    console.log(this.props.gradesLen);
+    let i;
+    for (i = 0; i < grades.length; i++) {
       if (grades[i].task_name == taskName) {
         return grades[i].value.toString();
       }
     }
 
-    return "-";
+    if(i === this.props.gradesLen)
+      return '-';
+
+    return <MiniSpinner animation="border"/>;
   }
 
   getLinkPrefix() {
@@ -75,6 +81,7 @@ export class TaskIcon extends Component {
                       max_points={task.grade_max}
                       grade={this.getGrade(task.name, grades)}
                       grades={grades}
+                      gradesLen={ this.props.gradesLen === -1 ? -1 : grades.length}
                     />
                   </Col>
                 );
@@ -133,14 +140,13 @@ export class TaskIcon extends Component {
   }
 
   prepareButtons(taskUrl) {
-    // if (this.state.loaded) {
       if (localStorage.getItem("isStudent") == "true") {
         return (
-          <List>
-            <ListInlineItem className="task-link pr-3">
+          <List className="mb-1">
+            <ListInlineItem className="pr-3">
               <a
                 href="/student/task/details"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => this.setTask(taskUrl)}
               >
                 Details
@@ -150,20 +156,20 @@ export class TaskIcon extends Component {
         );
       } else {
         return (
-          <List>
-            <ListInlineItem className="task-link pr-3">
+          <List className="mb-1">
+            <ListInlineItem className="pr-3">
               <a
                 href="/teacher/task/add"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => this.setTask(taskUrl)}
               >
                 +Task
               </a>
             </ListInlineItem>
-            <ListInlineItem className="task-link pr-3 ">
+            <ListInlineItem className="pr-3 ">
               <a
                 href="/teacher/task/grades"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => {
                   this.setTask(taskUrl);
                   this.setIsParentTask(this.state.children.length > 0);
@@ -172,10 +178,10 @@ export class TaskIcon extends Component {
                 Grades
               </a>
             </ListInlineItem>
-            <ListInlineItem className="task-link">
+            <ListInlineItem className="pr-3">
               <a
                 href="/teacher/task/details"
-                className="custom-btn"
+                className="task-link"
                 onClick={() => this.setTask(taskUrl)}
               >
                 Details
@@ -186,6 +192,8 @@ export class TaskIcon extends Component {
       }
   }
 
+  
+
   render() {
     return (
       <Fragment>
@@ -194,12 +202,12 @@ export class TaskIcon extends Component {
           className={`icon mb-4 ${this.state.style}`}
         >
           <Row>
-            <Col xs={9}>
-              <CardBody className="pb-0">
+            <Col xs={localStorage.getItem('isStudent')=='true' ? 9 : 11}>
+              <CardBody className="pb-0 pt-3">
                 <CardTitle tag="h1">{this.props.task_name}</CardTitle>
               </CardBody>
             </Col>
-            <Col xs={3} className="text-right pl-0 pt-3">
+            <Col xs={localStorage.getItem('isStudent')=='true' ? 3 : 1} className="text-right pl-0 pt-3">
               <div className=" points">
                 {localStorage.getItem("isStudent") == "false" ? ( "" ) : ( <h1 className="your-points">{this.props.grade}/</h1>)}
                 <h1 className="max-points">{this.props.max_points}</h1>
@@ -208,8 +216,8 @@ export class TaskIcon extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              <CardBody className="pt-0">
-                <List>
+              <CardBody className="pt-0 pb-0">
+                <List className="mb-0">
                   <ListInlineItem className="card-text">
                     <b>Deadline:</b>
                   </ListInlineItem>

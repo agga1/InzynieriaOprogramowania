@@ -13,7 +13,6 @@ export class Sidebar extends Component {
              show: false,
              isStudent: localStorage.getItem('isStudent'),
 		}
-        this.showModal = this.showModal.bind(this);
         this.handleStudents = this.handleStudents.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);

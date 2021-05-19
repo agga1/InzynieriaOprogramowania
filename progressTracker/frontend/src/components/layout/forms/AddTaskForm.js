@@ -95,7 +95,7 @@ export class AddTaskForm extends Component {
                 type="text"
                 className="input_window"
                 onChange={this.props.handleWeight}
-                value={this.props.weight || 0}
+                value={this.props.weight}
                 readOnly={this.props.readOnly}
               />
             </Form.Group>

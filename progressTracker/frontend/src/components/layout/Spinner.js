@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Card, CardBody, Spinner } from 'reactstrap';
-import Button from './Button'
+import { Spinner } from 'reactstrap';
 
 export class EmptyCard extends Component { 
     render() {

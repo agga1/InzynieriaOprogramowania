@@ -7,6 +7,8 @@ import Spinner from "../layout/Spinner";
 import Footer from "../layout/Footer";
 import { getElement } from "../functions/helpers";
 import Button from '../layout/Button';
+import { Spinner as MiniSpinner } from "reactstrap";
+
 
 export class Tasks extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ export class Tasks extends Component {
       name: localStorage.getItem("courseName"),
       tasks: [],
       grades: [],
+      gradesLen: -1,
       loaded: false,
       isStudent: localStorage.getItem('isStudent'),
     };
@@ -62,7 +65,8 @@ export class Tasks extends Component {
 
         this.setState(() => {
           return {
-            grades: grades
+            grades: grades,
+            gradesLen: grades.length
           };
         });
 
@@ -70,13 +74,16 @@ export class Tasks extends Component {
   }
 
   getGrade(taskName) {
-    for (let i=0; i<this.state.grades.length; i++) {
+    let i;
+    for (i=0; i<this.state.grades.length; i++) {
       if (this.state.grades[i].task_name == taskName) {
         return this.state.grades[i].value.toString();
       }
     }
+    if(i == this.state.gradesLen)
+      return '-';
 
-    return "-";
+    return <MiniSpinner animation="border"/>;
   }
 
 
@@ -125,6 +132,7 @@ export class Tasks extends Component {
                   max_points={task.grade_max}
                   grade={this.getGrade(task.name)}
                   grades={this.state.grades}
+                  gradesLen={this.state.gradesLen}
                 />
               </Col>
             );
@@ -148,7 +156,7 @@ export class Tasks extends Component {
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}></Col>
-            <Col xs={6} className="title text-left">
+            <Col xs={9} className="title text-left">
               {this.state.name}
             </Col>
           </Row>

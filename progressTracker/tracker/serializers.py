@@ -1,7 +1,10 @@
 from rest_framework import serializers
 import numpy as np
 from accounts.serializers import TeacherSerializer
+from sqlalchemy import null
+
 from .models import Task, Course, Grade, Achievement
+
 
 # Task Serializers ---------------------------------------------------
 class TaskListSerializer(serializers.HyperlinkedModelSerializer):
@@ -43,7 +46,8 @@ class TaskSerializer(serializers.ModelSerializer):
         maxs = [child.grade_max for child in child_tasks]
         agg = parent_task.aggregation_method
         if agg == Task.AggregationMethod.AVERAGE:
-            Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins)/len(mins), grade_max=sum(maxs)/len(maxs))
+            Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins) / len(mins),
+                                                          grade_max=sum(maxs) / len(maxs))
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
             weights = [child.weight for child in child_tasks]
             avg_min = np.average(a=mins, weights=weights)
@@ -52,7 +56,6 @@ class TaskSerializer(serializers.ModelSerializer):
         elif agg == Task.AggregationMethod.SUM:
             print(f"new grade_max {sum(maxs)} for {parent_task.name}")
             Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins), grade_max=sum(maxs))
-
 
 
 # Course Serializers ---------------------------------------------------
@@ -96,6 +99,7 @@ class CreateCourseSerializer(serializers.ModelSerializer):
         Course.objects.filter(pk=instance.id).update(**validated_data)
         return Course.objects.get(pk=instance.id)
 
+
 # Grade Serializers ---------------------------------------------------
 class GradeDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -107,6 +111,7 @@ class GradeDetailSerializer(serializers.ModelSerializer):
 
 class GradeMinimalSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student', read_only=True)
+
     class Meta:
         model = Grade
         fields = (
@@ -125,6 +130,68 @@ class GradeListSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'task_name', 'value', 'student_name', 'course_name', 'issued_by_name'
         )
+
+
+def update_achievements(grade):
+    course = grade.course
+    achievements = course.achievement_set.all()
+    for achievement in achievements:
+        if achievement.kind == Achievement.Kind.ALL:
+            print("debug: kind all")
+            should_get = True
+            pass_threshold = course.pass_threshold
+            task_set = Task.objects.filter(course=course).filter(parent_task=None)
+            if not task_set:
+                continue
+            for task in task_set:
+                parent_grade = Grade.objects.filter(task=task)
+                if not parent_grade:
+                    continue
+                if not ((parent_grade[0].value / task.grade_max * 100) > pass_threshold):
+                    should_get = False
+            if should_get:
+                achievement.student.add(grade.student)
+            # else:
+            #     delete_achievement = Achievement.objects.filter(kind=achievement.kind).filter(student=grade.student)
+            #     if delete_achievement:
+            #         achievement.student.remove(grade.student)
+
+        elif achievement.kind == Achievement.Kind.MAX:
+            print("debug: kind max")
+            max_grade = grade.task.grade_max
+            if grade == max_grade:
+                achievement.student.add(grade.student)
+            # else:
+            #     delete_achievement = Achievement.objects.filter(kind=achievement.kind).filter(student=grade.student)
+            #     if delete_achievement:
+            #         achievement.student.remove(grade.student)
+
+        elif achievement.kind == Achievement.Kind.BONUS:
+            print("debug: kind bonus")
+            is_bonus = grade.task.is_extra
+            if is_bonus:
+                achievement.student.add(grade.student)
+
+        elif achievement.kind == Achievement.Kind.THRESH:
+            print("debug: kind thresh")
+            threshold = int(achievement.args)
+            number = 0
+            weights = 0
+            task_set = Task.objects.filter(course=course).filter(parent_task=None)
+            if not task_set:
+                continue
+            for task in task_set:
+                parent_grade = Grade.objects.filter(task=task)
+                if not parent_grade:
+                    continue
+                number += parent_grade[0].value * task.weight
+                weights += task.weight
+            if (number / weights) > threshold:
+                achievement.student.add(grade.student)
+            # else:
+            #     delete_achievement = Achievement.objects.filter(kind=achievement.kind).filter(student=grade.student)
+            #     if delete_achievement:
+            #         achievement.student.remove(grade.student)
 
 
 class CreateGradeSerializer(serializers.ModelSerializer):
@@ -148,18 +215,17 @@ class CreateGradeSerializer(serializers.ModelSerializer):
             self.recalculate_parent(instance)
         return Grade.objects.get(pk=instance.id)
 
-
     def recalculate_parent(self, grade):
         student = grade.student
         parent_task = grade.task.parent_task
         if parent_task is None:  # highest level already - update achievements
-            self.update_achievements(grade)
+            update_achievements(grade)
             return
         parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
         if not parent_grade_set:  # create new grade
             parent_grade = Grade.objects.create(task=parent_task, value=parent_task.grade_min,
-                                         student=student, course=grade.course,
-                                         issued_by=grade.issued_by)
+                                                student=student, course=grade.course,
+                                                issued_by=grade.issued_by)
             parent_grade.save()
         else:
             parent_grade = parent_grade_set[0]
@@ -168,21 +234,16 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         values = np.array([grade.value for grade in grades])
         agg = parent_task.aggregation_method
         if agg == Task.AggregationMethod.AVERAGE:
-            Grade.objects.filter(pk=parent_grade.id).update(value=values.sum()/len(child_tasks))
+            Grade.objects.filter(pk=parent_grade.id).update(value=values.sum() / len(child_tasks))
         elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
             sum_weights = sum([task.weight for task in child_tasks])
-            sum_grades_with_weights = sum([grade.value*grade.task.weight for grade in grades])
-            avg = sum_grades_with_weights/sum_weights
+            sum_grades_with_weights = sum([grade.value * grade.task.weight for grade in grades])
+            avg = sum_grades_with_weights / sum_weights
             Grade.objects.filter(pk=parent_grade.id).update(value=avg)
         elif agg == Task.AggregationMethod.SUM:
             Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
         self.recalculate_parent(parent_grade)
 
-    def update_achievements(self, grade):
-        course = grade.course
-        achievements = course.achievement_set.all()
-        for achievement in achievements:
-            pass # todo check if achievement met
 
 # Achievement Serializers ---------------------------------------------------
 class CreateAchievementSerializer(serializers.ModelSerializer):
@@ -194,6 +255,7 @@ class CreateAchievementSerializer(serializers.ModelSerializer):
         ach = Achievement.objects.create(**validated_data)
         ach.save()
         return ach
+
 
 class ListAchievementSerializer(serializers.ModelSerializer):
     class Meta:
