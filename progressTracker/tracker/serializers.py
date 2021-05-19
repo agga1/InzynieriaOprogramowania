@@ -56,6 +56,7 @@ class TaskSerializer(serializers.ModelSerializer):
         elif agg == Task.AggregationMethod.SUM:
             print(f"new grade_max {sum(maxs)} for {parent_task.name}")
             Task.objects.filter(pk=parent_task.id).update(grade_min=sum(mins), grade_max=sum(maxs))
+        self.update_parents(task.parent_task)
 
 
 # Course Serializers ---------------------------------------------------

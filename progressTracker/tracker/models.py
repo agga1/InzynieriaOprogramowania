@@ -44,6 +44,9 @@ class Grade(models.Model):
     issued_by = models.ForeignKey(Teacher, on_delete=models.SET(-1))
     issued_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('task', 'student')
+
     def __str__(self):
         return str(vars(self))
 
