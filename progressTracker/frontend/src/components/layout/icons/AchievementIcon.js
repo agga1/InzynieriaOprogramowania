@@ -36,6 +36,7 @@ export class AchievementIcon extends Component {
                 {getFullRule(this.props.kind, this.props.args, this.props.tasks)}
               </CardTitle>
             </Col>
+            {localStorage.getItem('isStudent')=='true' ? <></> : 
             <Col xs={2}>
               <CardTitle className="cancel-achievement">
                 <a
@@ -48,6 +49,7 @@ export class AchievementIcon extends Component {
                 </a>
               </CardTitle>
             </Col>
+  }
           </Row>
 
         </Card>
