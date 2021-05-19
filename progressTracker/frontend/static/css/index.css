@@ -99,6 +99,10 @@ html, body{
   padding: 3px 3px;
 }
 
+.minispinner{
+  border-width: 0.15em !important;
+}
+
 .form {
   background: #483ebb !important;
   margin-top: 2vw !important;

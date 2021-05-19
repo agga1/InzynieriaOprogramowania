@@ -52,6 +52,15 @@ export class Tasks extends Component {
       });
   }
 
+  getStudentsGrades() {
+      return getElement(localStorage.getItem("taskUrl") + "grades").then(
+        (data) => {
+          data = data.grades;
+          return data;
+        }
+      );
+  }
+
   getGrades() {
     getElement("/api/grades/")
       .then((data) => {
@@ -83,7 +92,7 @@ export class Tasks extends Component {
     if(i == this.state.gradesLen)
       return '-';
 
-    return <MiniSpinner animation="border"/>;
+    return <MiniSpinner className="minispinner" animation="border"/>;
   }
 
 

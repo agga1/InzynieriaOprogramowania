@@ -14,7 +14,7 @@ export class TaskIcon extends Component {
       show: false,
       loaded: false,
       children: [],
-      grades: this.props.grades,
+      // grades: this.props.grades,
     };
     this.onClick = this.onClick.bind(this);
     this.getChildren();
@@ -46,7 +46,7 @@ export class TaskIcon extends Component {
     if(i === this.props.gradesLen)
       return '-';
 
-    return <MiniSpinner animation="border"/>;
+    return <MiniSpinner className="minispinner" animation="border"/>;
   }
 
   getLinkPrefix() {
@@ -151,6 +151,7 @@ export class TaskIcon extends Component {
               >
                 Details
               </a>
+              
             </ListInlineItem>
           </List>
         );
@@ -195,6 +196,8 @@ export class TaskIcon extends Component {
   
 
   render() {
+    console.log(this.props.grades);
+    console.log(this.props.grade);
     return (
       <Fragment>
         <Card
