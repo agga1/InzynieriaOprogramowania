@@ -1,7 +1,7 @@
 from rest_framework import serializers
 import numpy as np
 from accounts.serializers import TeacherSerializer
-from sqlalchemy import null
+# from sqlalchemy import null
 
 from .models import Task, Course, Grade, Achievement
 
@@ -144,7 +144,7 @@ def update_achievements(grade):
             if not task_set:
                 continue
             for task in task_set:
-                parent_grade = Grade.objects.filter(task=task)
+                parent_grade = Grade.objects.filter(task=task).filter(student=grade.student)
                 if not parent_grade:
                     continue
                 if not ((parent_grade[0].value / task.grade_max * 100) > pass_threshold):
