@@ -53,7 +53,7 @@ export const checkUser = (returnPage) =>{
 }
 
 export const deleteElement = (url) =>{
-  return (fetch(url, {
+  return (fetch(url.replace("http","https"), {
     method : 'DELETE',
     headers : {
         Authorization : `Token ${localStorage.getItem('token')}`,
