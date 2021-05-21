@@ -12,7 +12,6 @@ logs
 node_modules
 bower_components
 
-frontend/static/frontend/main.js
 **/venv/
 **/.idea
 .vscode
