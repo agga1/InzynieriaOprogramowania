@@ -1,5 +1,5 @@
 """
-WSGI config for progressTracker project.
+WSGI config for progress_tracker_project project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'progressTracker.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'progress_tracker_project.settings')
 
 application = get_wsgi_application()

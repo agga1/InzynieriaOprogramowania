@@ -1,3 +1,5 @@
+# for heroku - important!!
+.env
 ### react ###
 .DS_*
 *.log
@@ -10,4 +12,54 @@ logs
 node_modules
 bower_components
 
-progressTracker/frontend/static/frontend/main.js
+frontend/static/frontend/main.js
+**/venv/
+**/.idea
+.vscode
+
+### Django ###
+*.log
+*.pot
+*.pyc
+**/__pycache__/
+local_settings.py
+db.sqlite3
+
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+/venv2/
