@@ -96,7 +96,9 @@ AUTH_USER_MODEL = 'accounts.DefaultUser'
 #     }
 # }
 dotenv_file = os.path.join(BASE_DIR, ".env")
+run_local_settings = False
 if os.path.isfile(dotenv_file):
+    run_local_settings = True
     dotenv.load_dotenv(dotenv_file)
 
 DATABASES = {}
@@ -149,5 +151,6 @@ django_heroku.settings(locals())
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+if not run_local_settings:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
