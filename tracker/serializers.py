@@ -3,7 +3,7 @@ import numpy as np
 from accounts.serializers import TeacherSerializer
 # from sqlalchemy import null
 
-from .models import Task, Course, Grade, Achievement
+from .models import Task, Course, Grade, Achievement, CourseGroup
 
 
 # Task Serializers ---------------------------------------------------
@@ -266,5 +266,5 @@ class ListAchievementSerializer(serializers.ModelSerializer):
 
 class CourseGroupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Achievement
+        model = CourseGroup
         fields = ('id', 'name', 'course', 'student')

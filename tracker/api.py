@@ -228,7 +228,7 @@ class AchievementViewSet(viewsets.ModelViewSet):
 
 class CourseGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.DjangoModelPermissions
+        permissions.AllowAny
     ]
 
     def get_serializer_class(self):
@@ -279,7 +279,7 @@ class CourseGroupViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'])
     def del_students(self, request, pk=None):
         """ provide {"students" : [1,2,3..]}
-            (list of students ids to be added to course)"""
+            (list of students ids to be deleted from course)"""
         student_ids = request.data['students']
         group = CourseGroup.objects.get(pk=pk)
         for student_id in student_ids:
