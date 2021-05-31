@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Courses from './Courses'
 import Tasks from './Tasks'
 import StudentsList from './StudentsList'
+import Groups from './Groups'
+import AddGroup from './AddGroup'
 import AddCourse from './AddCourse'
 import AddTask from './AddTask'
 import Grades from './Grades'
@@ -45,6 +47,8 @@ export class HomePage extends Component {
                     <Route path='/student/course/tasks' component={Tasks}/>
                     <Route path='/teacher/course/tasks' component={Tasks}/>
                     <Route path='/teacher/course/students' component={StudentsList}/>
+                    <Route path='/teacher/course/groups' component={Groups}/>
+                    <Route path='/teacher/group/add' component={AddGroup}/>
                     <Route path='/teacher/course/add' component={AddCourse}/>
                     <Route path='/teacher/task/add' component={AddTask}/>
                     <Route path='/teacher/task/grades' component={Grades}/>

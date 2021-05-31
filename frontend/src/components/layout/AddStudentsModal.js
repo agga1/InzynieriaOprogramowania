@@ -10,7 +10,7 @@ export class AddStudentsModal extends Component {
                 <ModalHeader >Add students</ModalHeader>
                 <ModalBody>
                 <SelectStudentsField 
-                    chosen_students = {this.props.chosen_students}
+                    chosenStudents = {this.props.chosenStudents}
                     handleStudents={this.props.handleStudents}
                     />
                 </ModalBody>

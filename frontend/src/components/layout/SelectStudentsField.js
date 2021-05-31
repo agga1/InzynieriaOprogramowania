@@ -44,7 +44,7 @@ export class SelectStudentsField extends Component {
             <Select 
                 classNamePrefix="input_window "
                 isMulti = {true}
-                value = {this.props.chosen_students}
+                value = {this.props.chosenStudents}
                 onChange={this.props.handleStudents}
                 options={this.state.students}
             />

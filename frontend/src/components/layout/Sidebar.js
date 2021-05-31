@@ -9,7 +9,7 @@ export class Sidebar extends Component {
 		super(props)
 
         this.state = {
-             chosen_students: [],
+             chosenStudents: [],
              show: false,
              isStudent: localStorage.getItem('isStudent'),
 		}
@@ -47,19 +47,18 @@ export class Sidebar extends Component {
 
     handleCancel = () => {
         this.setState((state) => ({
-            chosen_students: [],
+            chosenStudents: [],
             show: !state.show
         }))
     }
 
     handleStudents = (e) => {
-        this.setState({chosen_students: e});
+        this.setState({chosenStudents: e});
     }
-
 
     prepareData(){
         console.log(this.props.refresh);
-        var students_id = this.state.chosen_students;
+        var students_id = this.state.chosenStudents;
         students_id = students_id.map(e => e.value);
         return{
             students: students_id,
@@ -96,7 +95,7 @@ export class Sidebar extends Component {
                 <div className="task-sidebar">
                     <AddStudentsModal 
                         show={this.state.show}
-                        chosen_students = {this.state.chosen_students}
+                        chosenStudents = {this.state.chosenStudents}
                         handleStudents = {this.handleStudents}
                         handleSubmit = {this.handleSubmit}
                         handleCancel = {this.handleCancel}
@@ -110,6 +109,9 @@ export class Sidebar extends Component {
                         </NavItem>
                         <NavItem className="m-3 w-80">
                             <Button path="/teacher/course/students" className="w-80"  text="Enrolled students"/>
+                        </NavItem>
+                        <NavItem className="m-3 w-80">
+                            <Button path="/teacher/course/groups" className="w-80"  text="Groups"/>
                         </NavItem>
                         <NavItem className="m-3 w-80 text-center">
                             <Button onClick={this.showModal} className="w-80"  text="Add student"/>
