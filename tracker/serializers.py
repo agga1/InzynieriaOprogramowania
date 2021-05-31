@@ -262,3 +262,9 @@ class ListAchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
         fields = ('id', 'course', 'kind', 'args', 'name')
+
+
+class CourseGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achievement
+        fields = ('id', 'name', 'course', 'student')

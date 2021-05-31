@@ -4,12 +4,12 @@ from rest_framework.response import Response
 
 from accounts.models import Student
 from accounts.serializers import StudentSerializer
-from .models import Task, Course, Grade, Achievement
+from .models import Task, Course, Grade, Achievement, CourseGroup
 from rest_framework import viewsets, permissions
 from .serializers import TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
     GradeListSerializer, TaskMainSerializer, GradeMinimalSerializer, \
-    CreateAchievementSerializer, ListAchievementSerializer
+    CreateAchievementSerializer, ListAchievementSerializer, CourseGroupSerializer
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -224,4 +224,67 @@ class AchievementViewSet(viewsets.ModelViewSet):
             student = self.request.user.student
             return student.achievement_set.all()
         return None
+
+
+class CourseGroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.DjangoModelPermissions
+    ]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CourseGroupSerializer
+        if self.action == 'retrieve':
+            return CourseGroupSerializer
+        if self.action == 'create':
+            return CourseGroupSerializer
+        return CourseGroupSerializer
+
+    def get_queryset(self):
+        """ restrict queryset so that users can see only their own tasks. """
+        if hasattr(self.request.user, 'teacher'):
+            courses = self.request.user.teacher.course_set.all()
+            groups = CourseGroup.objects.filter(course__in=courses)
+            return groups
+
+        elif hasattr(self.request.user, 'student'):
+            courses = self.request.user.student.course_set.all()
+            groups = CourseGroup.objects.filter(course__in=courses)
+            return groups
+        return None
+
+    @action(detail=True, methods=['POST'])
+    def add_grade(self, request, pk=None):
+        """ provide {"grade": 4, "task": 31} """
+        grade_value = request.data['grade']
+        task = request.data['task']
+        group = CourseGroup.objects.get(pk=pk)
+        for student_id in group.student:
+            grade = Grade.objects.create(task=task, value=grade_value,
+                                         student=student_id, course=task.course,
+                                         issued_by=task.course.teacher)
+            grade.save()
+        return Response({"status": 'ok'})
+
+    @action(detail=True, methods=['POST'])
+    def add_students(self, request, pk=None):
+        """ provide {"students" : [1,2,3..]}
+            (list of students ids to be added to group)"""
+        student_ids = request.data['students']
+        group = CourseGroup.objects.get(pk=pk)
+        for student_id in student_ids:
+            group.student.add(student_id)
+        return Response({"status": 'ok'})
+
+    @action(detail=True, methods=['POST'])
+    def del_students(self, request, pk=None):
+        """ provide {"students" : [1,2,3..]}
+            (list of students ids to be added to course)"""
+        student_ids = request.data['students']
+        group = CourseGroup.objects.get(pk=pk)
+        for student_id in student_ids:
+            group.student.remove(student_id)
+        return Response({"status": 'ok'})
+
+
 

@@ -1,6 +1,6 @@
 export const getStudents = () => {
   if (localStorage.getItem('isStudent') == 'false') {
-    return (fetch(localStorage.getItem('courseUrl') + 'students', {
+    return (fetch(localStorage.getItem('courseUrl').replace("http","https") + 'students', {
       method: 'GET',
       headers: {
         Authorization: `Token ${localStorage.getItem('token')}`
@@ -53,7 +53,7 @@ export const checkUser = (returnPage) =>{
 }
 
 export const deleteElement = (url) =>{
-  return (fetch(url, {
+  return (fetch(url.replace("http","https"), {
     method : 'DELETE',
     headers : {
         Authorization : `Token ${localStorage.getItem('token')}`,
@@ -71,7 +71,7 @@ export const deleteElement = (url) =>{
 }
 
 export const getElement = (url) => {
-  return (fetch(url, {
+  return (fetch(url.replace("http","https"), {
     method: 'GET',
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`

@@ -13,6 +13,13 @@ class Course(models.Model):
     def __str__(self):
         return str(vars(self))
 
+class CourseGroup(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    student = models.ManyToManyField(Student, blank=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(vars(self))
 
 class Task(models.Model):
     class AggregationMethod(models.TextChoices):
