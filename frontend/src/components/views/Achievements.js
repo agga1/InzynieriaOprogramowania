@@ -6,7 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import AchievementIcon from "../layout/icons/AchievementIcon";
-import {getArgs, getElement} from '../functions/helpers';
+import {getElement} from '../functions/helpers';
 
 export class Achievements extends Component {
   constructor(props) {

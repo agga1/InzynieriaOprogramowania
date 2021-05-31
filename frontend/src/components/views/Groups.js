@@ -7,9 +7,8 @@ import Spinner from "../layout/Spinner";
 import Footer from "../layout/Footer";
 import {checkUser, getElement} from "../functions/helpers";
 import Button from '../layout/Button';
-import { Spinner as MiniSpinner } from "reactstrap";
 
-
+// TODO component in progress
 export class Groups extends Component {
   constructor(props) {
     super(props);

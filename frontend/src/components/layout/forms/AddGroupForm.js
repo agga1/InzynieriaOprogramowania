@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "../Button";
 import { Row, Col } from "reactstrap";
-import Select from 'react-select'
 import SelectStudentsField from "../SelectStudentsField";
 
 export class AddGroupForm extends Component {
@@ -27,18 +26,9 @@ export class AddGroupForm extends Component {
             <Form.Group controlId="formBasicDescription">
               <Form.Label className="form_text">Students</Form.Label>
               <SelectStudentsField
-                    chosen_students = {this.props.chosen_students}
-                    handleStudents={this.props.handleStudents}
-                    />
-              {/*<Form.Control*/}
-              {/*  xs={12}*/}
-              {/*  type="text"*/}
-              {/*  as="textarea"*/}
-              {/*  rows={5}*/}
-              {/*  className="input_window"*/}
-              {/*  onChange={this.props.handleStudents}*/}
-              {/*  value={this.props.chosenStudents}*/}
-              {/*/>*/}
+                chosen_students = {this.props.chosen_students}
+                handleStudents={this.props.handleStudents}
+              />
             </Form.Group>
           </Col>
         </Row>

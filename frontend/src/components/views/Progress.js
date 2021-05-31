@@ -124,19 +124,19 @@ export class Progress extends Component {
       let grade = (this.state.points * 100.0) / this.state.total;
       return (
         <Row className="pr-5 pl-5 ml-2 mb-4">
-            <Col xs={10} className="pr-5">
-              <ProgressBar className="my-progressbar">
-                <ProgressBar now={`${levels_values[0]}`} animated striped variant="danger" label={`Not enough!`}
-                             key={1}/>
-                <ProgressBar now={`${levels_values[1]}`} animated striped variant="warning" label={`Ok`} key={2}/>
-                <ProgressBar now={`${levels_values[2]}`} animated striped variant="info" label={`Good`} key={3}/>
-                <ProgressBar now={`${levels_values[3]}`} animated striped variant="success" label={`Very Good`}
-                             key={4}/>
-              </ProgressBar>
-            </Col>
-            <Col xs={2} className="pr-5">
-              <h1 className="heading max-points">{Math.round(grade)}%</h1>
-            </Col>
+          <Col xs={10} className="pr-5">
+            <ProgressBar className="my-progressbar">
+              <ProgressBar now={`${levels_values[0]}`} animated striped variant="danger" label={`Not enough!`}
+                           key={1}/>
+              <ProgressBar now={`${levels_values[1]}`} animated striped variant="warning" label={`Ok`} key={2}/>
+              <ProgressBar now={`${levels_values[2]}`} animated striped variant="info" label={`Good`} key={3}/>
+              <ProgressBar now={`${levels_values[3]}`} animated striped variant="success" label={`Very Good`}
+                           key={4}/>
+            </ProgressBar>
+          </Col>
+          <Col xs={2} className="pr-5">
+            <h1 className="heading max-points">{Math.round(grade)}%</h1>
+          </Col>
         </Row>
       )
     }
