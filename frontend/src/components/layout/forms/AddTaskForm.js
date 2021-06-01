@@ -67,11 +67,10 @@ export class AddTaskForm extends Component {
             <Form.Group controlId="formBasicDeadline">
               <Form.Label className="form_text"> Deadline </Form.Label>
               <Form.Control
-                type="text"
+                type="datetime-local"
                 className="input_window"
                 onChange={this.props.handleDeadline}
                 value={this.props.deadline}
-                readOnly={this.props.readOnly}
               />
             </Form.Group>
           </Col>
