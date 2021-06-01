@@ -16,7 +16,7 @@ export class AddTask extends Component {
       gradeMax: 0,
       weight: 0,
       isExtra: false,
-      deadline: '2021-04-20T23:22:00Z',
+      deadline: '',
       aggregation: {label:"sum", value:"SUM"},
       aggregationOptions:[
         {value:"AVG", label: "average"},
@@ -98,6 +98,7 @@ export class AddTask extends Component {
   }
 
   handleSubmit = (e) =>{
+    console.log(this.state)
     e.preventDefault();
     fetch('/api/tasks/', {
       method : 'POST',
@@ -136,17 +137,19 @@ export class AddTask extends Component {
     }
     return parseInt(idString);
   }
-
+  //2021/06/15T17:30
+  //'2021-04-20T23:22:00Z'
   prepareData() {
+    var date = this.state.deadline.toString();
     const courseUrl = localStorage.getItem('courseUrl');
-
+    console.log(date);
     return {
       name: this.state.name,
       grade_min: parseInt(this.state.gradeMin),
       grade_max: parseInt(this.state.gradeMax),
       is_extra: this.state.isExtra,
       weight: parseInt(this.state.weight),
-      deadline: this.state.deadline,
+      deadline: date,
       description: this.state.description,
       aggregation_method: this.state.aggregation.value,
       course: this.extractID(courseUrl),

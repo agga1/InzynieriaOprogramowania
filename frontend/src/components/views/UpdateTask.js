@@ -13,9 +13,11 @@ export class AddTask extends Component {
     this.state = {
       task: {},
       description: "",
+      deadline: "",
       loaded: false,
     };
     this.handleDescription = this.handleDescription.bind(this);
+    this.handleDeadline = this.handleDeadline.bind(this);
     this.handleNone = this.handleNone.bind(this);
   }
 
@@ -41,6 +43,7 @@ export class AddTask extends Component {
           this.setState(() => ({
             task: data,
             description: data.description,
+            deadline: data.deadline,
             loaded: true,
           }));
         })
@@ -54,6 +57,12 @@ export class AddTask extends Component {
   handleDescription = (event) => {
     this.setState({
       description: event.target.value,
+    });
+  };
+
+  handleDeadline = (event) => {
+    this.setState({
+      deadline: event.target.value,
     });
   };
 
@@ -78,6 +87,7 @@ export class AddTask extends Component {
   prepareData() {
     return {
       description: this.state.description,
+      deadline: this.state.deadline
     };
   }
 
@@ -89,7 +99,7 @@ export class AddTask extends Component {
         </Col>
       );
     } else {
-      const { description } = this.state;
+      const { description, deadline } = this.state;
       return(
         <Col xs={10} className="text-center">
           <AddTaskForm
@@ -99,7 +109,7 @@ export class AddTask extends Component {
             handleGradeMin={this.handleNone}
             handleGradeMax={this.handleNone}
             handleWeight={this.handleNone}
-            handleDeadline={this.handleNone}
+            handleDeadline={this.handleDeadline}
             handleExtra = {this.handleNone}
             handleAggregation = {this.handleNone}
             handleSubmit={this.handleSubmit}
@@ -108,7 +118,7 @@ export class AddTask extends Component {
             gradeMin={this.state.task.gradeMin}
             gradeMax={this.state.task.gradeMax}
             weight={this.state.task.weight}
-            deadline={this.state.task.deadline}
+            deadline={deadline}
             readOnly={true}
             isExtra = {this.state.task.is_extra}
             aggregation = {{label:this.state.task.aggregation_method}}
