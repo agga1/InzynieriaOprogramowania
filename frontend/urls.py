@@ -18,6 +18,7 @@ urlpatterns = [
     path('teacher/task/grades', views.index),
     path('teacher/task/details', views.index),
     path('student/task/details', views.index),
+    path('student/task/histogram', views.index),
     path('teacher/task/update', views.index),
     path('teacher/course/leaderboard', views.index),
     path('teacher/course/achievements', views.index),
@@ -27,4 +28,5 @@ urlpatterns = [
     path('teacher/course/details', views.index),
     path('student/course/details', views.index),
     path('teacher/course/update', views.index),
+    path('teacher/task/histogram', views.index),
 ]

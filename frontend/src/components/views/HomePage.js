@@ -21,6 +21,7 @@ import Footer from '../layout/Footer'
 import CourseDetails from "./CourseDetails";
 import UpdateCourse from "./UpdateCourse";
 import {NotEarnedAchievements} from "./NotEarnedAchievements";
+import Histogram from './Histogram'
 
 
 export class HomePage extends Component {
@@ -63,6 +64,8 @@ export class HomePage extends Component {
           <Route path='/teacher/course/details' component={CourseDetails}/>
           <Route path='/student/course/details' component={CourseDetails}/>
           <Route path='/teacher/course/update' component={UpdateCourse}/>
+          <Route path='/teacher/task/histogram' component={Histogram}/>
+          <Route path='/student/task/histogram' component={Histogram}/>
         </Switch>
       </Router>
 

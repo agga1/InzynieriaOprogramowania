@@ -150,7 +150,15 @@ export class TaskIcon extends Component {
             >
               Details
             </a>
-
+          </ListInlineItem>
+          <ListInlineItem className="pr-3">
+            <a
+              href="/student/task/histogram"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+              <img src='./../../../static/images/histogram.png' alt='histogram_button' height="25px" width="25px"/>
+            </a>
           </ListInlineItem>
         </List>
       );
@@ -185,6 +193,15 @@ export class TaskIcon extends Component {
               onClick={() => this.setTask(taskUrl)}
             >
               Details
+            </a>
+          </ListInlineItem>
+          <ListInlineItem className="pr-3">
+            <a
+              href="/teacher/task/histogram"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+             <img src='./../../../static/images/histogram.png' alt='histogram_button' height="25px" width="25px"/>
             </a>
           </ListInlineItem>
         </List>
