@@ -8,6 +8,7 @@ import Footer from "../layout/Footer";
 import { getElement } from "../functions/helpers";
 import Button from '../layout/Button';
 import { Spinner as MiniSpinner } from "reactstrap";
+import {ProgressBar} from "react-bootstrap";
 
 
 export class Tasks extends Component {
@@ -18,6 +19,8 @@ export class Tasks extends Component {
       name: localStorage.getItem("courseName"),
       tasks: [],
       grades: [],
+      points: -1,
+      total: -1,
       gradesLen: -1,
       loaded: false,
       isStudent: localStorage.getItem('isStudent'),
@@ -26,8 +29,7 @@ export class Tasks extends Component {
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
-      this.getTasks();
-      this.getGrades();
+      this.getData();
     } else {
       alert("Log in to see the view");
       window.location.href = "/";
@@ -41,28 +43,22 @@ export class Tasks extends Component {
 }
 
   getTasks() {
-    getElement(localStorage.getItem("courseUrl") + "main_tasks")
+    return getElement(localStorage.getItem("courseUrl") + "main_tasks")
       .then((data) => {
+        let total = 0;
+        data.tasks.map(task => total=total + task.grade_max)
         this.setState(() => {
           return {
-            tasks: data.tasks,
-            loaded: true,
+            total: total,
           };
         });
+        return data.tasks;
       });
   }
 
-  getStudentsGrades() {
-      return getElement(localStorage.getItem("taskUrl") + "grades").then(
-        (data) => {
-          data = data.grades;
-          return data;
-        }
-      );
-  }
 
   getGrades() {
-    getElement("/api/grades/")
+    return getElement("/api/grades/")
       .then((data) => {
         let grades = [];
 
@@ -71,15 +67,43 @@ export class Tasks extends Component {
             grades.push(data[i]);
           }
         }
-
-        this.setState(() => {
-          return {
-            grades: grades,
-            gradesLen: grades.length
-          };
-        });
-
+        return grades;
       });
+  }
+
+  getPoints(tasks, grades){
+    var points = 0;
+    tasks.map(task => {
+      grades.map( grade => {
+        if(grade.task_name == task.name){
+          points = points + grade.value;
+        }
+      })
+    })
+    return points;
+  }
+
+  getData() {
+    let tasks = this.getTasks();
+    let grades = this.getGrades();
+    
+    Promise.all([tasks, grades])
+      .then(([tasks, grades]) => {
+        this.setState(() => ({
+          grades: grades,
+          gradesLen: grades.length,
+          tasks: tasks,
+        }));
+        let points = this.getPoints(tasks, grades);
+        return points
+      })
+      .then((points) => {
+        this.setState(() => ({
+          points: points,
+          loaded: true,
+        }));
+      })
+      .catch((err) => console.log(err.message));
   }
 
   getGrade(taskName) {
@@ -96,6 +120,12 @@ export class Tasks extends Component {
   }
 
 
+  prepareProgressBarView(){
+    const now = (this.state.points*100)/this.state.total;
+    if(this.state.isStudent === "true" && this.state.loaded == true){
+      return  <ProgressBar animated variant="warning" now={now} label={`${Math.round(now)}%`} />
+    }
+  }
   prepareView() {
     if (this.state.loaded == false) {
       return (
@@ -153,6 +183,7 @@ export class Tasks extends Component {
 
   render() {
     const coursesPath =  localStorage.getItem("isStudent") === "true" ? "/student/courses" : "/teacher/courses";
+   
     return (
       <Fragment>
         <Header
@@ -165,8 +196,11 @@ export class Tasks extends Component {
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}></Col>
-            <Col xs={9} className="title text-left">
+            <Col xs={5} className="title text-left">
               {this.state.name}
+            </Col>
+            <Col xs={4} className="title text-left mt-5">
+             {this.prepareProgressBarView()} 
             </Col>
           </Row>
           <Row>

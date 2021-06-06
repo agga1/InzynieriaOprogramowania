@@ -34,7 +34,6 @@ export class TaskIcon extends Component {
   };
 
   getGrade(taskName, grades) {
-    console.log(this.props.gradesLen);
     let i;
     for (i = 0; i < grades.length; i++) {
       if (grades[i].task_name == taskName) {
@@ -212,8 +211,6 @@ export class TaskIcon extends Component {
   
 
   render() {
-    console.log(this.props.grades);
-    console.log(this.props.grade);
     return (
       <Fragment>
         <Card
