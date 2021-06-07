@@ -10,7 +10,7 @@ from .serializers import TaskSerializer, CourseDetailSerializer, CreateGradeSeri
     CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
     GradeListSerializer, TaskMainSerializer, GradeMinimalSerializer, \
     CreateAchievementSerializer, ListAchievementSerializer, CourseGroupSerializer
-
+import csv
 
 class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -150,11 +150,6 @@ class CourseViewSet(viewsets.ModelViewSet):
             course.student.remove(student_id)
         return Response({"status": 'ok'})
 
-    @action(detail=True)
-    def tasks(self, request, pk=None):
-        course = Course.objects.get(pk=pk)
-        tasks_ = course.task_set.all()
-        return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
 
     @action(detail=True)
     def main_tasks(self, request, pk=None):
@@ -162,6 +157,47 @@ class CourseViewSet(viewsets.ModelViewSet):
         tasks_ = course.task_set.filter(parent_task=None)
         return Response({"tasks": TaskMainSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
 
+    @action(detail=True)
+    def tasks(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        tasks_ = course.task_set.all()
+        return Response({"tasks": TaskListSerializer(tasks_, many=True, context=self.get_serializer_context()).data})
+
+    @action(detail=True)
+    def grades_csv(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        students_names = [str(s) for s in course.student.all()]  # get all students, even those without grades
+        tasks_names = [task.name for task in course.task_set.all()]  # get all tasks, even those without grades
+
+        grades_dict = self.get_grades_dict(course, students_names)
+        response = self.grades_dict_to_http(grades_dict, tasks_names)
+        return response
+
+
+    def get_grades_dict(self, course, students_names):
+        """ create a dict with entry for each given student.
+            Each entry contains dict of key-value pairs "task_name": "received grade".
+            For given student, there are no entries for tasks in which student did not receive a grade! """
+        grades = course.grade_set.all()
+        grades_dict = {}
+        for student_name in students_names:
+            grades_dict[student_name] = {}
+        for grade in grades:
+            grade = GradeListSerializer(grade, context=self.get_serializer_context()).data
+            student, task_name, value = grade['student_name'], grade['task_name'], grade['value']
+            grades_dict[student][task_name] = value
+        return grades_dict
+
+    def grades_dict_to_http(self, grades_dict, tasks_names):
+        from django.http import HttpResponse
+        response = HttpResponse(
+            content_type='text/csv',
+        )
+        writer = csv.writer(response)
+        writer.writerow(['student'] + tasks_names)
+        for student, tasks_dict in grades_dict.items():
+            writer.writerow([student] + [tasks_dict.get(task, "-") for task in tasks_names])
+        return response
 
 class GradeViewSet(viewsets.ModelViewSet):
     permission_classes = [
