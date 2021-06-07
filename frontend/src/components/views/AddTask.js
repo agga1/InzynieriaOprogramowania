@@ -4,6 +4,7 @@ import AddTaskForm from '../layout/forms/AddTaskForm'
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 import { checkUser } from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class AddTask extends Component {
   constructor(props){
@@ -111,14 +112,7 @@ export class AddTask extends Component {
       .then(res => res.json())
       .then(resp =>{
         if(resp.name == this.state.name) {
-          alert(`Task ${this.state.name} added successfully.\n`
-            + `grade min: ${this.state.gradeMin}\n`
-            + `grade max: ${this.state.gradeMax}\n`
-            + `weight: ${this.state.weight}\n`
-            + `aggregation method: ${this.state.aggregation.value}\n`
-            + `is extra: ${this.state.isExtra}\n`
-            + `deadline: ${this.state.deadline}\n`
-          );
+          toast.success(`Task ${this.state.name} added successfully.\n`);
           window.location.href="/teacher/course/tasks";
         }
       })

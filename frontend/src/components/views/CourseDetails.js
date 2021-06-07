@@ -7,6 +7,7 @@ import Spinner from '../layout/Spinner';
 import { deleteElement, getElement } from '../functions/helpers';
 import CustomModal from '../layout/modals/CustomModal';
 import { Container as FABContainer, Link as FABLink, Button as FABBtn } from 'react-floating-action-button'
+import toast from 'react-hot-toast';
 
 export class CourseDetails extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ export class CourseDetails extends Component {
       this.getMainTasksNumber();
     }
     else {
-      alert('Log into to see the view');
+      toast.error('Log into to see the view',{duration:6000});
       window.location.href = "/";
     }
   }

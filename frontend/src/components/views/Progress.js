@@ -8,6 +8,7 @@ import Button from '../layout/Button';
 import {ProgressBar} from "react-bootstrap";
 import AchievementIcon from "../layout/icons/AchievementIcon";
 import { getElement } from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class Progress extends Component {
   constructor(props) {
@@ -106,7 +107,7 @@ export class Progress extends Component {
       this.getPointsForMainTasks()
       this.getAchievements();
     } else {
-      alert('Log into to see the view');
+      toast.error('Log into to see the view');
       window.location.href = "/";
     }
   }

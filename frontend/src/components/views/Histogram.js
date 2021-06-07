@@ -6,6 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import { getElement } from '../functions/helpers'
 import Chart from "react-google-charts";
+import toast from 'react-hot-toast';
 
 export class Histogram extends Component {
   constructor(props) {
@@ -34,9 +35,10 @@ export class Histogram extends Component {
           loaded: true
         }))
       })
-        .catch((err) =>
-          alert(err.message)
-        )
+        .catch((err) =>{
+          console.log(err);
+          toast.error("Error occured while getting task");
+        })
       getElement(localStorage.getItem("taskUrl") + "grades").then((data) => {
           console.log(data);
         let grades_list = [];
@@ -64,7 +66,7 @@ export class Histogram extends Component {
       })
     }
     else {
-      alert('Log into to see the view');
+      toast.error('Log into to see the view',{duration:6000});
       window.location.href = "/";
     }
   }

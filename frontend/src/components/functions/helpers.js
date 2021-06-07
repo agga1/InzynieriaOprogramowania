@@ -1,4 +1,7 @@
+import toast from "react-hot-toast";
+
 export const getStudents = () => {
+
   if (localStorage.getItem('isStudent') == 'false') {
     return (fetch(localStorage.getItem('courseUrl') + 'students', {
       method: 'GET',
@@ -37,8 +40,9 @@ export const checkUser = (returnPage) =>{
       })
       .then(resp => {
         if (resp.user.is_student != false) {
-          alert("Only teacher can see this view");
+          toast.error("Only teacher can see this view");
           window.location.href = returnPage;
+          
         }else{
           return (resp);
         }
@@ -46,7 +50,7 @@ export const checkUser = (returnPage) =>{
       .catch(err => console.log(err)));
 
   } else {
-    alert('Log into to see the view');
+    toast.error('Log into to see the view');
     window.location.href = "/";
     return new Promise(null);
   }
@@ -62,7 +66,7 @@ export const deleteElement = (url) =>{
 })
 .then(res => {
   if(res.status>=300){
-    alert("Error occured. Error number: "+res.status);
+    toast.error("Error occured. Error number: "+res.status);
     return false;
   }
   return true;

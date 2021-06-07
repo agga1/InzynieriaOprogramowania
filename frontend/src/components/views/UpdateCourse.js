@@ -5,6 +5,7 @@ import Footer from "../layout/Footer";
 import Spinner from "../layout/Spinner";
 import { checkUser, getElement } from "../functions/helpers";
 import AddCourseForm from '../layout/forms/AddCourseForm'
+import toast from "react-hot-toast";
 
 export class CourseUpdate extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ export class CourseUpdate extends Component {
           loaded: true,
         }));
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => toast.error(err.message));
   }
 
   handleDescription = (event) => {

@@ -5,6 +5,7 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Spinner from "../layout/Spinner";
 import { getElement } from "../functions/helpers";
+import toast from "react-hot-toast";
 
 export class AddTask extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export class AddTask extends Component {
         .then((res) => res.json())
         .then((resp) => {
           if (resp.user.is_student != false) {
-            alert("Only teacher can add tasks");
+            toast.error("Only teacher can add tasks");
             window.location.href = "/student/courses";
           }
         })
@@ -47,9 +48,9 @@ export class AddTask extends Component {
             loaded: true,
           }));
         })
-        .catch((err) => alert(err.message));
+        .catch((err) => toast.error(err.message));
     } else {
-      alert("Log into to see the view");
+      toast.error("Log into to see the view");
       window.location.href = "/";
     }
   }

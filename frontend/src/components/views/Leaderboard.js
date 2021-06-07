@@ -7,6 +7,7 @@ import Spinner from '../layout/Spinner';
 import {getElement, getStudents} from '../functions/helpers'
 import { MDBDataTable } from 'mdbreact';
 import {ProgressBar} from "react-bootstrap";
+import toast from 'react-hot-toast';
 
 
 export class Leaderboard extends Component {
@@ -45,7 +46,7 @@ export class Leaderboard extends Component {
     if (localStorage.getItem("token")) {
       this.getData();
     } else {
-      alert("Log into to see the view");
+      toast.error("Log into to see the view", {duration:6000});
       window.location.href = "/";
     }
   }

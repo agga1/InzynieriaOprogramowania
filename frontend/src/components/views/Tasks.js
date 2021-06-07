@@ -9,6 +9,7 @@ import { getElement } from "../functions/helpers";
 import Button from '../layout/Button';
 import { Spinner as MiniSpinner } from "reactstrap";
 import {ProgressBar} from "react-bootstrap";
+import toast from "react-hot-toast";
 
 
 export class Tasks extends Component {
@@ -31,7 +32,7 @@ export class Tasks extends Component {
     if (localStorage.getItem("token")) {
       this.getData();
     } else {
-      alert("Log in to see the view");
+      toast.error("Log in to see the view");
       window.location.href = "/";
     }
   }

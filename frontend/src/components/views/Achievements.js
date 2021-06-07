@@ -7,6 +7,7 @@ import Spinner from '../layout/Spinner';
 import Button from '../layout/Button';
 import AchievementIcon from "../layout/icons/AchievementIcon";
 import {getElement} from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class Achievements extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export class Achievements extends Component {
       this.getTasks();
       this.getAchievements();
     } else {
-      alert("Log in to see the view");
+      toast.error("Log in to see the view");
       window.location.href = "/";
     }
   }
@@ -91,22 +92,27 @@ export class Achievements extends Component {
       return (
         <Col>
           <Row className="p-2">
-            {this.state.achievements.map((achievement) => {
-              return (
-                <Col
-                  xs={12}
-                  key={achievement.id}
-                >
-                  <AchievementIcon
-                    kind={achievement.kind}
-                    args={achievement.args}
-                    name={achievement.name}
-                    handleCancel={this.handleCancel}
-                    tasks={this.state.tasks}
-                  />
-                </Col>
-              );
-            })}
+            {this.state.achievements.earned.length!=0 ? 
+              this.state.achievements.earned.map((achievement) => {
+                return (
+                  <Col
+                    xs={12}
+                    key={achievement.id}
+                  >
+                    <AchievementIcon
+                      kind={achievement.kind}
+                      args={achievement.args}
+                      name={achievement.name}
+                      handleCancel={this.handleCancel}
+                      tasks={this.state.tasks}
+                    />
+                  </Col>
+                );})
+                :
+                (<Col xs={9} className="mb-5 mt-5">
+                <h1 className="heading">There is no achievements in course {this.state.name}</h1>
+                </Col> )
+            }
           </Row>
           <Row className="pr-5 pl-5 mb-4">
             <Col xs={7}></Col>

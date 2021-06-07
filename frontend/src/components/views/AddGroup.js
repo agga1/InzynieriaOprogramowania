@@ -4,6 +4,7 @@ import AddGroupForm from '../layout/forms/AddGroupForm'
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 import {checkUser, extractID} from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class AddGroup extends Component {
   constructor(props){
@@ -47,7 +48,7 @@ export class AddGroup extends Component {
       .then(res => res.json())
       .then(resp => {
         if(resp.name === this.state.name) {
-          alert(`Group ${this.state.name} added successfully.\n`);
+          toast.success(`Group ${this.state.name} added successfully.\n`);
           window.location.href="/teacher/course/groups";
         }
       })

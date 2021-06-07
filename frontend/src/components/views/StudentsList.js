@@ -9,6 +9,7 @@ import CustomModal from '../layout/modals/CustomModal';
 import { Container as FABContainer, Button as FABBtn } from 'react-floating-action-button'
 import AddStudentsModal from '../layout/modals/AddStudentsModal';
 import AddStudentsComponent from '../layout/AddStudentComponent';
+import toast from 'react-hot-toast';
 
 export class StudentsList extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ export class StudentsList extends Component {
       students: [],
       showDeleteModal: false,
       studentToDelete: -1,
-      showAdd: false,
+      showAddModal: false,
       loaded: false,
     };
     this.showAddModal = this.showAddModal.bind(this);
@@ -35,13 +36,13 @@ export class StudentsList extends Component {
             loaded: true,
           }));
         })
-        .catch((err) => alert(err.message));
+        .catch((err) => toast.error(err.message));
     }
   }
 
   showDeleteModal = (student) => {
     this.setState((state) => ({
-      showModal: !state.showModal,
+      showDeleteModal: !state.showDeleteModal,
       studentToDelete: student
     }));
   };
@@ -60,7 +61,7 @@ export class StudentsList extends Component {
         if (res.status < 300) {
           this.refresh();
         } else {
-          alert("Error occured. Error number: " + res.status);
+          toast.error("Error occured. Error number: " + res.status);
         }
         this.handleDeleteCancel();
       })
@@ -69,7 +70,7 @@ export class StudentsList extends Component {
 
   handleDeleteCancel = () => {
     this.setState((state) => ({
-      showModal: !state.showModal,
+      showDeleteModal: !state.showDeleteModal,
       studentToDelete: -1,
     }));
   };
@@ -80,7 +81,7 @@ export class StudentsList extends Component {
 
   showAddModal = () => {
     this.setState((state) => ({
-      showAdd: !state.showAdd
+      showAddModal: !state.showAddModal
     }));
   }
 
@@ -151,7 +152,7 @@ export class StudentsList extends Component {
   }
 
   render() {
-    const {showAdd} = this.state
+    const {showAddModal} = this.state
     return (
       <Fragment>
         <Header
@@ -168,7 +169,7 @@ export class StudentsList extends Component {
           handleSubmit={this.handleDeleteSubmit}
           handleCancel={this.handleDeleteCancel}
         />
-        <AddStudentsComponent showAdd={showAdd} toggleAdd={this.showAddModal} refresh={this.refresh} />
+        <AddStudentsComponent showAdd={showAddModal} toggleAdd={this.showAddModal} refresh={this.refresh} />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}></Col>

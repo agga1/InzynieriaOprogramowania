@@ -6,6 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import AchievementIcon from "../layout/icons/AchievementIcon";
 import { getElement } from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class NotEarnedAchievements extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export class NotEarnedAchievements extends Component {
       this.getTasks();
       this.getAchievements();
     } else {
-      alert("Log in to see the view");
+      toast.error("Log in to see the view");
       window.location.href = "/";
     }
   }

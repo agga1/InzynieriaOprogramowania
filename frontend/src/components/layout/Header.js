@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Toaster } from 'react-hot-toast';
 import Button from './Button'
 
 export class Header extends Component{
@@ -40,6 +41,7 @@ export class Header extends Component{
             </li>
           </ul>
         </div>
+        <Toaster toastOptions={{duration:2000, style: {padding:"10px"}, success:{duration:2000}, error:{duration:2000}}}/>
       </nav>
     )
   }

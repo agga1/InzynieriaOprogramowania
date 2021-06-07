@@ -3,6 +3,7 @@ import {Container, Row, Col} from 'reactstrap';
 import AddAchievementForm from '../layout/forms/AddAchievementForm'
 import Header from '../layout/Header';
 import {checkUser, extractID, getArgs, getElement} from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class AddAchievement extends Component {
   constructor(props) {
@@ -84,8 +85,8 @@ export class AddAchievement extends Component {
       .then(res => res.json())
       .then(resp => {
         if (resp.kind == this.state.rule.value) {
-          alert(`Achievement added successfully`);
-          window.location.href="/teacher/course/achievements";
+          toast.success(`Achievement added successfully`);
+          // window.location.href="/teacher/course/achievements";
         }
       })
       .catch(err => console.log(err));

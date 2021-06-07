@@ -8,6 +8,7 @@ import { deleteElement, getElement } from '../functions/helpers'
 import parse from "html-react-parser";
 import CustomModal from '../layout/modals/CustomModal';
 import { Container as FABContainer, Link as FABLink, Button as FABBtn} from 'react-floating-action-button'
+import toast from 'react-hot-toast';
 
 export class TaskDetails extends Component {
   constructor(props) {
@@ -29,11 +30,11 @@ export class TaskDetails extends Component {
         }))
       })
         .catch((err) =>
-          alert(err.message)
+          toast.error(err.message)
         )
     }
     else {
-      alert('Log into to see the view');
+      toast.error('Log into to see the view');
       window.location.href = "/";
     }
   }

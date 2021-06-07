@@ -7,6 +7,7 @@ import Spinner from "../layout/Spinner";
 import Modal from "../layout/modals/RateStudentModal";
 import { getStudents, getElement, deleteElement } from "../functions/helpers";
 import CustomModal from "../layout/modals/CustomModal";
+import toast from "react-hot-toast";
 
 export class Grades extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ export class Grades extends Component {
     if (localStorage.getItem("token")) {
       this.getData();
     } else {
-      alert("Log into to see the view");
+      toast.error("Log into to see the view");
       window.location.href = "/";
     }
   }
@@ -153,12 +154,14 @@ export class Grades extends Component {
           .catch((err) => console.log(err));
       }
     } else {
-      alert(
+      toast.error(
         "Enter proper grade from range: [" +
           this.state.task.grade_min +
           ", " +
           this.state.task.grade_max +
-          "]!"
+          "]!", {
+            duration:6000,
+          }
       );
     }
   };

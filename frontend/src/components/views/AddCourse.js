@@ -4,6 +4,7 @@ import AddCourseForm from '../layout/forms/AddCourseForm'
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import { checkUser } from '../functions/helpers';
+import toast from 'react-hot-toast';
 
 export class AddCourse extends Component {
   constructor(props){
@@ -71,13 +72,11 @@ export class AddCourse extends Component {
       .then(res => res.json())
       .then(resp =>{
         if(resp.name == this.state.name){
-          alert("Course "+this.state.name+" added succesfully.\nteacher: "
-            +this.state.teacher+"\n"
-            +"pass threshold: "+this.state.pass_threshold);
+          toast.success("Course "+this.state.name+" added succesfully");
           window.location.href = "/teacher/courses";
         }
         else{
-          alert("Course not added.")
+          toast.error("Course not added.")
         }
 
       })
