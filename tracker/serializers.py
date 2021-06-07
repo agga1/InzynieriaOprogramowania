@@ -1,9 +1,9 @@
 from rest_framework import serializers
 import numpy as np
-from accounts.serializers import TeacherSerializer
+from accounts.serializers import TeacherSerializer, StudentSerializer
 # from sqlalchemy import null
 
-from .models import Task, Course, Grade, Achievement
+from .models import Task, Course, Grade, Achievement, CourseGroup
 
 
 # Task Serializers ---------------------------------------------------
@@ -265,6 +265,41 @@ class ListAchievementSerializer(serializers.ModelSerializer):
 
 
 class CourseGroupSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Achievement
+        model = CourseGroup
         fields = ('id', 'name', 'course', 'student')
+
+
+class CourseGroupListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CourseGroup
+        fields = (
+            'id', 'name', 'student'
+        )
+
+
+class CreateCourseGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseGroup
+        fields = (
+            'name', 'course', 'student'
+        )
+
+    def create(self, validated_data):
+        group = CourseGroup.objects.create(name=validated_data['name'], course=validated_data['course'])
+        for student in validated_data['student']:
+            group.student.add(student)
+        group.save()
+        return group
+
+
+class UpdateCourseGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseGroup
+        fields = (
+            'name', 'student'
+        )
+
+
