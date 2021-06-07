@@ -32,6 +32,7 @@ export class AddCourseForm extends Component {
           <SelectStudentsField
             chosen_students = {this.props.chosen_students}
             handleStudents={this.props.handleStudents}
+            readOnly={this.props.readOnly ? true : false}
           />
         </Form.Group>
 

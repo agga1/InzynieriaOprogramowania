@@ -150,7 +150,7 @@ export class AddTask extends Component {
       is_extra: this.state.isExtra,
       weight: parseInt(this.state.weight),
       deadline: date,
-      description: this.state.description,
+      description: this.state.description=="" ? "no-description-provided": this.state.description,
       aggregation_method: this.state.aggregation.value,
       course: this.extractID(courseUrl),
       parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))

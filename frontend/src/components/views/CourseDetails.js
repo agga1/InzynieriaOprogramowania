@@ -96,6 +96,12 @@ export class CourseDetails extends Component {
     if (localStorage.getItem("isStudent") == "false"){
       return (
         <FABContainer>
+          <FABBtn
+            tooltip="Export to csv"
+            className="orange-bg"
+            icon="fas fa-file-download fa-lg "
+            // onClick={() => this.toggleModal()}
+          />
           <FABLink
             tooltip="Edit description"
             className="orange-bg"

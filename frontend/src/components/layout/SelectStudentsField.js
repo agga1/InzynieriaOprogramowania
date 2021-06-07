@@ -44,6 +44,7 @@ export class SelectStudentsField extends Component {
       <Select
         classNamePrefix="input_window "
         isMulti = {true}
+        isDisabled = {this.props.readOnly ? true : false}
         value = {this.props.chosenStudents}
         onChange={this.props.handleStudents}
         options={this.state.students}

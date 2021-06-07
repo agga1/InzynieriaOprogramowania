@@ -91,7 +91,7 @@ export class AddCourse extends Component {
       name: this.state.name,
       teacher: this.state.teacher_id,
       student: students_id,
-      description: this.state.description,
+      description: this.state.description=="" ? "no-description-provided": this.state.description,
       pass_threshold: this.state.pass_threshold
     }
   }
