@@ -203,6 +203,15 @@ export class TaskIcon extends Component {
              <img src='./../../../static/images/histogram.png' alt='histogram_button' height="25px" width="25px"/>
             </a>
           </ListInlineItem>
+          <ListInlineItem className="pr-3">
+            <a
+              href="/teacher/task/leaderboard"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+              <img src='./../../../static/images/list.png' alt='leaderboard_button' height="25px" width="25px"/>
+            </a>
+          </ListInlineItem>
         </List>
       );
     }
