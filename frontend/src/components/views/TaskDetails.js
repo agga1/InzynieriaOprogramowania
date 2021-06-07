@@ -6,7 +6,7 @@ import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import { deleteElement, getElement } from '../functions/helpers'
 import parse from "html-react-parser";
-import CustomModal from '../layout/CustomModal';
+import CustomModal from '../layout/modals/CustomModal';
 import { Container as FABContainer, Link as FABLink, Button as FABBtn} from 'react-floating-action-button'
 
 export class TaskDetails extends Component {

@@ -5,7 +5,7 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import { deleteElement, getElement } from '../functions/helpers';
-import CustomModal from '../layout/CustomModal';
+import CustomModal from '../layout/modals/CustomModal';
 import { Container as FABContainer, Link as FABLink, Button as FABBtn } from 'react-floating-action-button'
 
 export class CourseDetails extends Component {
@@ -164,14 +164,6 @@ export class CourseDetails extends Component {
                 </Col>
               </Row>
             </Col>
-            {/* {localStorage.getItem('isStudent') === 'true' ? <Col></Col> :
-                            <>
-                                <Col xs={5} className="pr-5 text-right flex-cen-col-container" >
-                                    <Button path="/teacher/course/update" text="Edit description" className="course-details-btns"/>
-                                    <Button path="#" className=" mt-3 course-details-btns" text="Delete course" onClick={() => this.toggleModal()}/>
-                                </Col>
-                            </>
-                        } */}
           </Row>
           {this.prepareButtons()}
         </Col>

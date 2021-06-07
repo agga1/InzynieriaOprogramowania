@@ -4,9 +4,9 @@ import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import Spinner from "../layout/Spinner";
-import Modal from "../layout/RateStudentModal";
+import Modal from "../layout/modals/RateStudentModal";
 import { getStudents, getElement, deleteElement } from "../functions/helpers";
-import CustomModal from "../layout/CustomModal";
+import CustomModal from "../layout/modals/CustomModal";
 
 export class Grades extends Component {
   constructor(props) {

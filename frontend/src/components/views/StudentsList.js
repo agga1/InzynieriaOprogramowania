@@ -5,7 +5,10 @@ import Header from '../layout/Header'
 import Sidebar from '../layout/Sidebar';
 import Spinner from '../layout/Spinner';
 import {getStudents} from '../functions/helpers'
-import CustomModal from '../layout/CustomModal';
+import CustomModal from '../layout/modals/CustomModal';
+import { Container as FABContainer, Button as FABBtn } from 'react-floating-action-button'
+import AddStudentsModal from '../layout/modals/AddStudentsModal';
+import AddStudentsComponent from '../layout/AddStudentComponent';
 
 export class StudentsList extends Component {
   constructor(props) {
@@ -14,10 +17,12 @@ export class StudentsList extends Component {
     this.state = {
       name: localStorage.getItem("courseName"),
       students: [],
-      showModal: false,
+      showDeleteModal: false,
       studentToDelete: -1,
+      showAdd: false,
       loaded: false,
     };
+    this.showAddModal = this.showAddModal.bind(this);
     this.refresh = this.refresh.bind(this);
   }
 
@@ -34,7 +39,7 @@ export class StudentsList extends Component {
     }
   }
 
-  showModal = (student) => {
+  showDeleteModal = (student) => {
     this.setState((state) => ({
       showModal: !state.showModal,
       studentToDelete: student
@@ -73,6 +78,28 @@ export class StudentsList extends Component {
     window.location.reload();
   }
 
+  showAddModal = () => {
+    this.setState((state) => ({
+      showAdd: !state.showAdd
+    }));
+  }
+
+  prepareButtons(){
+    if (localStorage.getItem("isStudent") == "false"){
+      return (
+        <FABContainer>
+          <FABBtn
+            tooltip="Add student"
+            className="orange-bg"
+            icon="fas fa-plus fa-2x "
+            onClick={() => this.showAddModal()}
+          />
+        </FABContainer>
+      )
+    }
+  }
+
+
   prepareView() {
     if (this.state.loaded == false) {
       return (
@@ -109,7 +136,7 @@ export class StudentsList extends Component {
                         className="btn fas fa-trash fa-lg"
                         role="button"
                         aria-pressed="false"
-                        onClick={() => this.showModal(student.user.id)}
+                        onClick={() => this.showDeleteModal(student.user.id)}
                         style={{"margin":0}}
                       />
                     </td>
@@ -124,6 +151,7 @@ export class StudentsList extends Component {
   }
 
   render() {
+    const {showAdd} = this.state
     return (
       <Fragment>
         <Header
@@ -134,12 +162,13 @@ export class StudentsList extends Component {
           is_logout={true}
         />
         <CustomModal 
-          show={this.state.showModal}
+          show={this.state.showDeleteModal}
           title="Warning"
           body="Are you sure you want to delete this student?"
           handleSubmit={this.handleDeleteSubmit}
           handleCancel={this.handleDeleteCancel}
         />
+        <AddStudentsComponent showAdd={showAdd} toggleAdd={this.showAddModal} refresh={this.refresh} />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2}></Col>
@@ -155,6 +184,7 @@ export class StudentsList extends Component {
             {this.prepareView()}
           </Row>
         </Container>
+        {this.prepareButtons()}
         <Footer />
       </Fragment>
     );
