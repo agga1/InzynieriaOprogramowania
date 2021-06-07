@@ -95,12 +95,11 @@ export class StudentLoginPage extends Component {
       <Fragment>
         <Header button1_text="Teacher" button2_text="Main Page" button1_path="/teacher/login" button2_path="/"/>
         <Container fluid>
-          <Row className="mt-4 ml-3">
-            <Col xs={6} className="heading login_heading">Log into student's account</Col>
-            <Col></Col>
+          <Row className="mt-4 ml-md-3">
+            <Col lg={6} md={12} className="heading login_heading">Log into student's account</Col>
           </Row>
-          <Row className="mt-4 ml-3">
-            <Col xs={6}><LoginForm
+          <Row className="mt-4 ml-md-3">
+            <Col sm={6} xs={12}><LoginForm
               handleLogin = {this.handleLogin}
               handleLoginChange = {this.handleLoginChange}
               handlePasswordChange = {this.handlePasswordChange}
@@ -108,12 +107,14 @@ export class StudentLoginPage extends Component {
               password = {password}
               error = {this.state.error}/>
             </Col>
-            <Col xs={6}>
-              <Row className="mt-2 ml-3">
-                <Col className="slogan"><img src="../../static/images/slogan1.png"  alt="slogan" /></Col>
+            <Col sm={6} xs={12}>
+              <Row className="mt-2">
+                <Col className="slogan"><img src="../../static/images/slogan1.png"  className="responsive" alt="slogan" /></Col>
               </Row>
-              <Row className="mt-5 ml-3">
-                <Col className="log_image"><img src="../../static/images/breaking_rocks.png"  alt="sleeping students furing lecture" /></Col>
+              <Row className="mt-5 mb-3">
+                <Col className="log_image">
+                  <img src="../../static/images/breaking_rocks.png" class="responsive" alt="sleeping students furing lecture" />
+                  </Col>
               </Row>
             </Col>
           </Row>

@@ -22,6 +22,7 @@ import CourseDetails from "./CourseDetails";
 import UpdateCourse from "./UpdateCourse";
 import {NotEarnedAchievements} from "./NotEarnedAchievements";
 import Histogram from './Histogram'
+import { Col, Container, Row } from 'reactstrap'
 
 
 export class HomePage extends Component {
@@ -36,8 +37,18 @@ export class HomePage extends Component {
           <Route exact path='/'>
             <Fragment>
               <Header button1_text="Student" button2_text="Teacher" button1_path="/student/login" button2_path="teacher/login"/>
-              <h1 className="d-flex justify-content-center heading" id="main_heading">TeachRideExperience</h1>
-              <img src="../../static/images/sleeping_students.png" className="mx-auto pb-5 d-block" alt="sleeping students furing lecture" />
+              <Row>
+                <Col xs={12}>
+                  <h1 className="d-flex justify-content-center heading" id="main_heading">TeachRideExperience</h1>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={2} />
+                <Col xs={12} md={8}>
+                  <img src="../../static/images/sleeping_students.png" className="mx-auto pb-5 d-block responsive" alt="sleeping students furing lecture" />
+                </Col>
+              </Row>
+
               <Footer/>
             </Fragment>
           </Route>

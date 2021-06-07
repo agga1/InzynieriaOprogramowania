@@ -93,6 +93,24 @@ export class CourseDetails extends Component {
     this.toggleModal();
   }
 
+  getCSV = () => {
+    fetch(localStorage.getItem("courseUrl") + "grades_csv", {
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`,
+        // 'Content-Type' : 'text/csv',
+      }
+    })
+    .then(response => response.blob())
+    .then(blob => {
+          let url = window.URL.createObjectURL(blob);
+					let a = document.createElement('a');
+					a.href = url;
+					a.download = 'grades.csv';
+					a.click();
+    })
+  }
+
   prepareButtons(){
     if (localStorage.getItem("isStudent") == "false"){
       return (
@@ -101,7 +119,7 @@ export class CourseDetails extends Component {
             tooltip="Export to csv"
             className="orange-bg"
             icon="fas fa-file-download fa-lg "
-            // onClick={() => this.toggleModal()}
+            onClick={() => this.getCSV()}
           />
           <FABLink
             tooltip="Edit description"
