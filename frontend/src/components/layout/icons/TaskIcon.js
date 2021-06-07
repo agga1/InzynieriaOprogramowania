@@ -3,7 +3,6 @@ import { Card, CardBody, Row, CardTitle, Col, List, ListInlineItem} from "reacts
 import { getElement } from "../../functions/helpers";
 import Spinner from "../Spinner"
 import { Spinner as MiniSpinner } from "reactstrap";
-import CustomModal from "../CustomModal";
 
 export class TaskIcon extends Component {
   constructor(props) {
@@ -35,7 +34,6 @@ export class TaskIcon extends Component {
   };
 
   getGrade(taskName, grades) {
-    console.log(this.props.gradesLen);
     let i;
     for (i = 0; i < grades.length; i++) {
       if (grades[i].task_name == taskName) {
@@ -140,64 +138,79 @@ export class TaskIcon extends Component {
   }
 
   prepareButtons(taskUrl) {
-      if (localStorage.getItem("isStudent") == "true") {
-        return (
-          <List className="mb-1">
-            <ListInlineItem className="pr-3">
-              <a
-                href="/student/task/details"
-                className="task-link"
-                onClick={() => this.setTask(taskUrl)}
-              >
-                Details
-              </a>
-              
-            </ListInlineItem>
-          </List>
-        );
-      } else {
-        return (
-          <List className="mb-1">
-            <ListInlineItem className="pr-3">
-              <a
-                href="/teacher/task/add"
-                className="task-link"
-                onClick={() => this.setTask(taskUrl)}
-              >
-                +Task
-              </a>
-            </ListInlineItem>
-            <ListInlineItem className="pr-3 ">
-              <a
-                href="/teacher/task/grades"
-                className="task-link"
-                onClick={() => {
-                  this.setTask(taskUrl);
-                  this.setIsParentTask(this.state.children.length > 0);
-                }}
-              >
-                Grades
-              </a>
-            </ListInlineItem>
-            <ListInlineItem className="pr-3">
-              <a
-                href="/teacher/task/details"
-                className="task-link"
-                onClick={() => this.setTask(taskUrl)}
-              >
-                Details
-              </a>
-            </ListInlineItem>
-          </List>
-        );
-      }
+    if (localStorage.getItem("isStudent") == "true") {
+      return (
+        <List className="mb-1">
+          <ListInlineItem className="pr-3">
+            <a
+              href="/student/task/details"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+              Details
+            </a>
+          </ListInlineItem>
+          <ListInlineItem className="pr-3">
+            <a
+              href="/student/task/histogram"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+              <img src='./../../../static/images/histogram.png' alt='histogram_button' height="25px" width="25px"/>
+            </a>
+          </ListInlineItem>
+        </List>
+      );
+    } else {
+      return (
+        <List className="mb-1">
+          <ListInlineItem className="pr-3">
+            <a
+              href="/teacher/task/add"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+              +Task
+            </a>
+          </ListInlineItem>
+          <ListInlineItem className="pr-3 ">
+            <a
+              href="/teacher/task/grades"
+              className="task-link"
+              onClick={() => {
+                this.setTask(taskUrl);
+                this.setIsParentTask(this.state.children.length > 0);
+              }}
+            >
+              Grades
+            </a>
+          </ListInlineItem>
+          <ListInlineItem className="pr-3">
+            <a
+              href="/teacher/task/details"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+              Details
+            </a>
+          </ListInlineItem>
+          <ListInlineItem className="pr-3">
+            <a
+              href="/teacher/task/histogram"
+              className="task-link"
+              onClick={() => this.setTask(taskUrl)}
+            >
+             <img src='./../../../static/images/histogram.png' alt='histogram_button' height="25px" width="25px"/>
+            </a>
+          </ListInlineItem>
+        </List>
+      );
+    }
   }
 
   
 
   render() {
-    console.log(this.props.grades);
-    console.log(this.props.grade);
     return (
       <Fragment>
         <Card

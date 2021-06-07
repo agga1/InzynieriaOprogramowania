@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import {
   Card,
   CardBody,
-  Button,
   Row,
   CardTitle,
   Col
@@ -37,21 +36,20 @@ export class AchievementIcon extends Component {
               </CardTitle>
             </Col>
             {localStorage.getItem('isStudent')=='true' ? <></> : 
-            <Col xs={2}>
-              <CardTitle className="cancel-achievement">
-                <a
-                  className="cancel-achievement-btn"
-                  onClick={() => {
-                    this.props.handleCancel(this.props.name)
-                  }}
-                >
-                  Cancel
-                </a>
-              </CardTitle>
-            </Col>
-  }
+              <Col xs={2}>
+                <CardTitle className="cancel-achievement">
+                  <a
+                    className="cancel-achievement-btn"
+                    onClick={() => {
+                      this.props.handleCancel(this.props.name)
+                    }}
+                  >
+                    Cancel
+                  </a>
+                </CardTitle>
+              </Col>
+            }
           </Row>
-
         </Card>
       </Fragment>
     );
