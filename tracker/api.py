@@ -9,7 +9,8 @@ from rest_framework import viewsets, permissions
 from .serializers import TaskSerializer, CourseDetailSerializer, CreateGradeSerializer, \
     CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
     GradeListSerializer, TaskMainSerializer, GradeMinimalSerializer, \
-    CreateAchievementSerializer, ListAchievementSerializer, CourseGroupSerializer
+    CreateAchievementSerializer, ListAchievementSerializer, CourseGroupSerializer, CreateCourseGroupSerializer, \
+    UpdateCourseGroupSerializer, CourseGroupListSerializer
 import csv
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -111,6 +112,13 @@ class CourseViewSet(viewsets.ModelViewSet):
         course = Course.objects.get(pk=pk)
         students_ = course.student.all()
         return Response({"students": StudentSerializer(students_, many=True).data})
+
+    @action(detail=True)
+    def groups(self, request, pk=None):
+        course = Course.objects.get(pk=pk)
+        groups_ = course.coursegroup_set.all()
+        return Response({"groups": CourseGroupListSerializer(groups_, many=True)
+                        .data})
 
     @action(detail=True)
     def achievements(self, request, pk=None):
@@ -273,7 +281,9 @@ class CourseGroupViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return CourseGroupSerializer
         if self.action == 'create':
-            return CourseGroupSerializer
+            return CreateCourseGroupSerializer
+        if self.action == 'update':
+            return UpdateCourseGroupSerializer
         return CourseGroupSerializer
 
     def get_queryset(self):
@@ -293,9 +303,10 @@ class CourseGroupViewSet(viewsets.ModelViewSet):
     def add_grade(self, request, pk=None):
         """ provide {"grade": 4, "task": 31} """
         grade_value = request.data['grade']
-        task = request.data['task']
+        task = Task.objects.get(pk=request.data['task'])
         group = CourseGroup.objects.get(pk=pk)
-        for student_id in group.student:
+        students = group.student.all()
+        for student_id in students:
             grade = Grade.objects.create(task=task, value=grade_value,
                                          student=student_id, course=task.course,
                                          issued_by=task.course.teacher)
