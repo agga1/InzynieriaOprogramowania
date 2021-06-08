@@ -206,44 +206,45 @@ class CreateGradeSerializer(serializers.ModelSerializer):
         print("create")
         grade = Grade.objects.create(**validated_data)
         grade.save()
-        self.recalculate_parent(grade)
+        recalculate_parent(grade)
         return grade
 
     def update(self, instance, validated_data):
         print("update")
         Grade.objects.filter(pk=instance.id).update(**validated_data)
         if 'value' in validated_data.keys():
-            self.recalculate_parent(instance)
+            recalculate_parent(instance)
         return Grade.objects.get(pk=instance.id)
 
-    def recalculate_parent(self, grade):
-        student = grade.student
-        parent_task = grade.task.parent_task
-        if parent_task is None:  # highest level already - update achievements
-            update_achievements(grade)
-            return
-        parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
-        if not parent_grade_set:  # create new grade
-            parent_grade = Grade.objects.create(task=parent_task, value=parent_task.grade_min,
-                                                student=student, course=grade.course,
-                                                issued_by=grade.issued_by)
-            parent_grade.save()
-        else:
-            parent_grade = parent_grade_set[0]
-        child_tasks = Task.objects.filter(parent_task=parent_task)
-        grades = Grade.objects.filter(student=student).filter(task__in=child_tasks)
-        values = np.array([grade.value for grade in grades])
-        agg = parent_task.aggregation_method
-        if agg == Task.AggregationMethod.AVERAGE:
-            Grade.objects.filter(pk=parent_grade.id).update(value=values.sum() / len(child_tasks))
-        elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
-            sum_weights = sum([task.weight for task in child_tasks])
-            sum_grades_with_weights = sum([grade.value * grade.task.weight for grade in grades])
-            avg = sum_grades_with_weights / sum_weights
-            Grade.objects.filter(pk=parent_grade.id).update(value=avg)
-        elif agg == Task.AggregationMethod.SUM:
-            Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
-        self.recalculate_parent(parent_grade)
+
+def recalculate_parent(grade):
+    student = grade.student
+    parent_task = grade.task.parent_task
+    if parent_task is None:  # highest level already - update achievements
+        update_achievements(grade)
+        return
+    parent_grade_set = Grade.objects.filter(task=parent_task).filter(student=student)
+    if not parent_grade_set:  # create new grade
+        parent_grade = Grade.objects.create(task=parent_task, value=parent_task.grade_min,
+                                            student=student, course=grade.course,
+                                            issued_by=grade.issued_by)
+        parent_grade.save()
+    else:
+        parent_grade = parent_grade_set[0]
+    child_tasks = Task.objects.filter(parent_task=parent_task)
+    grades = Grade.objects.filter(student=student).filter(task__in=child_tasks)
+    values = np.array([grade.value for grade in grades])
+    agg = parent_task.aggregation_method
+    if agg == Task.AggregationMethod.AVERAGE:
+        Grade.objects.filter(pk=parent_grade.id).update(value=values.sum() / len(child_tasks))
+    elif agg == Task.AggregationMethod.WEIGHTED_AVERAGE:
+        sum_weights = sum([task.weight for task in child_tasks])
+        sum_grades_with_weights = sum([grade.value * grade.task.weight for grade in grades])
+        avg = sum_grades_with_weights / sum_weights
+        Grade.objects.filter(pk=parent_grade.id).update(value=avg)
+    elif agg == Task.AggregationMethod.SUM:
+        Grade.objects.filter(pk=parent_grade.id).update(value=values.sum())
+    recalculate_parent(parent_grade)
 
 
 # Achievement Serializers ---------------------------------------------------

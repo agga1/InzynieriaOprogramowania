@@ -266,7 +266,7 @@ export class TaskIcon extends Component {
               </CardBody>
             </Col>
 
-            <Col xs={6} className="text-right task-btn">
+            <Col xs={6} className="text-right card-btn">
               {this.prepareButtons(this.props.url, this.props.aggregation, this.props.isExtra)}
             </Col>
           </Row>

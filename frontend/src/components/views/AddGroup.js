@@ -61,7 +61,7 @@ export class AddGroup extends Component {
     return {
       name: this.state.name,
       course: courseID,
-      students: this.state.chosenStudents
+      student: this.state.chosenStudents
     }
   }
 

@@ -10,8 +10,9 @@ from .serializers import TaskSerializer, CourseDetailSerializer, CreateGradeSeri
     CreateCourseSerializer, CourseListSerializer, TaskListSerializer, GradeDetailSerializer, \
     GradeListSerializer, TaskMainSerializer, GradeMinimalSerializer, \
     CreateAchievementSerializer, ListAchievementSerializer, CourseGroupSerializer, CreateCourseGroupSerializer, \
-    UpdateCourseGroupSerializer, CourseGroupListSerializer
+    UpdateCourseGroupSerializer, CourseGroupListSerializer, recalculate_parent
 import csv
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -69,6 +70,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                                          student=student, course=task.course,
                                          issued_by=task.course.teacher)
             grade.save()
+            recalculate_parent(grade)
         return Response({"status": 'ok'})
 
 
@@ -129,14 +131,14 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif hasattr(self.request.user, 'student'):
             student = self.request.user.student
             achievements_ = course.achievement_set.all()
-            earned = achievements_.filter(pk__in = student.achievement_set.all())
-            not_earned = achievements_.exclude(pk__in = student.achievement_set.all())
+            earned = achievements_.filter(pk__in=student.achievement_set.all())
+            not_earned = achievements_.exclude(pk__in=student.achievement_set.all())
             return Response({"achievements":
                 {
                     "earned": ListAchievementSerializer(earned, many=True).data,
                     "not_earned": ListAchievementSerializer(not_earned, many=True).data
-                 }
-             })
+                }
+            })
 
     @action(detail=True, methods=['POST'])
     def add_students(self, request, pk=None):
@@ -157,7 +159,6 @@ class CourseViewSet(viewsets.ModelViewSet):
         for student_id in student_ids:
             course.student.remove(student_id)
         return Response({"status": 'ok'})
-
 
     @action(detail=True)
     def main_tasks(self, request, pk=None):
@@ -180,7 +181,6 @@ class CourseViewSet(viewsets.ModelViewSet):
         grades_dict = self.get_grades_dict(course, students_names)
         response = self.grades_dict_to_http(grades_dict, tasks_names)
         return response
-
 
     def get_grades_dict(self, course, students_names):
         """ create a dict with entry for each given student.
@@ -206,6 +206,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         for student, tasks_dict in grades_dict.items():
             writer.writerow([student] + [tasks_dict.get(task, "-") for task in tasks_names])
         return response
+
 
 class GradeViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -311,6 +312,7 @@ class CourseGroupViewSet(viewsets.ModelViewSet):
                                          student=student_id, course=task.course,
                                          issued_by=task.course.teacher)
             grade.save()
+            recalculate_parent(grade)
         return Response({"status": 'ok'})
 
     @action(detail=True, methods=['POST'])
@@ -332,6 +334,3 @@ class CourseGroupViewSet(viewsets.ModelViewSet):
         for student_id in student_ids:
             group.student.remove(student_id)
         return Response({"status": 'ok'})
-
-
-

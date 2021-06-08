@@ -92,12 +92,8 @@ export class Achievements extends Component {
       return (
         <Col>
           <Row className="p-2">
-            {this.state.achievements ? 
-            (<Col xs={9} className="mb-5 mt-5">
-            <h1 className="heading">There is no achievements in course {this.state.name}</h1>
-            </Col> )
-            :
-              this.state.achievements.earned.map((achievement) => {
+            {this.state.achievements.length > 0 ?
+              this.state.achievements.map((achievement) => {
                 return (
                   <Col
                     xs={12}
@@ -112,6 +108,10 @@ export class Achievements extends Component {
                     />
                   </Col>
                 );})
+              :
+              (<Col xs={9} className="mb-5 mt-5">
+            <h1 className="heading">There is no achievements in course {this.state.name}</h1>
+            </Col> )
                 
             }
           </Row>
