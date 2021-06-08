@@ -110,7 +110,7 @@ export class CourseDetails extends Component {
     })
     .catch(err => {
       console.log(err);
-      toast.error("Error occured while downloading file");
+      toast.error("Error occured while downloading file.");
     })
   }
 

@@ -11,7 +11,7 @@ export const getStudents = () => {
     })
       .then(response => {
         if (response.status > 400) {
-          toast.error("Something went wrong!");
+          toast.error("Something went wrong! Try to refresh the page.");
         }
         return response.json();
       })
@@ -83,7 +83,7 @@ export const getElement = (url) => {
   })
     .then(response => {
       if (response.status > 400) {
-        toast.error("Something went wrong!");
+        toast.error("Something went wrong! Try to refresh the page.");
       }
       return response.json();
     })

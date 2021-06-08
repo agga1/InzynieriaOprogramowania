@@ -48,7 +48,7 @@ export class AddTask extends Component {
             loaded: true,
           }));
         })
-        .catch((err) => toast.error(err.message));
+        .catch((err) => console.log(err.message));
     } else {
       toast.error("Log into to see the view");
       window.location.href = "/";

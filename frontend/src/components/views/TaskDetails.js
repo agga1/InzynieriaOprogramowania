@@ -30,7 +30,7 @@ export class TaskDetails extends Component {
         }))
       })
         .catch((err) =>
-          toast.error(err.message)
+          console.log(err.message)
         )
     }
     else {

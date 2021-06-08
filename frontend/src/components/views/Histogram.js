@@ -35,7 +35,7 @@ export class Histogram extends Component {
         }))
       })
         .catch((err) =>{
-          toast.error("Error occured while getting task");
+          toast.error("Error occured while getting task. Try to refresh the page.");
         })
       getElement(localStorage.getItem("taskUrl") + "grades").then((data) => {
         let grades_list = [];

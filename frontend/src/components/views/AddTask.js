@@ -115,7 +115,7 @@ export class AddTask extends Component {
           window.location.href="/teacher/course/tasks";
         }
       })
-      .catch(err => {toast.error("Error occured.Check provided data."); console.log(err);});
+      .catch(err => {toast.error("Error occured. Check provided data."); console.log(err);});
 
   }
 
