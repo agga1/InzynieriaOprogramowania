@@ -204,13 +204,26 @@ html, body{
   font-size: 64px;
 }
 
+.group-title {
+  font-size: 50px;
+}
+
 .task-sidebar{
   background-color: #483ebb !important;
 }
 
-.task-btn{
+.card-btn{
   align-self:flex-end;
   padding: 0 30px 10px 0;
+}
+
+.group-students-list-title {
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.group-students-list {
+  font-size: 23px;
 }
 
 .students-list{
