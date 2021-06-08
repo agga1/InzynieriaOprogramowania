@@ -141,7 +141,6 @@ export class TaskIcon extends Component {
     }
     localStorage.setItem("taskAggregation", aggregation);
     localStorage.setItem("taskIsExtra", isExtra);
-    console.log("a"+aggregation);
   }
 
   setIsParentTask(isParentTask) {
