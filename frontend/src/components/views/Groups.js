@@ -9,6 +9,7 @@ import {checkUser, deleteElement, getElement, getStudents} from "../functions/he
 import Button from '../layout/Button';
 import RateGroupModal from "../layout/RateGroupModal";
 import CustomModal from "../layout/modals/CustomModal";
+import toast from "react-hot-toast";
 
 export class Groups extends Component {
   constructor(props) {
@@ -153,7 +154,7 @@ export class Groups extends Component {
                 let grade = this.gradeExists(this.state.groupStudents, data.grades);
 
                 if (grade != undefined) {
-                 alert("At least one of the students have already been given a grade");
+                 toast.error("At least one of the students have already been given a grade");
                 } else {
                   fetch("/api/groups/" + this.state.groupID + "/add_grade/", {
                     method: "POST",
@@ -170,11 +171,11 @@ export class Groups extends Component {
                 }
               })
           } else {
-            alert("You can give a grade only to a task that does not have any subtasks");
+            toast.error("You can give a grade only to a task that does not have any subtasks");
           }
         })
     } else {
-      alert(
+      toast.error(
         "Enter proper grade from range: [" +
           this.state.task.grade_min +
           ", " +

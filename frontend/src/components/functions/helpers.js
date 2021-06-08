@@ -11,7 +11,7 @@ export const getStudents = () => {
     })
       .then(response => {
         if (response.status > 400) {
-          throw new Error("Something went wrong!");
+          toast.error("Something went wrong!");
         }
         return response.json();
       })
@@ -20,7 +20,7 @@ export const getStudents = () => {
         return (data);
       }))
   } else {
-    throw new Error("Only teacher can see this view!");
+    toast.error("Only teacher can see this view!");
   }
 }
 
@@ -83,7 +83,7 @@ export const getElement = (url) => {
   })
     .then(response => {
       if (response.status > 400) {
-        throw new Error("Something went wrong!");
+        toast.error("Something went wrong!");
       }
       return response.json();
     })
