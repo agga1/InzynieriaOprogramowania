@@ -75,7 +75,7 @@ export class AddTaskForm extends Component {
               />
             </Form.Group>
           </Col>
-          <Col md={2} style={{display: aggr==undefined ? (aggr == "WAVG" ? 'block' : 'none') : (aggr == "WAVG" ? 'block' : 'none' )}}>
+          <Col md={2} style={{display: aggr==undefined ? ('none') : (aggr == "WAVG" ? 'block' : 'none' )}}>
             <Form.Group controlId="formBasicWeight">
               <Form.Label className="form_text">Weight</Form.Label>
               <Form.Control
@@ -109,7 +109,7 @@ export class AddTaskForm extends Component {
                 label="is extra?"
                 className="form_text"
                 onChange={this.props.handleExtra}
-                // disabled={this.props.readOnly}
+                disabled={this.props.readOnly}
               />
             </Form.Group>
           </Col>

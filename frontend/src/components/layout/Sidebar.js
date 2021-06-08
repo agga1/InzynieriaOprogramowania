@@ -18,9 +18,15 @@ export class Sidebar extends Component {
   }
 
 
-  deleteParentTask() {
+  deleteLocalItems() {
     if (localStorage.getItem('taskUrl')){
       localStorage.removeItem('taskUrl');
+    }
+    if (localStorage.getItem("taskIsExtra")) {
+      localStorage.removeItem("taskIsExtra");
+    }
+    if (localStorage.getItem("taskAggregation")) {
+      localStorage.removeItem("taskAggregation");
     }
   }
 
@@ -66,7 +72,7 @@ export class Sidebar extends Component {
               <Button path="/teacher/course/groups" className="w-80"  text="Groups"/>
             </NavItem>
             <NavItem className="m-md-3 m-1 w-80 text-center">
-              <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add task"/>
+              <Button path="/teacher/task/add" onClick={this.deleteLocalItems} className="w-80"  text="Add task"/>
             </NavItem>
             <NavItem className="m-md-3 m-1 w-80 text-center">
               <Button path="/teacher/course/leaderboard" className="w-80"  text="Leaderboard"/>
