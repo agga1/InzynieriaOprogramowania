@@ -103,7 +103,7 @@ export class TaskDetails extends Component {
       );
     } else {
       return (
-        <Col xs={10} className="pr-4">
+        <Col md={10} className="pr-4">
           <Row className="pr-5 mb-4" style={{ "paddingLeft": "60px" }}>
             <h3 className="task-heading font-weight-bold">Description</h3>
           </Row>
@@ -141,11 +141,6 @@ export class TaskDetails extends Component {
                 </Col>
               </Row>
             </Col>
-            {/* {localStorage.getItem('isStudent') == 'true' ? <Col></Col> :
-                            <Col xs={5} className="mt-4 pr-5 text-right">
-                                <Button path="/teacher/task/update" text="Edit description" />
-                            </Col>
-                        } */}
           </Row>
           {this.prepareButtons()}
         </Col>
@@ -168,11 +163,11 @@ export class TaskDetails extends Component {
           />
           <Row className="mt-4 mb-5 ml-3">
             <Col xs={2} />
-            <Col xs={9} className="task-heading title text-left">{this.state.task.name}</Col>
-            <Col xs={1} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.state.task.grade_max}</Col>
+            <Col md={9} xs={12} className="task-heading title text-left">{this.state.task.name}</Col>
+            <Col md={1} xs={12} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.state.task.grade_max}</Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar />
             </Col>
             {this.prepareView()}

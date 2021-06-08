@@ -105,16 +105,16 @@ export class Groups extends Component {
         />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={2}></Col>
-            <Col xs={9} className="title text-left">
+            <Col md={2}></Col>
+            <Col md={9} className="title text-left">
               {this.state.name}
             </Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar />
             </Col>
-            <Col xs={10}>{this.prepareView()}</Col>
+            <Col md={10}>{this.prepareView()}</Col>
           </Row>
         </Container>
         <Footer />

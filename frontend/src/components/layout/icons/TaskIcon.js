@@ -218,12 +218,12 @@ export class TaskIcon extends Component {
           className={`icon mb-4 ${this.state.style}`}
         >
           <Row>
-            <Col xs={localStorage.getItem('isStudent')=='true' ? 9 : 11}>
-              <CardBody className="pb-0 pt-3">
+            <Col sm={localStorage.getItem('isStudent')=='true' ? 9 : 10}>
+              <CardBody className="pb-0 pt-3 pr-0">
                 <CardTitle tag="h1">{this.props.task_name}</CardTitle>
               </CardBody>
             </Col>
-            <Col xs={localStorage.getItem('isStudent')=='true' ? 3 : 1} className="text-right pl-0 pt-3">
+            <Col sm={localStorage.getItem('isStudent')=='true' ? 3 : 2} className="text-right pl-0 pt-3">
               <div className=" points">
                 {localStorage.getItem("isStudent") == "false" ? ( "" ) : ( <h1 className="your-points">{this.props.grade}/</h1>)}
                 <h1 className="max-points">{this.props.max_points}</h1>
@@ -232,7 +232,7 @@ export class TaskIcon extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              <CardBody className="pt-0 pb-0">
+              <CardBody className="pt-0 pb-0 pl-0 pl-sm-1">
                 <List className="mb-0">
                   <ListInlineItem className="card-text">
                     <b>Deadline:</b>

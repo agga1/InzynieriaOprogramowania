@@ -154,7 +154,7 @@ export class Progress extends Component {
     else {
       let levels_values = this.setLevels();
       return (
-        <Col xs={10} className="pr-4">
+        <Col md={10} className="pr-4">
           {this.prepareProgressBar(levels_values)}
           <Row className="p-2">
             {this.state.achievements.map((achievement) => {
@@ -194,11 +194,11 @@ export class Progress extends Component {
                 is_logout={true}/>
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={2}/>
-            <Col xs={10} className="task-heading title text-left">Progress</Col>
+            <Col md={2}/>
+            <Col md={10} className="task-heading title text-left">Progress</Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar/>
             </Col>
             {this.prepareView()}

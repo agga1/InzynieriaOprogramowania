@@ -124,7 +124,10 @@ export class Tasks extends Component {
   prepareProgressBarView(){
     const now = (this.state.points*100)/this.state.total;
     if(this.state.isStudent === "true" && this.state.loaded == true){
-      return  <ProgressBar animated variant="warning" now={now} label={`${Math.round(now)}%`} />
+      return  (
+          <Col md={4} sm={12} className="title text-left pt-md-5 pt-4">
+            <ProgressBar animated variant="warning" now={now} label={`${Math.round(now)}%`} />
+          </Col>)
     }
   }
   prepareView() {
@@ -196,19 +199,18 @@ export class Tasks extends Component {
         />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={2}></Col>
-            <Col xs={5} className="title text-left">
+            <Col md={2} xs={0}></Col>
+            <Col md={5} sm={12} className="title text-left">
               {this.state.name}
             </Col>
-            <Col xs={4} className="title text-left mt-5">
+            
              {this.prepareProgressBarView()} 
-            </Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} sm={12} className="ml-md-0 pl-md-0 ">
               <Sidebar />
             </Col>
-            <Col xs={10}>{this.prepareView()}</Col>
+            <Col md={10} sm={12}>{this.prepareView()}</Col>
           </Row>
         </Container>
         <Footer />

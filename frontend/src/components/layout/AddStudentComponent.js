@@ -1,6 +1,5 @@
 import React from 'react'
 import { Component } from 'react';
-// import { Container, Row, Col, Table } from 'reactstrap';
 import AddStudentsModal from './modals/AddStudentsModal';
 
 export class AddStudentsComponent extends Component{

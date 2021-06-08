@@ -113,7 +113,7 @@ export class StudentLoginPage extends Component {
               </Row>
               <Row className="mt-5 mb-3">
                 <Col className="log_image">
-                  <img src="../../static/images/breaking_rocks.png" class="responsive" alt="sleeping students furing lecture" />
+                  <img src="../../static/images/breaking_rocks.png" className="responsive" alt="sleeping students furing lecture" />
                   </Col>
               </Row>
             </Col>

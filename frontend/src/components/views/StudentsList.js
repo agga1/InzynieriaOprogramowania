@@ -111,8 +111,8 @@ export class StudentsList extends Component {
     } else {
       this.state.refresh == true ? this.refresh() : null;
       return (
-        <Col xs={10}>
-          <Table striped className="students-list">
+        <Col md={10}>
+          <Table striped className="students-list mb-5">
             <thead>
               <tr>
                 <th></th>
@@ -172,14 +172,14 @@ export class StudentsList extends Component {
         <AddStudentsComponent showAdd={showAddModal} toggleAdd={this.showAddModal} refresh={this.refresh} />
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={2}></Col>
-            <Col xs={9} className="heading title text-left">
+            <Col md={2}></Col>
+            <Col md={9} className="heading title text-left">
               {this.state.name}
             </Col>
           </Row>
 
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar refresh={this.refresh} />
             </Col>
             {this.prepareView()}

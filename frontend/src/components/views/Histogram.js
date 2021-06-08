@@ -80,7 +80,7 @@ export class Histogram extends Component {
     else number = 10;
     if (!this.state.loaded || !this.state.grades_loaded) {
       return (
-        <Col xs={10} className="mb-5 mt-5">
+        <Col md={10} className="mb-5 mt-5">
           <Spinner className="spinner"/>
         </Col>
       );
@@ -126,15 +126,17 @@ export class Histogram extends Component {
         <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true} />
         <Container fluid>
           <Row className="mt-4 mb-3 ml-3">
-            <Col xs={2} />
-            <Col xs={7} className="task-heading title text-left">{this.state.taskName}</Col>
-            <Col xs={3} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.returnPoints()}</Col>
+            <Col md={2} />
+            <Col md={7} className="task-heading title text-left">{this.state.taskName}</Col>
+            <Col md={3} className="task-heading login_heading text-right pr-5" style={{ "fontSize": "40px" }}>{this.returnPoints()}</Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar />
             </Col>
+            <Col md={10}>
             {this.prepareView()}
+            </Col>
           </Row>
         </Container>
         <Footer />

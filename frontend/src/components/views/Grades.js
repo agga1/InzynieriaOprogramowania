@@ -214,13 +214,13 @@ export class Grades extends Component {
   prepareView() {
     if (this.state.loaded == false) {
       return (
-        <Col xs={10} className="mb-5 mt-5">
+        <Col md={10} className="mb-5 mt-5">
           <Spinner className="spinner" />
         </Col>
       );
     } else {
       return (
-        <Col xs={10} className="pr-4">
+        <Col md={10} className="pr-4">
           <Table striped className="students-list">
             <thead>
               <tr>
@@ -310,14 +310,14 @@ export class Grades extends Component {
           handleCancel={this.handleDeleteCancel}
         />
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={3} />
-            <Col xs={9} className="heading login_heading text-left">
+            <Col md={3} />
+            <Col md={9} className="heading login_heading text-left">
               {this.state.task.name}
             </Col>
           </Row>
 
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar />
             </Col>
             {this.prepareView()}

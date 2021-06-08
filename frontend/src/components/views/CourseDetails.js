@@ -98,7 +98,6 @@ export class CourseDetails extends Component {
       method: 'GET',
       headers: {
         Authorization: `Token ${localStorage.getItem('token')}`,
-        // 'Content-Type' : 'text/csv',
       }
     })
     .then(response => response.blob())
@@ -108,6 +107,10 @@ export class CourseDetails extends Component {
 					a.href = url;
 					a.download = 'grades.csv';
 					a.click();
+    })
+    .catch(err => {
+      console.log(err);
+      toast.error("Error occured while downloading file");
     })
   }
 
@@ -146,13 +149,13 @@ export class CourseDetails extends Component {
   prepareView() {
     if (this.state.loaded === false) {
       return (
-        <Col xs={10} className="mb-5 mt-5">
+        <Col ms={10} className="mb-5 mt-5">
           <Spinner className="spinner-no-style"/>
         </Col>
       );
     } else {
       return (
-        <Col xs={10} className="pr-4">
+        <Col ms={10} className="pr-4">
           <Row className="pr-5 pl-5 mb-4">
             <Col xs={7}>
               <Row className="ml-1 mb-3">
@@ -211,12 +214,12 @@ export class CourseDetails extends Component {
             handleCancel={this.handleCancel}
           />
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={2} />
-            <Col xs={9} className="task-heading title text-left">{this.state.name}</Col>
-            <Col xs={1} />
+            <Col md={2} />
+            <Col md={9} className="task-heading title text-left">{this.state.name}</Col>
+            <Col md={1} />
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar />
             </Col>
             {this.prepareView()}

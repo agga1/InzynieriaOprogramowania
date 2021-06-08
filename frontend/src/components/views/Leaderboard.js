@@ -140,13 +140,13 @@ export class Leaderboard extends Component {
   prepareView() {
     if (this.state.loaded === false || this.state.grades_loaded === false) {
       return (
-        <Col xs={10} className="mb-3 mt-5">
+        <Col md={10} className="mb-3 mt-5">
           <Spinner className="spinner"/>
         </Col>
       );
     } else {
       return (
-        <Col xs={10} className="pr-4">
+        <Col md={10} className="pr-4">
           <MDBDataTable
             striped
             bordered
@@ -165,12 +165,12 @@ export class Leaderboard extends Component {
         <Header button1_text="My Courses" button2_text="Log Out" button1_path="/student/courses" button2_path="/" is_logout={true}/>
         <Container fluid>
           <Row className="mt-4 mb-3 ml-3">
-            <Col xs={2}></Col>
-            <Col xs={9} className="heading title text-left">{this.state.name}</Col>
-            <Col xs={12} className="heading subtitle text-center">Leaderboard</Col>
+            <Col md={2}></Col>
+            <Col md={9} className="heading title text-left">{this.state.name}</Col>
+            <Col md={12} className="heading subtitle text-center">Leaderboard</Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar/>
             </Col>
               {this.prepareView()}

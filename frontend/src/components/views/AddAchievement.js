@@ -89,7 +89,7 @@ export class AddAchievement extends Component {
           // window.location.href="/teacher/course/achievements";
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err); toast.error(`Error occured.`);});
   }
 
   prepareData() {
@@ -120,12 +120,12 @@ export class AddAchievement extends Component {
         <Header button1_text="Achievements" button2_text="Log Out" button1_path="/teacher/course/achievements"
                 button2_path="/" is_logout={true}/>
         <Container fluid>
-          <Row xs={3} className="mt-4 mb-5 ml-3">
-            <Col xs={5} className="heading text-center login_heading">Create achievement</Col>
+          <Row sm={3} className="mt-4 mb-5 ml-3">
+            <Col sm={5} className="heading text-center login_heading">Create achievement</Col>
           </Row>
           <Row className="mt-2">
-            <Col xs={1}></Col>
-            <Col xs={10} className="text-center">
+            <Col sm={1}></Col>
+            <Col sm={10} className="text-center">
               <AddAchievementForm
                 buttonText="Create"
                 handleName={this.handleName}

@@ -55,7 +55,7 @@ export class NotEarnedAchievements extends Component {
   prepareView() {
     if (this.state.loaded == false) {
       return (
-        <Col xs={12} className="mb-5 mt-5">
+        <Col md={12} className="mb-5 mt-5">
           <Spinner/>
         </Col>
       );
@@ -92,14 +92,14 @@ export class NotEarnedAchievements extends Component {
                 is_logout={true}/>
         <Container fluid>
           <Row className="mt-4 mb-5 ml-3">
-            <Col xs={2}/>
-            <Col xs={10} className="task-heading title text-left">Achievements to get</Col>
+            <Col md={2}/>
+            <Col md={10} className="task-heading title text-left">Achievements to get</Col>
           </Row>
           <Row>
-            <Col xs={2} className="ml-0 pl-0">
+            <Col md={2} className="ml-md-0 pl-md-0">
               <Sidebar/>
             </Col>
-            <Col xs={10}>{this.prepareView()}</Col>
+            <Col md={10}>{this.prepareView()}</Col>
           </Row>
         </Container>
 
