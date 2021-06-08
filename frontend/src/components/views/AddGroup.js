@@ -72,7 +72,7 @@ export class AddGroup extends Component {
         <Header button1_text="Groups" button2_text="Log Out" button1_path="/teacher/course/groups" button2_path="/" is_logout={true}/>
         <Container fluid>
           <Row xs={3} className="mt-4 mb-5 ml-3">
-            <Col xs={3} className="heading text-center login_heading">Add task</Col>
+            <Col xs={3} className="heading text-center login_heading">Add group</Col>
 
           </Row>
           <Row className="mt-2">

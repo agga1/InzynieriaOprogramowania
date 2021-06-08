@@ -26,7 +26,6 @@ export class Histogram extends Component {
   componentDidMount() {
     if (localStorage.getItem('token')) {
       getElement(localStorage.getItem('taskUrl')).then((data) => {
-        console.log(data);
         this.setState(() => ({
           taskID: data.id,
           taskName: data.name,
@@ -36,11 +35,9 @@ export class Histogram extends Component {
         }))
       })
         .catch((err) =>{
-          console.log(err);
           toast.error("Error occured while getting task");
         })
       getElement(localStorage.getItem("taskUrl") + "grades").then((data) => {
-          console.log(data);
         let grades_list = [];
         grades_list.push(["Student", "Grade"]);
         if(localStorage.getItem("isStudent") == "false"){
@@ -85,7 +82,6 @@ export class Histogram extends Component {
         </Col>
       );
     } else {
-        console.log(this.state.grades.length)
       if(this.state.grades.length === 1){
           return <h1 className="heading">No grade was assigned to this task.</h1>
       }

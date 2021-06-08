@@ -16,7 +16,7 @@ export class AddTask extends Component {
       gradeMin: 0,
       gradeMax: 0,
       weight: 0,
-      isExtra: false,
+      isExtra: localStorage.getItem('taskIsExtra')==='true' ? true : false,
       deadline: '',
       aggregation: {label:"sum", value:"SUM"},
       aggregationOptions:[
@@ -99,7 +99,6 @@ export class AddTask extends Component {
   }
 
   handleSubmit = (e) =>{
-    console.log(this.state)
     e.preventDefault();
     fetch('/api/tasks/', {
       method : 'POST',
@@ -116,7 +115,7 @@ export class AddTask extends Component {
           window.location.href="/teacher/course/tasks";
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {toast.error("Error occured.Check provided data."); console.log(err);});
 
   }
 
@@ -133,15 +132,15 @@ export class AddTask extends Component {
   }
   //2021/06/15T17:30
   //'2021-04-20T23:22:00Z'
+
   prepareData() {
-    var date = this.state.deadline.toString();
+    let date = this.state.deadline.toString()+":00Z";
     const courseUrl = localStorage.getItem('courseUrl');
-    console.log(date);
     return {
       name: this.state.name,
       grade_min: parseInt(this.state.gradeMin),
       grade_max: parseInt(this.state.gradeMax),
-      is_extra: this.state.isExtra,
+      is_extra: localStorage.getItem('taskIsExtra')==='true' ? true : this.state.isExtra,
       weight: parseInt(this.state.weight),
       deadline: date,
       description: this.state.description=="" ? "no-description-provided": this.state.description,
@@ -149,8 +148,6 @@ export class AddTask extends Component {
       course: this.extractID(courseUrl),
       parent_task: (localStorage.getItem('taskUrl') == null ? null : this.extractID(localStorage.getItem('taskUrl')))
     }
-
-
   }
 
   render() {

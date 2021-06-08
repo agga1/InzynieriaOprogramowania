@@ -127,7 +127,6 @@ export class Grades extends Component {
                 }
                 return val;
               });
-              console.log(list);
               return {
                 grades: list,
               };

@@ -148,7 +148,6 @@ export class TasksLeaderboard extends Component {
       var obj = {name: student.user.first_name + " " + student.user.last_name}
       result.map((res) => {
         var label = res["key"].split('_')[0];
-        console.log(label);
         var val = res["value"];
         obj[[label]]=val;
       })

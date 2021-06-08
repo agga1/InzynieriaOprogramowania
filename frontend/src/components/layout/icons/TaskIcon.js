@@ -80,6 +80,8 @@ export class TaskIcon extends Component {
                       grade={this.getGrade(task.name, grades)}
                       grades={grades}
                       gradesLen={ this.props.gradesLen === -1 ? -1 : grades.length}
+                      aggregation={task.aggregation}
+                      isExtra={task.is_extra}
                     />
                   </Col>
                 );
@@ -130,6 +132,18 @@ export class TaskIcon extends Component {
     localStorage.setItem("taskUrl", taskUrl);
   }
 
+  setAggregationAndExtra(aggregation,isExtra) {
+    if (localStorage.getItem("taskAggregation")) {
+      localStorage.removeItem("taskAggregation");
+    }
+    if (localStorage.getItem("taskIsExtra")) {
+      localStorage.removeItem("taskIsExtra");
+    }
+    localStorage.setItem("taskAggregation", aggregation);
+    localStorage.setItem("taskIsExtra", isExtra);
+    console.log("a"+aggregation);
+  }
+
   setIsParentTask(isParentTask) {
     if (localStorage.getItem("isParentTask")) {
       localStorage.removeItem("isParentTask");
@@ -137,7 +151,7 @@ export class TaskIcon extends Component {
     localStorage.setItem("isParentTask", isParentTask);
   }
 
-  prepareButtons(taskUrl) {
+  prepareButtons(taskUrl, aggregation, isExtra) {
     if (localStorage.getItem("isStudent") == "true") {
       return (
         <List className="mb-1">
@@ -168,7 +182,7 @@ export class TaskIcon extends Component {
             <a
               href="/teacher/task/add"
               className="task-link"
-              onClick={() => this.setTask(taskUrl)}
+              onClick={() => {this.setTask(taskUrl), this.setAggregationAndExtra(aggregation,isExtra)}}
             >
               +Task
             </a>
@@ -254,7 +268,7 @@ export class TaskIcon extends Component {
             </Col>
 
             <Col xs={6} className="text-right task-btn">
-              {this.prepareButtons(this.props.url)}
+              {this.prepareButtons(this.props.url, this.props.aggregation, this.props.isExtra)}
             </Col>
           </Row>
         </Card>

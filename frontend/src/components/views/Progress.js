@@ -46,7 +46,6 @@ export class Progress extends Component {
         let points = 0;
         counter++;
         data2.grades.map((grade) =>{
-          console.log(this.state.studentId);
               if(grade.student == this.state.studentId)
                 points += grade.value;
           })

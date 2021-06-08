@@ -6,6 +6,7 @@ import Select from 'react-select'
 
 export class AddTaskForm extends Component {
   render() {
+    let aggr = localStorage.getItem('taskAggregation');
     return (
       <Form className="form">
         <Row>
@@ -74,6 +75,18 @@ export class AddTaskForm extends Component {
               />
             </Form.Group>
           </Col>
+          <Col md={2} style={{display: aggr==undefined ? (aggr == "WAVG" ? 'block' : 'none') : (aggr == "WAVG" ? 'block' : 'none' )}}>
+            <Form.Group controlId="formBasicWeight">
+              <Form.Label className="form_text">Weight</Form.Label>
+              <Form.Control
+                type="text"
+                className="input_window"
+                onChange={this.props.handleWeight}
+                value={this.props.weight}
+                readOnly={this.props.readOnly}
+              />
+            </Form.Group>
+          </Col>
           <Col md={4} xl={3}>
             <Form.Group controlId="formBasicAggregation">
               <Form.Label className="form_text">Aggregation method</Form.Label>
@@ -84,18 +97,6 @@ export class AddTaskForm extends Component {
                 onChange={this.props.handleAggregation}
                 options={this.props.aggregationOptions}
                 isDisabled={this.props.readOnly}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={2} style={{display: this.props.aggregation.value==undefined ? (this.props.aggregation == "WAVG" ? 'block' : 'none') : (this.props.aggregation.value == "WAVG" ? 'block' : 'none' )}}>
-            <Form.Group controlId="formBasicWeight">
-              <Form.Label className="form_text">Weight</Form.Label>
-              <Form.Control
-                type="text"
-                className="input_window"
-                onChange={this.props.handleWeight}
-                value={this.props.weight}
-                readOnly={this.props.readOnly}
               />
             </Form.Group>
           </Col>

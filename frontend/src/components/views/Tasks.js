@@ -176,6 +176,8 @@ export class Tasks extends Component {
                   grade={this.getGrade(task.name)}
                   grades={this.state.grades}
                   gradesLen={this.state.gradesLen}
+                  aggregation={task.aggregation_method}
+                  isExtra={task.is_extra}
                 />
               </Col>
             );
