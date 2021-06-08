@@ -89,7 +89,7 @@ export class Leaderboard extends Component {
         list.push({"key": key, "value": value});
       }
       else
-        list.push({"key": key, "value": "-"});
+        list.push({"key": key, "value": "0"});
     });
     return { grades: list, points: points};
   }

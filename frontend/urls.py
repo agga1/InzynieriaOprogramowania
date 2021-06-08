@@ -29,4 +29,5 @@ urlpatterns = [
     path('student/course/details', views.index),
     path('teacher/course/update', views.index),
     path('teacher/task/histogram', views.index),
+    path('teacher/task/leaderboard', views.index),
 ]

@@ -22,7 +22,8 @@ import CourseDetails from "./CourseDetails";
 import UpdateCourse from "./UpdateCourse";
 import {NotEarnedAchievements} from "./NotEarnedAchievements";
 import Histogram from './Histogram'
-import { Col, Container, Row } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
+import TaskLeaderboard from './TaskLeaderboard'
 
 
 export class HomePage extends Component {
@@ -77,6 +78,7 @@ export class HomePage extends Component {
           <Route path='/teacher/course/update' component={UpdateCourse}/>
           <Route path='/teacher/task/histogram' component={Histogram}/>
           <Route path='/student/task/histogram' component={Histogram}/>
+          <Route path='/teacher/task/leaderboard' component={TaskLeaderboard}/>
         </Switch>
       </Router>
 
