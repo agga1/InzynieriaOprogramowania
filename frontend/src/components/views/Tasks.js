@@ -10,7 +10,7 @@ import Button from '../layout/Button';
 import { Spinner as MiniSpinner } from "reactstrap";
 import {ProgressBar} from "react-bootstrap";
 import toast from "react-hot-toast";
-import { Container as FABContainer, Link as FABLink} from 'react-floating-action-button'
+import { Container as FABContainer, Link as FABLink,  Button as FABBtn} from 'react-floating-action-button'
 
 
 export class Tasks extends Component {
@@ -37,12 +37,6 @@ export class Tasks extends Component {
       window.location.href = "/";
     }
   }
-
-  deleteParentTask() {
-    if (localStorage.getItem('taskUrl')){
-        localStorage.removeItem('taskUrl');
-    }
-}
 
   getTasks() {
     return getElement(localStorage.getItem("courseUrl") + "main_tasks")
@@ -133,18 +127,22 @@ export class Tasks extends Component {
     }
   }
 
+  deleteParentTask() {
+    if (localStorage.getItem('taskUrl')){
+        localStorage.removeItem('taskUrl');
+    }
+}
 
   prepareButtons(){
     if (localStorage.getItem("isStudent") == "false"){
       return (
          <FABContainer>
-          <FABLink
-            tooltip="Add task"
-            className="orange-bg plus-fa-size"
-            icon="fas fa-plus fa-2x"
-            href="/teacher/task/add"
-            onClick={this.deleteLocalItems}
-            />
+           <FABBtn
+           tooltip="Add task"
+           className="orange-bg plus-fa-size"
+           icon="fas fa-plus fa-2x"
+           onClick={() => {this.deleteLocalItems(); window.location.href="/teacher/task/add"}}
+          />
        </FABContainer>
       )
     }

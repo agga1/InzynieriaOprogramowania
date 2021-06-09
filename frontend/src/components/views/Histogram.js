@@ -40,6 +40,7 @@ export class Histogram extends Component {
       getElement(localStorage.getItem("taskUrl") + "grades").then((data) => {
         let grades_list = [];
         grades_list.push(["Student", "Grade"]);
+        
         if(localStorage.getItem("isStudent") == "false"){
             data.grades.map((grade) =>{
                 grades_list.push([grade.student_name, grade.value]);
