@@ -36,7 +36,7 @@ export class Sidebar extends Component {
           <Navbar dark expand="md">
           <NavbarBrand></NavbarBrand>
           <NavbarToggler className="mr-1" onClick={() => this.toggle()} />
-          <Collapse isOpen={this.state.isOpen} navbar className="task-sidebar">
+          <Collapse isOpen={this.state.isOpen} navbar >
           <Nav className="pt-4 pb-4 text-center flex-md-column flex-sm-line justify-content-center">
             <NavItem className="m-md-3 m-1 text-center">
               <Button path="/student/course/tasks" className="w-80" text="Course tasks"/>
@@ -57,6 +57,10 @@ export class Sidebar extends Component {
     else{
       return(
         <div className="task-sidebar mb-5 mb-lg-0">
+          <Navbar dark expand="md">
+          <NavbarBrand></NavbarBrand>
+          <NavbarToggler className="mr-1" onClick={() => this.toggle()} />
+          <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="pt-4 pb-4 text-center flex-md-column flex-sm-line justify-content-center">
             <NavItem className="m-md-3 m-1 w-80 text-center">
               <Button path="/teacher/course/tasks" className="w-80" text="Course tasks"/>
@@ -80,6 +84,8 @@ export class Sidebar extends Component {
               <Button path="/teacher/course/achievements" className="w-80"  text="Achievements"/>
             </NavItem>
           </Nav>
+          </Collapse>
+        </Navbar>
         </div>
       )
 
