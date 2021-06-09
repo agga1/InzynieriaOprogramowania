@@ -154,6 +154,14 @@ export class TaskIcon extends Component {
     if (localStorage.getItem("isStudent") == "true") {
       return (
         <List className="mb-1">
+          <ListInlineItem className="pr-3 pt-1">
+            <a
+              href="#"
+              className="task-link fas fa-chevron-down"
+              onClick={() => this.onClick()}
+            >
+            </a>
+          </ListInlineItem>
           <ListInlineItem className="pr-3">
             <a
               href="/student/task/details"
@@ -177,6 +185,14 @@ export class TaskIcon extends Component {
     } else {
       return (
         <List className="mb-1">
+          <ListInlineItem className="pr-3 pt-1">
+            <a
+              href="#"
+              className="task-link fas fa-chevron-down"
+              onClick={() => this.onClick()}
+            >
+            </a>
+          </ListInlineItem>
           <ListInlineItem className="pr-3">
             <a
               href="/teacher/task/add"
@@ -236,7 +252,7 @@ export class TaskIcon extends Component {
     return (
       <Fragment>
         <Card
-          onClick={this.onClick}
+          // onClick={this.onClick}
           className={`icon mb-4 ${this.state.style}`}
         >
           <Row>

@@ -171,7 +171,7 @@ export class Tasks extends Component {
       if (this.state.isStudent === 'true'){
         return (
           <Col xs={9} className="mb-5 mt-5">
-              <h1 className="heading">There is no task in course {this.state.name}</h1>
+              <h1 className="heading">There are no task in course {this.state.name}</h1>
           </Col> 
         );
       }
@@ -179,7 +179,7 @@ export class Tasks extends Component {
         return (
           <Row>
             <Col xs={9} className="mb-5 mt-5">
-              <h1 className="heading">There is no task in course {this.state.name}</h1>
+              <h1 className="heading">There are no task in course {this.state.name}</h1>
             </Col>
             {/* <Col xs={3} className="mb-5 mt-5">
               <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add new task"/>
