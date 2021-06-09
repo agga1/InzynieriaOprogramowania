@@ -201,7 +201,7 @@ html, body{
 }
 
 .subtitle{
-  font-size: 64px;
+  font-size: max(4vw, 3rem);
 }
 
 .group-title {
@@ -320,5 +320,5 @@ html, body{
 }
 
 .progress{
-  height: 1.2rem !important;
+  height: 1.5rem !important;
 }

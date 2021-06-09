@@ -22,20 +22,46 @@ export class TeacherLoginPage extends Component {
    this.handleLogin = this.handleLogin.bind(this);
   }
 
+  // componentDidMount(){
+  //   if(this.state.logged_in) {
+  //     getElement('/api/auth/login')
+  //       .then(resp => {
+  //         if(resp.is_student){
+  //           this.setState({
+  //             username : resp.username
+  //           })
+  //           window.location.href="/student/courses"
+  //         }
+  //       })
+  //       .catch(err => console.log(err));
+  //   }
+  // }
+
   componentDidMount(){
-    if(this.state.logged_in) {
-      getElement('/api/auth/login')
+    if(localStorage.getItem('token')){
+       fetch('/api/auth/login', {
+        method: 'GET',
+        headers: {
+          Authorization: `Token ${localStorage.getItem('token')}`
+        }
+      })
+        .then(response => {
+          if (response.status > 400) {
+            conosle.log("Something went wrong! Try to refresh the page.");
+          }
+          return response.json();
+        })
         .then(resp => {
           if(resp.is_student){
             this.setState({
               username : resp.username
             })
-            window.location.href="/student/courses"
+            window.location.href="/teacher/courses";
           }
         })
         .catch(err => console.log(err));
+      }
     }
-  }
 
   handleLoginChange = event => {
     this.setState({

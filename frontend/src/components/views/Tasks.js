@@ -10,6 +10,7 @@ import Button from '../layout/Button';
 import { Spinner as MiniSpinner } from "reactstrap";
 import {ProgressBar} from "react-bootstrap";
 import toast from "react-hot-toast";
+import { Container as FABContainer, Link as FABLink} from 'react-floating-action-button'
 
 
 export class Tasks extends Component {
@@ -120,6 +121,34 @@ export class Tasks extends Component {
     return <MiniSpinner className="minispinner" animation="border"/>;
   }
 
+  deleteLocalItems() {
+    if (localStorage.getItem('taskUrl')){
+      localStorage.removeItem('taskUrl');
+    }
+    if (localStorage.getItem("taskIsExtra")) {
+      localStorage.removeItem("taskIsExtra");
+    }
+    if (localStorage.getItem("taskAggregation")) {
+      localStorage.removeItem("taskAggregation");
+    }
+  }
+
+
+  prepareButtons(){
+    if (localStorage.getItem("isStudent") == "false"){
+      return (
+         <FABContainer>
+          <FABLink
+            tooltip="Add task"
+            className="orange-bg plus-fa-size"
+            icon="fas fa-plus fa-2x"
+            href="/teacher/task/add"
+            onClick={this.deleteLocalItems}
+            />
+       </FABContainer>
+      )
+    }
+  }
 
   prepareProgressBarView(){
     const now = (this.state.points*100)/this.state.total;
@@ -130,6 +159,7 @@ export class Tasks extends Component {
           </Col>)
     }
   }
+
   prepareView() {
     if (this.state.loaded == false) {
       return (
@@ -214,6 +244,7 @@ export class Tasks extends Component {
             </Col>
             <Col md={10} sm={12}>{this.prepareView()}</Col>
           </Row>
+          {this.prepareButtons()}
         </Container>
         <Footer />
       </Fragment>
