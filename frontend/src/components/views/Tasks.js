@@ -181,9 +181,9 @@ export class Tasks extends Component {
             <Col xs={9} className="mb-5 mt-5">
               <h1 className="heading">There is no task in course {this.state.name}</h1>
             </Col>
-            <Col xs={3} className="mb-5 mt-5">
+            {/* <Col xs={3} className="mb-5 mt-5">
               <Button path="/teacher/task/add" onClick={this.deleteParentTask} className="w-80"  text="Add new task"/>
-            </Col>
+            </Col> */}
           </Row>   
         );
       }
